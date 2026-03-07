@@ -1,29 +1,69 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>MILLONARIOS CAMPEON</title>
+<title>Mi Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{
+    font-family: Arial;
+    background:#f4f4f4;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+}
+</style>
 </head>
 
 <body>
 
-    <h1>MILLONARIOS HUMILLA A NACIONAL</h1>
+<h1>Dashboard de Ventas</h1>
 
-    <p>MILLOS 3 - NACIONAL 1</p>
+<div class="dashboard">
 
-    <h2>+18</h2>
+<div class="card">
+<h3>Usuarios</h3>
+<p>120</p>
+</div>
 
-    <p>SE RECOMIENDA VER CON UN ADULTO</p>
+<div class="card">
+<h3>Ventas</h3>
+<p>$3,500</p>
+</div>
 
-    <ul>
-        <li>Elemento de lista 1</li>
-        <li>Elemento de lista 2</li>
-        <li>Elemento de lista 3</li>
-    </ul>
+<div class="card">
+<h3>Pedidos</h3>
+<p>45</p>
+</div>
 
-    <a href="#">Este es un enlace</a>
+<div class="card">
+<canvas id="grafica"></canvas>
+</div>
+
+</div>
+
+<script>
+const ctx = document.getElementById('grafica');
+
+new Chart(ctx, {
+type: 'bar',
+data: {
+labels: ['Ene','Feb','Mar','Abr'],
+datasets: [{
+label: 'Ventas',
+data: [10,20,15,30]
+}]
+}
+});
+</script>
 
 </body>
-
 </html>
