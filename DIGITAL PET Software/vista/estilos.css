@@ -120,10 +120,10 @@ body{
 
 .lado-izquierdo{
     width:50%;
-    background:#fff5ef; /* color suave que resalta muy poco */
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    background-image: url("templates/perro_1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 
