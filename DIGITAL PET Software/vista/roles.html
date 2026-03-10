@@ -3,30 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <title>Roles y Permisos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 min-h-screen">
 
 <div class="max-w-6xl mx-auto p-10">
 
 <a href="administracion.html" class="text-blue-600 hover:underline">
-← Volver
+← Volver a administración
 </a>
 
-<h1 class="text-3xl font-bold mt-4 mb-6">
+<h1 class="text-3xl font-bold text-gray-800 mt-4 mb-6">
 Roles y Permisos
 </h1>
 
 <div class="bg-white rounded-xl shadow p-6">
 
-<button class="bg-purple-600 text-white px-4 py-2 rounded-lg mb-4">
+<div class="flex justify-between mb-6">
+
+<h2 class="text-xl font-semibold">
+Roles del sistema
+</h2>
+
+<button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
 Crear rol
 </button>
 
+</div>
+
 <table class="w-full text-left">
 
-<thead class="border-b">
+<thead class="border-b bg-gray-50">
 <tr>
 <th class="p-3">Rol</th>
 <th class="p-3">Descripción</th>
@@ -38,17 +49,33 @@ Crear rol
 
 <tr class="border-b">
 <td class="p-3">Administrador</td>
-<td class="p-3">Control total del sistema</td>
+<td class="p-3">Acceso completo al sistema</td>
 <td class="p-3">
-<button class="text-blue-600">Editar</button>
+<button class="text-blue-600 hover:underline">Editar</button>
 </td>
 </tr>
 
 <tr class="border-b">
 <td class="p-3">Veterinario</td>
-<td class="p-3">Acceso a citas e historial</td>
+<td class="p-3">Gestiona citas, historial clínico y pacientes</td>
 <td class="p-3">
-<button class="text-blue-600">Editar</button>
+<button class="text-blue-600 hover:underline">Editar</button>
+</td>
+</tr>
+
+<tr class="border-b">
+<td class="p-3">Cliente</td>
+<td class="p-3">Puede ver sus mascotas, citas y facturas</td>
+<td class="p-3">
+<button class="text-blue-600 hover:underline">Editar</button>
+</td>
+</tr>
+
+<tr class="border-b">
+<td class="p-3">Proveedor</td>
+<td class="p-3">Gestiona productos y suministros del inventario</td>
+<td class="p-3">
+<button class="text-blue-600 hover:underline">Editar</button>
 </td>
 </tr>
 
