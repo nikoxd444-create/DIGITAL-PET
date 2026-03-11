@@ -1,32 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
-
+<meta charset="UTF-8">
 <title>Registro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="estilos.css">
+<script src="https://cdn.tailwindcss.com"></script>
 
 </head>
 
-<body>
-
+<body class="bg-orange-50 min-h-screen flex flex-col">
 
 <!-- NAVBAR -->
 
-<div class="navbar">
+<div class="bg-orange-300 px-8 py-3 flex justify-between items-center shadow-md">
 
-<div class="logo">
-Veterinaria 🐾
+<div class="text-lg font-bold text-gray-800 flex items-center gap-2">
+🐾 Digital Pet
 </div>
 
-<div class="menu">
-<a href="index.html">Inicio</a>
+<div class="flex items-center gap-6 text-gray-700 font-semibold text-sm">
+
+<a href="index.html" class="hover:text-white transition">Inicio</a>
 <a href="#">Productos</a>
 <a href="#">Servicios</a>
 <a href="#">Citas</a>
-<a href="login.html">Ingresar</a>
-<a href="registro.html">Registrarse</a>
+
+<a href="login.html"
+class="bg-white px-3 py-1 rounded-lg hover:bg-orange-100 transition">
+Ingresar
+</a>
+
+<a href="registro.html"
+class="bg-orange-500 text-white px-3 py-1 rounded-lg hover:bg-orange-600 transition">
+Registrarse
+</a>
+
 </div>
 
 </div>
@@ -34,37 +44,81 @@ Veterinaria 🐾
 
 <!-- REGISTRO -->
 
-<div class="registro-layout">
+<div class="grid md:grid-cols-2 flex-grow">
 
+<!-- IMAGEN -->
 
-<!-- LADO IZQUIERDO (ESPACIO PARA IMAGENES) -->
-
-<div class="lado-izquierdo">
-
-<!-- Aquí luego puedes poner imágenes -->
-
+<div
+class="bg-cover bg-center"
+style="background-image: url('templates/perro_1.jpg');">
 </div>
 
 
-<!-- LADO DERECHO (FORMULARIO) -->
+<!-- FORMULARIO -->
 
-<div class="lado-derecho">
+<div class="flex items-center justify-center p-4">
 
-<div class="form-box">
+<div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm">
 
-<h2>Crear Cuenta</h2>
+<h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">
+Crear Cuenta 🐾
+</h2>
 
-<form>
+<form class="flex flex-col gap-2">
 
-<input type="text" placeholder="Nombre completo" required>
+<input
+type="text"
+placeholder="Nombre completo"
+class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+required
+>
 
-<input type="email" placeholder="Correo electrónico" required>
+<input
+type="email"
+placeholder="Correo electrónico"
+class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+required
+>
 
-<input type="password" placeholder="Contraseña" required>
+<input
+type="tel"
+placeholder="Teléfono"
+class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+required
+>
 
-<input type="password" placeholder="Confirmar contraseña" required>
+<input
+type="text"
+placeholder="Número de documento"
+class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+required
+>
 
-<button class="boton">Registrarse</button>
+<input
+type="text"
+placeholder="Dirección"
+class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+required
+>
+
+<input
+type="password"
+placeholder="Contraseña"
+class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+required
+>
+
+<input
+type="password"
+placeholder="Confirmar contraseña"
+class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+required
+>
+
+<button
+class="bg-orange-400 text-white py-2 rounded-lg hover:bg-orange-500 transition font-semibold mt-2">
+Registrarse
+</button>
 
 </form>
 
@@ -72,9 +126,7 @@ Veterinaria 🐾
 
 </div>
 
-
 </div>
-
 
 </body>
 </html>
