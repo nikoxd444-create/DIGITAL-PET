@@ -14,30 +14,52 @@
 
 <!-- NAVBAR -->
 
-<div class="bg-orange-300 px-8 py-3 flex justify-between items-center shadow-md">
+<div class="sticky top-0 z-50 backdrop-blur-md bg-orange-300/80 px-8 py-4 flex justify-between items-center shadow-lg">
 
-<div class="text-lg font-bold text-gray-800 flex items-center gap-2">
-🐾 Digital Pet
-</div>
+  <!-- LOGO -->
+    <a href="index.html" class="text-2xl font-bold text-gray-800 flex items-center gap-2 hover:opacity-80 transition">
+    🐾 Digital Pet
+    </a>
 
-<div class="flex items-center gap-6 text-gray-700 font-semibold text-sm">
+  <!-- LINKS -->
+  <div class="flex items-center gap-8 text-gray-700 font-semibold">
 
-<a href="index.html" class="hover:text-white transition">Inicio</a>
-<a href="productos.html">Productos</a>
-<a href="#">Servicios</a>
-<a href="#">Citas</a>
+    <a href="index.html" class="relative group">
+      Inicio
+      <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
+    </a>
 
-<a href="login.html"
-class="bg-white px-3 py-1 rounded-lg hover:bg-orange-100 transition">
-Ingresar
-</a>
+    <a href="productos.html" class="relative group">
+      Productos
+      <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
+    </a>
 
-<a href="registro.html"
-class="bg-orange-500 text-white px-3 py-1 rounded-lg hover:bg-orange-600 transition">
-Registrarse
-</a>
+    <a href="#" class="relative group">
+      Servicios
+      <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
+    </a>
 
-</div>
+    <a href="#" class="relative group">
+      Citas
+      <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
+    </a>
+
+  </div>
+
+  <!-- BOTONES -->
+  <div class="flex items-center gap-4">
+
+    <a href="login.html"
+      class="bg-white px-4 py-2 rounded-lg hover:bg-orange-100 transition duration-300 shadow-sm">
+      Ingresar
+    </a>
+
+    <a href="registro.html"
+      class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition duration-300 shadow-md">
+      Registrarse
+    </a>
+
+  </div>
 
 </div>
 
@@ -46,85 +68,82 @@ Registrarse
 
 <div class="grid md:grid-cols-2 flex-grow">
 
-<!-- IMAGEN -->
+  <!--  imagen #arreglar despues
+  <div
+    class="bg-cover bg-center bg-no-repeat hidden md:block"
+    style="background-image: url('templates/perro_1.jpg');">
+  </div>
+    -->
+  <!-- FORMULARIO -->
+  <div class="flex items-center justify-center p-6">
 
-<div
-class="bg-cover bg-center"
-style="background-image: url('templates/perro_1.jpg');">
-</div>
+    <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
 
+      <h2 class="text-3xl font-bold mb-6 text-gray-800 text-center">
+        Crear Cuenta 🐾
+      </h2>
 
-<!-- FORMULARIO -->
+      <form class="flex flex-col gap-3">
 
-<div class="flex items-center justify-center p-4">
+        <input
+          type="text"
+          placeholder="Nombre completo"
+          class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+          required
+        >
 
-<div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm">
+        <input
+          type="email"
+          placeholder="Correo electrónico"
+          class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+          required
+        >
 
-<h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">
-Crear Cuenta 🐾
-</h2>
+        <input
+          type="tel"
+          placeholder="Teléfono"
+          class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+          required
+        >
 
-<form class="flex flex-col gap-2">
+        <input
+          type="text"
+          placeholder="Número de documento"
+          class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+          required
+        >
 
-<input
-type="text"
-placeholder="Nombre completo"
-class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
-required
->
+        <input
+          type="text"
+          placeholder="Dirección"
+          class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+          required
+        >
 
-<input
-type="email"
-placeholder="Correo electrónico"
-class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
-required
->
+        <input
+          type="password"
+          placeholder="Contraseña"
+          class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+          required
+        >
 
-<input
-type="tel"
-placeholder="Teléfono"
-class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
-required
->
+        <input
+          type="password"
+          placeholder="Confirmar contraseña"
+          class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
+          required
+        >
 
-<input
-type="text"
-placeholder="Número de documento"
-class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
-required
->
+        <button
+          class="bg-orange-400 text-white py-3 rounded-lg hover:bg-orange-500 transition font-semibold mt-2 shadow-md">
+          Registrarse
+        </button>
 
-<input
-type="text"
-placeholder="Dirección"
-class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
-required
->
+      </form>
 
-<input
-type="password"
-placeholder="Contraseña"
-class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
-required
->
+    </div>
 
-<input
-type="password"
-placeholder="Confirmar contraseña"
-class="border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
-required
->
-
-<button
-class="bg-orange-400 text-white py-2 rounded-lg hover:bg-orange-500 transition font-semibold mt-2">
-Registrarse
-</button>
-
-</form>
-
-</div>
-
-</div>
+  </div>
 
 </div>
 
