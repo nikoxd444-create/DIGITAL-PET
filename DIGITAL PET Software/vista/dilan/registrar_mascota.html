@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registrar Mascota - Digital Pet</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.bg-dark {
+  background: radial-gradient(circle at top, #1f2937, #020617);
+}
+
+/* animación inputs */
+.input-focus:focus {
+  box-shadow: 0 0 0 2px #3b82f6;
+  border-color: #3b82f6;
+}
+
+/* botón hover */
+.btn-hover:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
+}
+</style>
+
+</head>
+
+<body class="bg-dark text-white min-h-screen">
+
+<!-- NAVBAR -->
+<header class="flex justify-between items-center px-10 py-6 border-b border-white/10">
+
+<a href="index.html" class="text-2xl font-bold hover:opacity-80">
+🐾 Digital Pet
+</a>
+
+<nav class="flex gap-8 text-sm text-gray-400">
+
+<a href="mascotas.html" class="hover:text-white">Mascotas</a>
+<a href="citas.html" class="hover:text-white">Citas</a>
+<a href="historial.html" class="hover:text-white">Historial</a>
+
+</nav>
+
+</header>
+
+<!-- CONTENIDO -->
+<section class="flex justify-center items-center py-16 px-6">
+
+<div class="bg-gray-900 p-10 rounded-2xl shadow-xl w-full max-w-2xl">
+
+<h1 class="text-4xl font-extrabold mb-8">
+Registrar Mascota
+</h1>
+
+<form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+<!-- NOMBRE -->
+<div>
+<label class="text-sm text-gray-400">Nombre</label>
+<input type="text" placeholder="Ej: Firulais"
+class="w-full mt-2 p-3 rounded-lg bg-gray-800 border border-gray-700 input-focus outline-none">
+</div>
+
+<!-- ESPECIE -->
+<div>
+<label class="text-sm text-gray-400">Especie</label>
+<select class="w-full mt-2 p-3 rounded-lg bg-gray-800 border border-gray-700 input-focus outline-none">
+<option>Perro</option>
+<option>Gato</option>
+<option>Ave</option>
+<option>Otro</option>
+</select>
+</div>
+
+<!-- RAZA -->
+<div>
+<label class="text-sm text-gray-400">Raza</label>
+<input type="text" placeholder="Ej: Labrador"
+class="w-full mt-2 p-3 rounded-lg bg-gray-800 border border-gray-700 input-focus outline-none">
+</div>
+
+<!-- EDAD -->
+<div>
+<label class="text-sm text-gray-400">Edad</label>
+<input type="number" placeholder="Ej: 3"
+class="w-full mt-2 p-3 rounded-lg bg-gray-800 border border-gray-700 input-focus outline-none">
+</div>
+
+<!-- PESO -->
+<div>
+<label class="text-sm text-gray-400">Peso (kg)</label>
+<input type="number" placeholder="Ej: 20"
+class="w-full mt-2 p-3 rounded-lg bg-gray-800 border border-gray-700 input-focus outline-none">
+</div>
+
+<!-- DUEÑO -->
+<div>
+<label class="text-sm text-gray-400">Dueño</label>
+<input type="text" placeholder="Nombre del dueño"
+class="w-full mt-2 p-3 rounded-lg bg-gray-800 border border-gray-700 input-focus outline-none">
+</div>
+
+<!-- FOTO -->
+<div class="md:col-span-2">
+<label class="text-sm text-gray-400">Foto de la mascota</label>
+<input type="file"
+class="w-full mt-2 p-3 rounded-lg bg-gray-800 border border-gray-700 cursor-pointer">
+</div>
+
+<!-- BOTONES -->
+<div class="md:col-span-2 flex justify-between mt-6">
+
+<a href="mascotas.html"
+class="border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition">
+Cancelar
+</a>
+
+<button type="submit"
+class="bg-white text-black px-8 py-3 rounded-lg font-semibold btn-hover">
+Guardar Mascota
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</section>
+
+</body>
+</html>
