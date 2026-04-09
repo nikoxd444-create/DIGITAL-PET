@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos Veterinarios - Sistema Veterinario</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f9ff;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .topbar-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .topbar-title i {
+            font-size: 2rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            width: 350px;
+        }
+
+        .search-box:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-box i {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .vet-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .vet-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* MAIN CONTAINER */
+        .main-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* HEADER SECTION */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-info h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-info p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .btn-add-product {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.75rem 1.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-add-product:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        /* FILTERS */
+        .filters-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #cbd5e1;
+            background-color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #475569;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #0ea5e9;
+            color: #0ea5e9;
+        }
+
+        .filter-btn.active {
+            background-color: #0ea5e9;
+            border-color: #0ea5e9;
+            color: white;
+        }
+
+        /* PRODUCTS GRID */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+            border-color: #0ea5e9;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .badge-disponible {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-bajo-stock {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-agotado {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-type {
+            display: inline-block;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .product-description {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .product-stock {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        .stock-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #10b981;
+        }
+
+        .stock-indicator.bajo {
+            background-color: #f59e0b;
+        }
+
+        .stock-indicator.agotado {
+            background-color: #ef4444;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            background-color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #475569;
+        }
+
+        .btn-action:hover {
+            border-color: #0ea5e9;
+            color: #0ea5e9;
+            background-color: #f0f9ff;
+        }
+
+        .btn-action.primary {
+            background-color: #0ea5e9;
+            color: white;
+            border-color: #0ea5e9;
+        }
+
+        .btn-action.primary:hover {
+            background-color: #0284c7;
+            border-color: #0284c7;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0c4a6e;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #0c4a6e;
+        }
+
+        /* DETAIL MODAL */
+        .detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .detail-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+        }
+
+        .detail-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-type {
+            display: inline-block;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .detail-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-section h4 {
+            font-weight: 700;
+            color: #0c4a6e;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-section p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .detail-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .spec-item {
+            background-color: #f0f9ff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 3px solid #0ea5e9;
+        }
+
+        .spec-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .spec-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0c4a6e;
+        }
+
+        .spec-value.price {
+            color: #10b981;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-modal {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-modal.primary {
+            background-color: #0ea5e9;
+            color: white;
+        }
+
+        .btn-modal.primary:hover {
+            background-color: #0284c7;
+        }
+
+        .btn-modal.secondary {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-modal.secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* FORM MODAL */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #0c4a6e;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .upload-area:hover {
+            border-color: #0ea5e9;
+            background-color: #f0f9ff;
+        }
+
+        .upload-area i {
+            font-size: 2rem;
+            color: #0ea5e9;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-area p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 0.75rem;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .detail-content {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-image {
+                height: 300px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .topbar-left {
+                width: 100%;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .topbar-title {
+                font-size: 1.5rem;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .header-section {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .btn-add-product {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-section {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .detail-specs {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .btn-modal {
+                width: 100%;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <h1 class="topbar-title">
+                <i class="fas fa-pills"></i>
+                Productos Veterinarios
+            </h1>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Buscar productos...">
+            </div>
+        </div>
+
+        <div class="topbar-right">
+            <div class="vet-avatar" title="Perfil del Veterinario">
+                <i class="fas fa-user-md"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        <!-- HEADER SECTION -->
+        <div class="header-section">
+            <div class="header-info">
+                <h1>Catálogo de Productos</h1>
+                <p>Gestiona y consulta todos los productos veterinarios disponibles</p>
+            </div>
+            <button class="btn-add-product" onclick="openAddModal()">
+                <i class="fas fa-plus"></i> Agregar Producto
+            </button>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filters-section">
+            <button class="filter-btn active" onclick="filterProducts('todos')">Todos</button>
+            <button class="filter-btn" onclick="filterProducts('medicamentos')">Medicamentos</button>
+            <button class="filter-btn" onclick="filterProducts('alimentos')">Alimentos</button>
+            <button class="filter-btn" onclick="filterProducts('accesorios')">Accesorios</button>
+            <button class="filter-btn" onclick="filterProducts('equipos')">Equipos</button>
+        </div>
+
+        <!-- PRODUCTS GRID -->
+        <div class="products-grid fade-in">
+            <!-- Producto 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    💊
+                    <span class="product-badge badge-disponible">Disponible</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-type">Medicamento</span>
+                    <h3 class="product-name">Amoxicilina 500mg</h3>
+                    <p class="product-description">Antibiótico de amplio espectro para infecciones bacterianas</p>
+                    <div class="product-meta">
+                        <span class="product-price">$15.99</span>
+                        <div class="product-stock">
+                            <span class="stock-indicator"></span>
+                            <span>45 unidades</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-action primary" onclick="openDetailModal('Amoxicilina 500mg', '💊')">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-action" onclick="openEditModal()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-action" onclick="deleteProduct()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    🥩
+                    <span class="product-badge badge-disponible">Disponible</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-type">Alimento</span>
+                    <h3 class="product-name">Alimento Premium Perros</h3>
+                    <p class="product-description">Fórmula balanceada con proteínas de alta calidad</p>
+                    <div class="product-meta">
+                        <span class="product-price">$24.99</span>
+                        <div class="product-stock">
+                            <span class="stock-indicator"></span>
+                            <span>120 bolsas</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-action primary" onclick="openDetailModal('Alimento Premium Perros', '🥩')">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-action" onclick="openEditModal()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-action" onclick="deleteProduct()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    🧴
+                    <span class="product-badge badge-bajo-stock">Bajo Stock</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-type">Higiene</span>
+                    <h3 class="product-name">Champú Veterinario</h3>
+                    <p class="product-description">Limpieza profunda sin irritar la piel sensible</p>
+                    <div class="product-meta">
+                        <span class="product-price">$18.50</span>
+                        <div class="product-stock">
+                            <span class="stock-indicator bajo"></span>
+                            <span>8 botellas</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-action primary" onclick="openDetailModal('Champú Veterinario', '🧴')">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-action" onclick="openEditModal()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-action" onclick="deleteProduct()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="product-card">
+                <div class="product-image">
+                    💉
+                    <span class="product-badge badge-disponible">Disponible</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-type">Medicamento</span>
+                    <h3 class="product-name">Vacuna Polivalente</h3>
+                    <p class="product-description">Protección contra múltiples enfermedades infecciosas</p>
+                    <div class="product-meta">
+                        <span class="product-price">$35.00</span>
+                        <div class="product-stock">
+                            <span class="stock-indicator"></span>
+                            <span>60 dosis</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-action primary" onclick="openDetailModal('Vacuna Polivalente', '💉')">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-action" onclick="openEditModal()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-action" onclick="deleteProduct()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 5 -->
+            <div class="product-card">
+                <div class="product-image">
+                    🩹
+                    <span class="product-badge badge-agotado">Agotado</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-type">Accesorios</span>
+                    <h3 class="product-name">Vendaje Elástico</h3>
+                    <p class="product-description">Soporte y compresión para lesiones y esguinces</p>
+                    <div class="product-meta">
+                        <span class="product-price">$8.99</span>
+                        <div class="product-stock">
+                            <span class="stock-indicator agotado"></span>
+                            <span>0 unidades</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-action primary" onclick="openDetailModal('Vendaje Elástico', '🩹')">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-action" onclick="openEditModal()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-action" onclick="deleteProduct()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 6 -->
+            <div class="product-card">
+                <div class="product-image">
+                    🔬
+                    <span class="product-badge badge-disponible">Disponible</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-type">Equipos</span>
+                    <h3 class="product-name">Termómetro Digital</h3>
+                    <p class="product-description">Medición rápida y precisa de temperatura corporal</p>
+                    <div class="product-meta">
+                        <span class="product-price">$22.50</span>
+                        <div class="product-stock">
+                            <span class="stock-indicator"></span>
+                            <span>35 unidades</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-action primary" onclick="openDetailModal('Termómetro Digital', '🔬')">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-action" onclick="openEditModal()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-action" onclick="deleteProduct()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 7 -->
+            <div class="product-card">
+                <div class="product-image">
+                    🧬
+                    <span class="product-badge badge-disponible">Disponible</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-type">Medicamento</span>
+                    <h3 class="product-name">Antiparasitario Oral</h3>
+                    <p class="product-description">Control efectivo de parásitos internos y externos</p>
+                    <div class="product-meta">
+                        <span class="product-price">$19.99</span>
+                        <div class="product-stock">
+                            <span class="stock-indicator"></span>
+                            <span>75 tabletas</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-action primary" onclick="openDetailModal('Antiparasitario Oral', '🧬')">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-action" onclick="openEditModal()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-action" onclick="deleteProduct()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 8 -->
+            <div class="product-card">
+                <div class="product-image">
+                    🐱
+                    <span class="product-badge badge-disponible">Disponible</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-type">Alimento</span>
+                    <h3 class="product-name">Alimento Gatos Adultos</h3>
+                    <p class="product-description">Nutrición completa y equilibrada para gatos</p>
+                    <div class="product-meta">
+                        <span class="product-price">$21.99</span>
+                        <div class="product-stock">
+                            <span class="stock-indicator"></span>
+                            <span>95 bolsas</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-action primary" onclick="openDetailModal('Alimento Gatos Adultos', '🐱')">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-action" onclick="openEditModal()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-action" onclick="deleteProduct()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 9 -->
+            <div class="product-card">
+                <div class="product-image">
+                    💊
+                    <span class="product-badge badge-bajo-stock">Bajo Stock</span>
+                </div>
+                <div class="product-info">
+                    <span class="product-type">Medicamento</span>
+                    <h3 class="product-name">Antiinflamatorio Veterinario</h3>
+                    <p class="product-description">Reduce inflamación y dolor en mascotas</p>
+                    <div class="product-meta">
+                        <span class="product-price">$12.50</span>
+                        <div class="product-stock">
+                            <span class="stock-indicator bajo"></span>
+                            <span>3 botellas</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-action primary" onclick="openDetailModal('Antiinflamatorio Veterinario', '💊')">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-action" onclick="openEditModal()">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn-action" onclick="deleteProduct()">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DETALLE PRODUCTO -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalle del Producto</h2>
+                <button class="modal-close" onclick="closeDetailModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="detail-content">
+                <div class="detail-image" id="detailImage">💊</div>
+
+                <div class="detail-info">
+                    <h3 id="detailName">Amoxicilina 500mg</h3>
+                    <span class="detail-type">Medicamento</span>
+
+                    <div class="detail-section">
+                        <h4>Descripción</h4>
+                        <p id="detailDescription">Antibiótico de amplio espectro utilizado para tratar infecciones bacterianas en mascotas. Efectivo contra una amplia variedad de bacterias patógenas.</p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Indicaciones de Uso</h4>
+                        <p>Infecciones del tracto respiratorio, infecciones de piel, infecciones urinarias, heridas infectadas y otras infecciones bacterianas sensibles a la amoxicilina.</p>
+                    </div>
+
+                    <div class="detail-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">Precio</div>
+                            <div class="spec-value price">$15.99</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Stock Disponible</div>
+                            <div class="spec-value">45 unidades</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Presentación</div>
+                            <div class="spec-value">Cápsula 500mg</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Lote</div>
+                            <div class="spec-value">AMX-2024-001</div>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Contraindicaciones</h4>
+                        <p>No usar en animales alérgicos a penicilinas. Usar con precaución en animales con insuficiencia renal.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-modal secondary" onclick="closeDetailModal()">Cerrar</button>
+                <button class="btn-modal primary" onclick="openEditModal()">
+                    <i class="fas fa-edit"></i> Editar Producto
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL AGREGAR/EDITAR PRODUCTO -->
+    <div class="modal" id="formModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="formTitle">Agregar Nuevo Producto</h2>
+                <button class="modal-close" onclick="closeFormModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Nombre del Producto</label>
+                        <input type="text" id="productName" placeholder="Ej: Amoxicilina 500mg">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productType">Tipo de Producto</label>
+                        <select id="productType">
+                            <option>Seleccionar tipo</option>
+                            <option>Medicamento</option>
+                            <option>Alimento</option>
+                            <option>Higiene</option>
+                            <option>Accesorios</option>
+                            <option>Equipos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Precio ($)</label>
+                        <input type="number" id="productPrice" placeholder="0.00" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productStock">Stock</label>
+                        <input type="number" id="productStock" placeholder="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="productDescription">Descripción</label>
+                    <textarea id="productDescription" placeholder="Describe el producto, sus características y beneficios..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="productIndications">Indicaciones de Uso</label>
+                    <textarea id="productIndications" placeholder="Describe para qué se utiliza este producto..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Imagen del Producto</label>
+                    <div class="upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arrastra la imagen aquí o haz clic para seleccionar</p>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal secondary" onclick="closeFormModal()">Cancelar</button>
+                    <button type="button" class="btn-modal primary" onclick="saveProduct()">Guardar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script mínimo para interactividad visual -->
+    <script>
+        function openDetailModal(productName, emoji) {
+            document.getElementById('detailImage').textContent = emoji;
+            document.getElementById('detailName').textContent = productName;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function openAddModal() {
+            document.getElementById('formTitle').textContent = 'Agregar Nuevo Producto';
+            document.getElementById('formModal').classList.add('active');
+        }
+
+        function openEditModal() {
+            document.getElementById('formTitle').textContent = 'Editar Producto';
+            document.getElementById('formModal').classList.add('active');
+            closeDetailModal();
+        }
+
+        function closeFormModal() {
+            document.getElementById('formModal').classList.remove('active');
+        }
+
+        function saveProduct() {
+            alert('✅ Producto guardado correctamente');
+            closeFormModal();
+        }
+
+        function deleteProduct() {
+            if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+                alert('✅ Producto eliminado correctamente');
+            }
+        }
+
+        function filterProducts(type) {
+            // Cambiar botón activo
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            alert(`Filtrando por: ${type}`);
+        }
+
+        // Cerrar modales al hacer clic fuera
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDetailModal();
+            }
+        });
+
+        document.getElementById('formModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFormModal();
+            }
+        });
+
+        // Animación al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 50);
+            });
+        });
+    </script>
+</body>
+</html>
