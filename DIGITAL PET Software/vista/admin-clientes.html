@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Pet Admin – Clientes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+  :root{--yellow:#FFCC00;--yellow-dark:#E6B800;--yellow-light:#FFF4B8;--orange:#FF8C42;--green:#4CAF79;--red:#FF5252;--dark:#1A1A2E;}
+  *{font-family:'Nunito',sans-serif;}
+  .fredoka{font-family:'Fredoka One',cursive;}
+  .sidebar-link{transition:all .2s;border-left:3px solid transparent;}
+  .sidebar-link:hover,.sidebar-link.active{background:rgba(255,204,0,.15);border-left:3px solid var(--yellow);}
+  .fade-in{opacity:0;transform:translateY(14px);animation:fadeIn .4s ease forwards;}
+  @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
+  .stagger-1{animation-delay:.1s;}.stagger-2{animation-delay:.2s;}.stagger-3{animation-delay:.3s;}
+  tbody tr{transition:background .15s;}
+  tbody tr:hover{background:#fffde7;}
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;align-items:center;justify-content:center;}
+  .modal.open{display:flex;}
+  .modal-box{animation:slideUp .3s ease;}
+  @keyframes slideUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+  .panel{display:none;position:fixed;top:0;right:0;width:380px;height:100vh;background:#fff;z-index:40;box-shadow:-8px 0 32px rgba(0,0,0,.12);transform:translateX(100%);transition:transform .3s ease;}
+  .panel.open{display:block;transform:translateX(0);}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 min-h-screen bg-white shadow-lg flex flex-col fixed top-0 left-0 z-20">
+  <div class="flex items-center gap-3 px-6 py-5 border-b border-yellow-100">
+    <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--yellow)"><span class="text-xl">🐾</span></div>
+    <div><p class="fredoka text-lg" style="color:var(--dark)">DIGITAL PET</p><p class="text-xs text-gray-400">Panel Admin</p></div>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1">
+    <p class="text-xs font-800 text-gray-400 px-3 mb-2 uppercase tracking-widest">Principal</p>
+    <a href="admin-dashboard.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>📊</span> Dashboard</a>
+    <a href="admin-reportes.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>📈</span> Reportes</a>
+    <a href="admin-auditoria.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🔍</span> Auditoría</a>
+    <p class="text-xs font-800 text-gray-400 px-3 mt-4 mb-2 uppercase tracking-widest">Gestión</p>
+    <a href="admin-usuarios.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>👤</span> Usuarios</a>
+    <a href="admin-roles.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🛡️</span> Roles</a>
+    <a href="admin-clientes.html" class="sidebar-link active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-gray-700"><span>👥</span> Clientes</a>
+    <a href="admin-mascotas.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🐶</span> Mascotas</a>
+    <a href="admin-estados.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🏷️</span> Estados</a>
+  </nav>
+  <div class="px-4 py-4 border-t border-gray-100">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-yellow-300 flex items-center justify-center text-sm font-800">AD</div>
+      <div><p class="text-sm font-700 text-gray-700">Admin</p><p class="text-xs text-gray-400">Superusuario</p></div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="ml-64 flex-1 p-8">
+
+  <div class="flex items-center justify-between mb-7 fade-in">
+    <div>
+      <h1 class="fredoka text-3xl" style="color:var(--dark)">Clientes 👥</h1>
+      <p class="text-gray-400 text-sm mt-1">Administra la base de clientes y su historial</p>
+    </div>
+    <button onclick="openCreate()" class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-700 text-white shadow-md" style="background:var(--yellow-dark)">+ Nuevo Cliente</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="grid grid-cols-4 gap-4 mb-6 fade-in stagger-1">
+    <div class="bg-white rounded-2xl p-4 shadow-sm text-center">
+      <p class="text-2xl font-900" style="color:var(--dark)">156</p>
+      <p class="text-xs text-gray-400 font-600 mt-1">Total clientes</p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-sm text-center">
+      <p class="text-2xl font-900 text-green-600">142</p>
+      <p class="text-xs text-gray-400 font-600 mt-1">Activos</p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-sm text-center">
+      <p class="text-2xl font-900" style="color:var(--orange)">12</p>
+      <p class="text-xs text-gray-400 font-600 mt-1">Nuevos este mes</p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-sm text-center">
+      <p class="text-2xl font-900" style="color:var(--yellow-dark)">$380K</p>
+      <p class="text-xs text-gray-400 font-600 mt-1">Valor promedio</p>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="bg-white rounded-2xl p-5 shadow-sm mb-5 fade-in stagger-2">
+    <div class="flex gap-4">
+      <div class="flex-1 relative">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+        <input id="searchInput" onkeyup="filterClients()" type="text" placeholder="Buscar por nombre, correo, teléfono…" class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"/>
+      </div>
+      <select id="filterEst" onchange="filterClients()" class="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 bg-gray-50">
+        <option value="">Todos</option><option>Activo</option><option>Inactivo</option>
+      </select>
+      <select class="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 bg-gray-50">
+        <option>Ordenar por</option><option>Nombre A-Z</option><option>Más recientes</option><option>Mayor historial</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="bg-white rounded-2xl shadow-sm overflow-hidden fade-in stagger-3">
+    <table class="w-full" id="clientesTable">
+      <thead>
+        <tr style="background:var(--yellow-light)">
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Cliente</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Contacto</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Mascotas</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Última visita</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Estado</th>
+          <th class="text-center px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+  <div class="flex items-center justify-between mt-4">
+    <p class="text-sm text-gray-400">Mostrando <strong id="count">8</strong> clientes</p>
+    <div class="flex gap-1">
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm text-gray-400">‹</button>
+      <button class="w-8 h-8 rounded-lg text-sm font-700 text-white" style="background:var(--yellow-dark)">1</button>
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm font-600 text-gray-600 hover:border-yellow-400">2</button>
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm text-gray-400">›</button>
+    </div>
+  </div>
+</main>
+
+<!-- SIDE PANEL: HISTORIAL -->
+<div class="panel" id="histPanel">
+  <div class="p-6 h-full overflow-y-auto">
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="fredoka text-xl" style="color:var(--dark)" id="panelTitle">Historial del Cliente</h2>
+      <button onclick="closePanel()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-red-100 hover:text-red-500 transition">×</button>
+    </div>
+    <div id="panelContent"></div>
+  </div>
+</div>
+
+<!-- MODAL CREATE -->
+<div class="modal" id="modal">
+  <div class="modal-box bg-white rounded-2xl shadow-2xl w-full max-w-lg p-7">
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="fredoka text-2xl" style="color:var(--dark)">Nuevo Cliente</h2>
+      <button onclick="document.getElementById('modal').classList.remove('open')" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xl hover:bg-red-100 hover:text-red-500 transition">×</button>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="col-span-2"><label class="text-xs font-700 text-gray-500 mb-1 block">Nombre completo</label><input type="text" placeholder="Ej. Sofía Martínez" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"/></div>
+      <div><label class="text-xs font-700 text-gray-500 mb-1 block">Correo</label><input type="email" placeholder="sofia@email.com" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"/></div>
+      <div><label class="text-xs font-700 text-gray-500 mb-1 block">Teléfono</label><input type="tel" placeholder="+57 300 000 0000" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"/></div>
+      <div class="col-span-2"><label class="text-xs font-700 text-gray-500 mb-1 block">Dirección</label><input type="text" placeholder="Cra. 7 # 45-23, Bogotá" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"/></div>
+      <div><label class="text-xs font-700 text-gray-500 mb-1 block">Ciudad</label><input type="text" placeholder="Bogotá" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"/></div>
+      <div><label class="text-xs font-700 text-gray-500 mb-1 block">Estado</label><select class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm"><option>Activo</option><option>Inactivo</option></select></div>
+    </div>
+    <div class="flex gap-3 mt-6">
+      <button onclick="document.getElementById('modal').classList.remove('open')" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-700 text-gray-500">Cancelar</button>
+      <button onclick="saveClient()" class="flex-1 py-2.5 rounded-xl text-sm font-700 text-white" style="background:var(--yellow-dark)">Guardar cliente</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
+  <div class="flex items-center gap-3 bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-xl text-sm font-700">✅ <span id="toastMsg">Guardado</span></div>
+</div>
+
+<script>
+const clients=[
+  {id:1,name:"Sofía Martínez",email:"sofia@mail.com",phone:"+57 312 445 6789",pets:["Max (Perro)","Mimi (Gato)"],last:"18 May 2026",estado:"Activo",visits:12,total:"$450.000"},
+  {id:2,name:"Andrés Gómez",email:"andres@mail.com",phone:"+57 310 221 3344",pets:["Rocky (Perro)"],last:"15 May 2026",estado:"Activo",visits:8,total:"$230.000"},
+  {id:3,name:"Valentina Ruiz",email:"vale@mail.com",phone:"+57 318 990 1122",pets:["Luna (Gato)","Buba (Conejo)"],last:"20 May 2026",estado:"Activo",visits:21,total:"$890.000"},
+  {id:4,name:"Carlos Peña",email:"cpeña@mail.com",phone:"+57 320 112 3456",pets:["Coco (Hamster)"],last:"02 Abr 2026",estado:"Inactivo",visits:3,total:"$75.000"},
+  {id:5,name:"Laura Vega",email:"laura@mail.com",phone:"+57 314 556 7890",pets:["Toby (Perro)","Nala (Gato)","Pippi (Ave)"],last:"19 May 2026",estado:"Activo",visits:15,total:"$620.000"},
+  {id:6,name:"Diego Castro",email:"dcastro@mail.com",phone:"+57 317 334 5566",pets:["Titan (Perro)"],last:"10 May 2026",estado:"Activo",visits:6,total:"$185.000"},
+  {id:7,name:"Paola Herrera",email:"paola@mail.com",phone:"+57 321 779 0011",pets:["Kira (Gato)"],last:"05 May 2026",estado:"Activo",visits:9,total:"$340.000"},
+  {id:8,name:"Mateo Rodríguez",email:"mateo@mail.com",phone:"+57 300 998 7766",pets:["Duque (Perro)","Zeus (Perro)"],last:"01 May 2026",estado:"Inactivo",visits:4,total:"$120.000"},
+];
+
+function renderTable(data){
+  const tb=document.getElementById('tableBody');
+  tb.innerHTML='';
+  document.getElementById('count').textContent=data.length;
+  data.forEach(c=>{
+    const initials=c.name.split(' ').map(x=>x[0]).join('').slice(0,2);
+    tb.innerHTML+=`<tr class="border-t border-gray-100">
+      <td class="px-5 py-3.5">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-800" style="background:var(--yellow-light)">${initials}</div>
+          <div><p class="text-sm font-700 text-gray-700">${c.name}</p><p class="text-xs text-gray-400">${c.total} · ${c.visits} visitas</p></div>
+        </div>
+      </td>
+      <td class="px-5 py-3.5">
+        <p class="text-sm text-gray-600">${c.email}</p>
+        <p class="text-xs text-gray-400">${c.phone}</p>
+      </td>
+      <td class="px-5 py-3.5">
+        <div class="flex flex-wrap gap-1">${c.pets.map(p=>`<span class="text-xs px-2 py-0.5 rounded-full" style="background:var(--yellow-light);color:var(--dark)">🐾 ${p}</span>`).join('')}</div>
+      </td>
+      <td class="px-5 py-3.5 text-sm text-gray-500">${c.last}</td>
+      <td class="px-5 py-3.5">
+        <span class="text-xs font-700 px-2 py-1 rounded-full" style="${c.estado==='Activo'?'background:#E8F5E9;color:#2E7D32':'background:#F5F5F5;color:#757575'}">${c.estado}</span>
+      </td>
+      <td class="px-5 py-3.5">
+        <div class="flex items-center justify-center gap-2">
+          <button onclick="showHistory(${c.id})" class="p-1.5 rounded-lg hover:bg-yellow-100 transition" title="Historial">📋</button>
+          <button onclick="openCreate()" class="p-1.5 rounded-lg hover:bg-yellow-100 transition" title="Editar">✏️</button>
+          <button class="p-1.5 rounded-lg hover:bg-red-50 transition" title="Eliminar">🗑️</button>
+        </div>
+      </td>
+    </tr>`;
+  });
+}
+
+function filterClients(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const est=document.getElementById('filterEst').value;
+  renderTable(clients.filter(c=>(!q||(c.name+c.email+c.phone).toLowerCase().includes(q))&&(!est||c.estado===est)));
+}
+
+function showHistory(id){
+  const c=clients.find(x=>x.id===id);
+  document.getElementById('panelTitle').textContent=c.name;
+  document.getElementById('panelContent').innerHTML=`
+    <div class="flex items-center gap-3 p-4 rounded-2xl mb-4" style="background:var(--yellow-light)">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center text-xl font-900" style="background:var(--yellow)">${c.name.split(' ').map(x=>x[0]).join('')}</div>
+      <div>
+        <p class="font-800 text-gray-800">${c.name}</p>
+        <p class="text-xs text-gray-500">${c.email} · ${c.phone}</p>
+        <p class="text-xs mt-1 font-700" style="color:var(--yellow-dark)">${c.visits} visitas · ${c.total}</p>
+      </div>
+    </div>
+    <p class="font-800 text-gray-700 mb-3 text-sm">🐾 Mascotas</p>
+    <div class="space-y-2 mb-5">${c.pets.map(p=>`<div class="flex items-center gap-2 p-2.5 bg-gray-50 rounded-xl text-sm font-600 text-gray-700">🐾 ${p}</div>`).join('')}</div>
+    <p class="font-800 text-gray-700 mb-3 text-sm">📅 Historial de citas</p>
+    <div class="space-y-2">
+      <div class="p-3 rounded-xl bg-gray-50 border-l-4 border-green-400"><p class="text-sm font-700 text-gray-700">Vacunación anual</p><p class="text-xs text-gray-400">18 May 2026 · Dr. Ramírez</p></div>
+      <div class="p-3 rounded-xl bg-gray-50 border-l-4" style="border-color:var(--yellow)"><p class="text-sm font-700 text-gray-700">Desparasitación</p><p class="text-xs text-gray-400">02 Abr 2026 · Dra. López</p></div>
+      <div class="p-3 rounded-xl bg-gray-50 border-l-4" style="border-color:var(--blue)"><p class="text-sm font-700 text-gray-700">Consulta general</p><p class="text-xs text-gray-400">15 Mar 2026 · Dr. García</p></div>
+    </div>
+  `;
+  document.getElementById('histPanel').classList.add('open');
+}
+function closePanel(){document.getElementById('histPanel').classList.remove('open');}
+function openCreate(){document.getElementById('modal').classList.add('open');}
+function saveClient(){document.getElementById('modal').classList.remove('open');showToast('✅','Cliente guardado correctamente');}
+function showToast(icon,msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2500);}
+
+renderTable(clients);
+</script>
+</body>
+</html>

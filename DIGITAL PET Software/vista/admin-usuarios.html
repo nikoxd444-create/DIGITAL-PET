@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Pet Admin – Usuarios</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+  :root{--yellow:#FFCC00;--yellow-dark:#E6B800;--yellow-light:#FFF4B8;--orange:#FF8C42;--green:#4CAF79;--red:#FF5252;--blue:#4A90E2;--dark:#1A1A2E;--gray:#F7F7F7;}
+  *{font-family:'Nunito',sans-serif;}
+  .fredoka{font-family:'Fredoka One',cursive;}
+  .sidebar-link{transition:all .2s;border-left:3px solid transparent;}
+  .sidebar-link:hover,.sidebar-link.active{background:rgba(255,204,0,.15);border-left:3px solid var(--yellow);}
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;align-items:center;justify-content:center;}
+  .modal.open{display:flex;}
+  .modal-box{animation:slideUp .3s ease;}
+  @keyframes slideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  .fade-in{opacity:0;transform:translateY(16px);animation:fadeIn .45s ease forwards;}
+  @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
+  .stagger-1{animation-delay:.08s;}.stagger-2{animation-delay:.16s;}.stagger-3{animation-delay:.24s;}.stagger-4{animation-delay:.32s;}
+  tr{transition:background .15s;}
+  tbody tr:hover{background:#fffde7;}
+  .chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+  input,select{outline:none;}
+    input:focus,
+    select:focus{
+  outline:2px solid var(--yellow);
+}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 min-h-screen bg-white shadow-lg flex flex-col fixed top-0 left-0 z-20">
+  <div class="flex items-center gap-3 px-6 py-5 border-b border-yellow-100">
+    <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--yellow)"><span class="text-xl">🐾</span></div>
+    <div><p class="fredoka text-lg" style="color:var(--dark)">DIGITAL PET</p><p class="text-xs text-gray-400">Panel Admin</p></div>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1">
+    <p class="text-xs font-800 text-gray-400 px-3 mb-2 uppercase tracking-widest">Principal</p>
+    <a href="admin-dashboard.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>📊</span> Dashboard</a>
+    <a href="admin-reportes.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>📈</span> Reportes</a>
+    <a href="admin-auditoria.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🔍</span> Auditoría</a>
+    <p class="text-xs font-800 text-gray-400 px-3 mt-4 mb-2 uppercase tracking-widest">Gestión</p>
+    <a href="admin-usuarios.html" class="sidebar-link active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-gray-700"><span>👤</span> Usuarios</a>
+    <a href="admin-roles.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🛡️</span> Roles</a>
+    <a href="admin-clientes.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>👥</span> Clientes</a>
+    <a href="admin-mascotas.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🐶</span> Mascotas</a>
+    <a href="admin-estados.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🏷️</span> Estados</a>
+  </nav>
+  <div class="px-4 py-4 border-t border-gray-100">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-yellow-300 flex items-center justify-center text-sm font-800">AD</div>
+      <div><p class="text-sm font-700 text-gray-700">Admin</p><p class="text-xs text-gray-400">Superusuario</p></div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="ml-64 flex-1 p-8">
+
+  <!-- HEADER -->
+  <div class="flex items-center justify-between mb-7 fade-in">
+    <div>
+      <h1 class="fredoka text-3xl" style="color:var(--dark)">Gestión de Usuarios 👤</h1>
+      <p class="text-gray-400 text-sm mt-1">Administra los accesos al sistema</p>
+    </div>
+    <button onclick="openModal('create')" class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-700 text-white shadow-md hover:opacity-90 transition" style="background:var(--yellow-dark)">
+      <span class="text-base">+</span> Nuevo Usuario
+    </button>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="bg-white rounded-2xl p-5 shadow-sm mb-6 fade-in stagger-1">
+    <div class="flex gap-4 flex-wrap">
+      <div class="flex-1 min-w-48 relative">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+        <input id="searchInput" type="text" placeholder="Buscar usuario, correo…" onkeyup="filterTable()" class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-700 bg-gray-50 focus:border-yellow-400 transition"/>
+      </div>
+      <select id="filterRol" onchange="filterTable()" class="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 bg-gray-50 focus:border-yellow-400">
+        <option value="">Todos los roles</option>
+        <option>Administrador</option><option>Veterinario</option><option>Recepcionista</option><option>Auxiliar</option>
+      </select>
+      <select id="filterEstado" onchange="filterTable()" class="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 bg-gray-50 focus:border-yellow-400">
+        <option value="">Todos los estados</option>
+        <option>Activo</option><option>Inactivo</option><option>Bloqueado</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="bg-white rounded-2xl shadow-sm overflow-hidden fade-in stagger-2">
+    <table class="w-full" id="usuariosTable">
+      <thead>
+        <tr style="background:var(--yellow-light)">
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Usuario</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Correo</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Rol</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Estado</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Último acceso</th>
+          <th class="text-center px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="flex items-center justify-between mt-5 fade-in stagger-4">
+    <p class="text-sm text-gray-400">Mostrando <strong>7</strong> de <strong>7</strong> usuarios</p>
+    <div class="flex gap-1">
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm text-gray-400 hover:border-yellow-400 transition">‹</button>
+      <button class="w-8 h-8 rounded-lg text-sm font-700 text-white" style="background:var(--yellow-dark)">1</button>
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm text-gray-400 hover:border-yellow-400 transition">›</button>
+    </div>
+  </div>
+</main>
+
+<!-- MODAL CREATE/EDIT -->
+<div class="modal" id="modal">
+  <div class="modal-box bg-white rounded-2xl shadow-2xl w-full max-w-lg p-7">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="fredoka text-2xl" style="color:var(--dark)" id="modalTitle">Nuevo Usuario</h2>
+      <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-red-100 hover:text-red-500 transition text-xl leading-none">×</button>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="col-span-2">
+        <label class="text-xs font-700 text-gray-500 mb-1 block">Nombre completo</label>
+        <input type="text" placeholder="Ej. Ana García" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-yellow-400 transition"/>
+      </div>
+      <div>
+        <label class="text-xs font-700 text-gray-500 mb-1 block">Usuario</label>
+        <input type="text" placeholder="anagarcia" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-yellow-400 transition"/>
+      </div>
+      <div>
+        <label class="text-xs font-700 text-gray-500 mb-1 block">Correo electrónico</label>
+        <input type="email" placeholder="ana@happypet.com" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-yellow-400 transition"/>
+      </div>
+      <div>
+        <label class="text-xs font-700 text-gray-500 mb-1 block">Rol</label>
+        <select class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 focus:border-yellow-400 transition">
+          <option>Seleccionar...</option>
+          <option>Administrador</option><option>Veterinario</option><option>Recepcionista</option><option>Auxiliar</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs font-700 text-gray-500 mb-1 block">Estado</label>
+        <select class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 focus:border-yellow-400 transition">
+          <option>Activo</option><option>Inactivo</option><option>Bloqueado</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs font-700 text-gray-500 mb-1 block">Contraseña</label>
+        <input type="password" placeholder="••••••••" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-yellow-400 transition"/>
+      </div>
+      <div>
+        <label class="text-xs font-700 text-gray-500 mb-1 block">Confirmar contraseña</label>
+        <input type="password" placeholder="••••••••" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-yellow-400 transition"/>
+      </div>
+    </div>
+    <div class="flex gap-3 mt-6">
+      <button onclick="closeModal()" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-700 text-gray-500 hover:bg-gray-50 transition">Cancelar</button>
+      <button onclick="saveUser()" class="flex-1 py-2.5 rounded-xl text-sm font-700 text-white shadow-md hover:opacity-90 transition" style="background:var(--yellow-dark)">Guardar usuario</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
+  <div class="flex items-center gap-3 bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-xl text-sm font-700">
+    <span id="toastIcon">✅</span><span id="toastMsg">Acción realizada</span>
+  </div>
+</div>
+
+<script>
+const users = [
+  {id:1,name:"Carlos Ramírez",user:"cramirez",email:"cramirez@happypet.com",rol:"Administrador",estado:"Activo",last:"Hoy 08:14"},
+  {id:2,name:"Ana García",user:"agarcia",email:"agarcia@happypet.com",rol:"Veterinario",estado:"Activo",last:"Hoy 07:55"},
+  {id:3,name:"Luis Torres",user:"ltorres",email:"ltorres@happypet.com",rol:"Recepcionista",estado:"Activo",last:"Ayer 16:30"},
+  {id:4,name:"María López",user:"mlopez",email:"mlopez@happypet.com",rol:"Veterinario",estado:"Inactivo",last:"Hace 3 días"},
+  {id:5,name:"Pedro Sánchez",user:"psanchez",email:"psanchez@happypet.com",rol:"Auxiliar",estado:"Activo",last:"Hoy 09:02"},
+  {id:6,name:"Laura Díaz",user:"ldiaz",email:"ldiaz@happypet.com",rol:"Recepcionista",estado:"Bloqueado",last:"Hace 1 sem."},
+  {id:7,name:"José Morales",user:"jmorales",email:"jmorales@happypet.com",rol:"Auxiliar",estado:"Activo",last:"Hoy 08:45"},
+];
+
+const rolColors={Administrador:"background:#1A1A2E;color:#FFCC00",Veterinario:"background:#E8F5E9;color:#2E7D32",Recepcionista:"background:#E3F2FD;color:#1565C0",Auxiliar:"background:#FFF3E0;color:#E65100"};
+const stateColors={Activo:"background:#E8F5E9;color:#2E7D32",Inactivo:"background:#F5F5F5;color:#757575",Bloqueado:"background:#FFEBEE;color:#C62828"};
+
+function renderTable(data){
+  const tb=document.getElementById('tableBody');
+  tb.innerHTML='';
+  data.forEach(u=>{
+    const initials=u.name.split(' ').map(x=>x[0]).join('').slice(0,2);
+    tb.innerHTML+=`<tr class="border-t border-gray-100">
+      <td class="px-5 py-3.5"><div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-800" style="background:var(--yellow-light);color:var(--dark)">${initials}</div>
+        <div><p class="text-sm font-700 text-gray-700">${u.name}</p><p class="text-xs text-gray-400">@${u.user}</p></div>
+      </div></td>
+      <td class="px-5 py-3.5 text-sm text-gray-500">${u.email}</td>
+      <td class="px-5 py-3.5"><span class="chip" style="${rolColors[u.rol]||''}">${u.rol}</span></td>
+      <td class="px-5 py-3.5"><span class="chip" style="${stateColors[u.estado]||''}">${u.estado}</span></td>
+      <td class="px-5 py-3.5 text-xs text-gray-400">${u.last}</td>
+      <td class="px-5 py-3.5">
+        <div class="flex items-center justify-center gap-2">
+          <button onclick="openModal('edit',${u.id})" class="p-1.5 rounded-lg hover:bg-yellow-100 transition tooltip" title="Editar">✏️</button>
+          <button onclick="toggleBlock(${u.id})" class="p-1.5 rounded-lg hover:bg-red-50 transition" title="${u.estado==='Bloqueado'?'Activar':'Bloquear'}">${u.estado==='Bloqueado'?'🔓':'🔒'}</button>
+          <button onclick="deleteUser(${u.id})" class="p-1.5 rounded-lg hover:bg-red-50 transition" title="Eliminar">🗑️</button>
+        </div>
+      </td>
+    </tr>`;
+  });
+}
+
+function filterTable(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const rol=document.getElementById('filterRol').value;
+  const est=document.getElementById('filterEstado').value;
+  const filtered=users.filter(u=>
+    (!q||(u.name+u.email+u.user).toLowerCase().includes(q)) &&
+    (!rol||u.rol===rol) &&
+    (!est||u.estado===est)
+  );
+  renderTable(filtered);
+}
+
+function openModal(mode,id){
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modalTitle').textContent=mode==='edit'?'Editar Usuario':'Nuevo Usuario';
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function saveUser(){closeModal();showToast('✅','Usuario guardado correctamente');}
+function toggleBlock(id){const u=users.find(x=>x.id===id);u.estado=u.estado==='Bloqueado'?'Activo':'Bloqueado';renderTable(users);showToast('🔒','Estado de usuario actualizado');}
+function deleteUser(id){if(confirm('¿Eliminar este usuario?')){const i=users.findIndex(x=>x.id===id);users.splice(i,1);renderTable(users);showToast('🗑️','Usuario eliminado');}}
+function showToast(icon,msg){const t=document.getElementById('toast');document.getElementById('toastIcon').textContent=icon;document.getElementById('toastMsg').textContent=msg;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2800);}
+
+renderTable(users);
+</script>
+</body>
+</html>
