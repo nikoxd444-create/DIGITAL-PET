@@ -17,19 +17,19 @@
 <div class="sticky top-0 z-50 backdrop-blur-md bg-orange-300/80 px-8 py-4 flex justify-between items-center shadow-lg">
 
   <!-- LOGO -->
-    <a href="index.html" class="text-2xl font-bold text-gray-800 flex items-center gap-2 hover:opacity-80 transition">
+  <a href="/" class="text-2xl font-bold text-gray-800 flex items-center gap-2 hover:opacity-80 transition">
     🐾 Digital Pet
-    </a>
+  </a>
 
   <!-- LINKS -->
   <div class="flex items-center gap-8 text-gray-700 font-semibold">
 
-    <a href="index.html" class="relative group">
+    <a href="/" class="relative group">
       Inicio
       <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
     </a>
 
-    <a href="productos.html" class="relative group">
+    <a href="#" class="relative group">
       Productos
       <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
     </a>
@@ -49,12 +49,12 @@
   <!-- BOTONES -->
   <div class="flex items-center gap-4">
 
-    <a href="login.html"
+    <a href="/login"
       class="bg-white px-4 py-2 rounded-lg hover:bg-orange-100 transition duration-300 shadow-sm">
       Ingresar
     </a>
 
-    <a href="registro.html"
+    <a href="/registro"
       class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition duration-300 shadow-md">
       Registrarse
     </a>
@@ -63,17 +63,10 @@
 
 </div>
 
-
 <!-- REGISTRO -->
 
 <div class="grid md:grid-cols-2 flex-grow">
 
-  <!--  imagen #arreglar despues
-  <div
-    class="bg-cover bg-center bg-no-repeat hidden md:block"
-    style="background-image: url('templates/perro_1.jpg');">
-  </div>
-    -->
   <!-- FORMULARIO -->
   <div class="flex items-center justify-center p-6">
 
@@ -83,58 +76,74 @@
         Crear Cuenta 🐾
       </h2>
 
-      <form class="flex flex-col gap-3">
+      <form action="/guardar_usuario" method="POST" class="flex flex-col gap-3">
 
+        <!-- NOMBRE -->
         <input
           type="text"
+          name="nombre"
           placeholder="Nombre completo"
           class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
           required
         >
 
+        <!-- CORREO -->
         <input
           type="email"
+          name="correo"
           placeholder="Correo electrónico"
           class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
           required
         >
 
+        <!-- TELEFONO -->
         <input
           type="tel"
+          name="telefono"
           placeholder="Teléfono"
           class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
           required
         >
 
+        <!-- CEDULA -->
         <input
           type="text"
+          name="cedula"
           placeholder="Número de documento"
           class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
           required
         >
 
+        <!-- DIRECCION -->
         <input
           type="text"
+          name="direccion"
           placeholder="Dirección"
           class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
           required
         >
 
+        <!-- CONTRASEÑA -->
         <input
           type="password"
+          name="password"
           placeholder="Contraseña"
           class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
           required
         >
 
+        <!-- CONFIRMAR CONTRASEÑA -->
         <input
           type="password"
+          name="confirmar"
           placeholder="Confirmar contraseña"
           class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300"
           required
         >
 
+        <!-- BOTON -->
         <button
+          type="submit"
           class="bg-orange-400 text-white py-3 rounded-lg hover:bg-orange-500 transition font-semibold mt-2 shadow-md">
           Registrarse
         </button>
