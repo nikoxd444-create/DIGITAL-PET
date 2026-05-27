@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Usuarios</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);align-items:center;justify-content:center}
+.modal.open{display:flex}
+</style>
+</head>
+
+<body class="bg-gray-100 p-10">
+
+<h1 class="text-2xl font-bold mb-4">Usuarios</h1>
+
+<button onclick="openModal()" class="bg-yellow-500 px-4 py-2 text-white mb-4">
+Nuevo Usuario
+</button>
+
+<table class="w-full bg-white">
+<thead>
+<tr>
+<th>Nombre</th>
+<th>Email</th>
+<th>Rol</th>
+<th>Estado</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+</table>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="bg-white p-5 w-[400px]">
+
+    <input id="nombre" class="border w-full p-2 mb-2" placeholder="Nombre">
+    <input id="usuario" class="border w-full p-2 mb-2" placeholder="Usuario">
+    <input id="email" class="border w-full p-2 mb-2" placeholder="Email">
+
+    <select id="rol" class="border w-full p-2 mb-2">
+      <option>Administrador</option>
+      <option>Veterinario</option>
+      <option>Recepcionista</option>
+      <option>Auxiliar</option>
+    </select>
+
+    <select id="estado" class="border w-full p-2 mb-2">
+      <option>Activo</option>
+      <option>Inactivo</option>
+      <option>Bloqueado</option>
+    </select>
+
+    <button onclick="saveUser()" class="bg-green-500 text-white px-4 py-2 w-full">
+      Guardar
+    </button>
+
+    <button onclick="closeModal()" class="w-full mt-2">Cerrar</button>
+
+  </div>
+</div>
+
+<script>
+
+const API = "http://127.0.0.1:5000/usuarios";
+
+let users = [];
+
+// CARGAR
+async function loadUsers(){
+  const res = await fetch(API);
+  users = await res.json();
+  render();
+}
+
+// RENDER
+function render(){
+  const tb = document.getElementById("tableBody");
+  tb.innerHTML = "";
+
+  users.forEach(u=>{
+    tb.innerHTML += `
+      <tr>
+        <td>${u.nombre}</td>
+        <td>${u.email}</td>
+        <td>${u.rol}</td>
+        <td>${u.estado}</td>
+      </tr>
+    `;
+  });
+}
+
+// GUARDAR
+async function saveUser(){
+
+  const data = {
+    nombre: document.getElementById("nombre").value,
+    usuario: document.getElementById("usuario").value,
+    email: document.getElementById("email").value,
+    rol: document.getElementById("rol").value,
+    estado: document.getElementById("estado").value
+  };
+
+  await fetch(API, {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify(data)
+  });
+
+  closeModal();
+  loadUsers();
+}
+
+// MODAL
+function openModal(){
+  document.getElementById("modal").classList.add("open");
+}
+
+function closeModal(){
+  document.getElementById("modal").classList.remove("open");
+}
+
+// INIT
+loadUsers();
+
+</script>
+
+</body>
+</html>
