@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Servicios API</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39;
+      --naranja-hover: #c4622a;
+      --amarillo: #F5C842;
+      --blanco: #ffffff;
+      --negro: #1a1a1a;
+      --gris: #555555;
+      --gris-claro: #f0f0f0;
+      --verde-menta: #4CAF7D;
+      --verde-bg: rgba(76,175,125,0.12);
+      --naranja-bg: rgba(224,123,57,0.10);
+      --rojo: #e53935;
+      --sombra: 0 4px 20px rgba(0,0,0,0.08);
+      --code-bg: #1e1e2e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f7f7f7; color: var(--negro); }
+
+    header {
+      background: var(--amarillo);
+      padding: 16px 32px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    header h1 { font-size: 22px; font-weight: 800; }
+    header span.hi { color: var(--naranja); }
+
+    .container { max-width: 960px; margin: 40px auto; padding: 0 20px; }
+
+    /* Config card */
+    .config-card {
+      background: var(--blanco);
+      border-radius: 20px;
+      padding: 28px 28px;
+      box-shadow: var(--sombra);
+      margin-bottom: 28px;
+    }
+    .config-card h2 { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+    .config-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 14px; }
+    .config-item { display: flex; flex-direction: column; gap: 6px; }
+    .config-item label { font-size: 12px; font-weight: 700; color: var(--gris); text-transform: uppercase; }
+    .config-item input, .config-item select {
+      padding: 10px 14px;
+      border: 2px solid var(--gris-claro);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: 'Nunito', sans-serif;
+      color: var(--negro);
+      background: var(--blanco);
+      outline: none;
+    }
+    .config-item input:focus, .config-item select:focus { border-color: var(--naranja); }
+
+    /* Endpoint cards */
+    .endpoints-grid { display: grid; gap: 16px; margin-bottom: 28px; }
+    .ep-card {
+      background: var(--blanco);
+      border-radius: 16px;
+      box-shadow: var(--sombra);
+      overflow: hidden;
+    }
+    .ep-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .ep-header:hover { background: #fafafa; }
+    .method-badge {
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      font-family: 'Courier New', monospace;
+      flex-shrink: 0;
+    }
+    .m-get { background: rgba(76,175,125,0.15); color: var(--verde-menta); }
+    .m-post { background: rgba(224,123,57,0.15); color: var(--naranja); }
+    .m-put { background: rgba(33,150,243,0.12); color: #1976D2; }
+    .m-delete { background: rgba(229,57,53,0.1); color: var(--rojo); }
+    .ep-path {
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--negro);
+      flex: 1;
+    }
+    .ep-desc { font-size: 13px; color: var(--gris); }
+    .btn-test {
+      padding: 7px 18px;
+      background: var(--naranja);
+      color: var(--blanco);
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-test:hover { background: var(--naranja-hover); }
+    .ep-body {
+      border-top: 1px solid var(--gris-claro);
+      padding: 16px 20px;
+      display: none;
+    }
+    .ep-body.open { display: block; }
+
+    /* Code block */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #cdd6f4;
+      overflow-x: auto;
+      white-space: pre;
+      margin-bottom: 12px;
+    }
+    .kw { color: #cba6f7; }
+    .str { color: #a6e3a1; }
+    .fn { color: #89b4fa; }
+    .cm { color: #6c7086; }
+
+    /* Response output */
+    .response-area {
+      background: var(--code-bg);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #a6e3a1;
+      min-height: 60px;
+      white-space: pre-wrap;
+    }
+    .response-label { font-size: 12px; font-weight: 700; color: var(--gris); margin-bottom: 6px; }
+
+    /* Status bar */
+    .status-bar {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 8px;
+    }
+    .status-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .dot-ok { background: var(--verde-menta); }
+    .dot-err { background: var(--rojo); }
+    .dot-idle { background: var(--gris-claro); }
+    .status-text { font-size: 12px; font-weight: 700; color: var(--gris); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span style="font-size:28px">⚡</span>
+    <h1>Happy <span class="hi">Pet</span> – Servicios API</h1>
+  </header>
+
+  <div class="container">
+
+    <!-- Config -->
+    <div class="config-card">
+      <h2>⚙️ Configuración del Servicio</h2>
+      <div class="config-grid">
+        <div class="config-item">
+          <label>Base URL</label>
+          <input type="text" id="baseUrl" value="https://api.happypet.com/v1" />
+        </div>
+        <div class="config-item">
+          <label>Token (Bearer)</label>
+          <input type="text" id="token" placeholder="eyJhbGciOiJIUzI1NiIs..." />
+        </div>
+        <div class="config-item">
+          <label>Timeout (ms)</label>
+          <input type="number" id="timeout" value="5000" />
+        </div>
+        <div class="config-item">
+          <label>Entorno</label>
+          <select id="env">
+            <option value="dev">Desarrollo</option>
+            <option value="staging">Staging</option>
+            <option value="prod">Producción</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="endpoints-grid">
+
+      <!-- GET mascotas -->
+      <div class="ep-card">
+        <div class="ep-header" onclick="toggleBody('ep1')">
+          <span class="method-badge m-get">GET</span>
+          <span class="ep-path">/mascotas</span>
+          <span class="ep-desc">Listar todas las mascotas</span>
+          <button class="btn-test" onclick="event.stopPropagation();testEndpoint('ep1','GET','/mascotas',null)">▶ Test</button>
+        </div>
+        <div class="ep-body" id="ep1">
+          <div class="code-block"><span class="cm">// services/mascotaService.js</span>
+<span class="kw">export const</span> <span class="fn">getMascotas</span> = <span class="kw">async</span> () => {
+  <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${BASE_URL}/mascotas`</span>, {
+    headers: { <span class="str">'Authorization'</span>: <span class="str">`Bearer ${token}`</span> }
+  });
+  <span class="kw">if</span> (!response.ok) <span class="kw">throw new</span> Error(<span class="str">'Error al obtener mascotas'</span>);
+  <span class="kw">return</span> response.<span class="fn">json</span>();
+};</div>
+          <div class="status-bar">
+            <div class="status-dot dot-idle" id="ep1-dot"></div>
+            <span class="status-text" id="ep1-status">Sin ejecutar</span>
+          </div>
+          <div class="response-label">Respuesta:</div>
+          <div class="response-area" id="ep1-res">// Presiona ▶ Test para ejecutar</div>
+        </div>
+      </div>
+
+      <!-- POST mascota -->
+      <div class="ep-card">
+        <div class="ep-header" onclick="toggleBody('ep2')">
+          <span class="method-badge m-post">POST</span>
+          <span class="ep-path">/mascotas</span>
+          <span class="ep-desc">Registrar nueva mascota</span>
+          <button class="btn-test" onclick="event.stopPropagation();testEndpoint('ep2','POST','/mascotas',{nombre:'Luna',especie:'Perro',edad:3})">▶ Test</button>
+        </div>
+        <div class="ep-body" id="ep2">
+          <div class="code-block"><span class="cm">// services/mascotaService.js</span>
+<span class="kw">export const</span> <span class="fn">crearMascota</span> = <span class="kw">async</span> (data) => {
+  <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${BASE_URL}/mascotas`</span>, {
+    method: <span class="str">'POST'</span>,
+    headers: {
+      <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>,
+      <span class="str">'Authorization'</span>: <span class="str">`Bearer ${token}`</span>
+    },
+    body: <span class="fn">JSON.stringify</span>(data)
+  });
+  <span class="kw">return</span> response.<span class="fn">json</span>();
+};</div>
+          <div class="status-bar">
+            <div class="status-dot dot-idle" id="ep2-dot"></div>
+            <span class="status-text" id="ep2-status">Sin ejecutar</span>
+          </div>
+          <div class="response-label">Respuesta:</div>
+          <div class="response-area" id="ep2-res">// Presiona ▶ Test para ejecutar</div>
+        </div>
+      </div>
+
+      <!-- PUT mascota -->
+      <div class="ep-card">
+        <div class="ep-header" onclick="toggleBody('ep3')">
+          <span class="method-badge m-put">PUT</span>
+          <span class="ep-path">/mascotas/:id</span>
+          <span class="ep-desc">Actualizar datos de una mascota</span>
+          <button class="btn-test" onclick="event.stopPropagation();testEndpoint('ep3','PUT','/mascotas/1',{nombre:'Luna Updated'})">▶ Test</button>
+        </div>
+        <div class="ep-body" id="ep3">
+          <div class="code-block"><span class="cm">// services/mascotaService.js</span>
+<span class="kw">export const</span> <span class="fn">actualizarMascota</span> = <span class="kw">async</span> (id, data) => {
+  <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${BASE_URL}/mascotas/${id}`</span>, {
+    method: <span class="str">'PUT'</span>,
+    headers: {
+      <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>,
+      <span class="str">'Authorization'</span>: <span class="str">`Bearer ${token}`</span>
+    },
+    body: <span class="fn">JSON.stringify</span>(data)
+  });
+  <span class="kw">return</span> response.<span class="fn">json</span>();
+};</div>
+          <div class="status-bar">
+            <div class="status-dot dot-idle" id="ep3-dot"></div>
+            <span class="status-text" id="ep3-status">Sin ejecutar</span>
+          </div>
+          <div class="response-label">Respuesta:</div>
+          <div class="response-area" id="ep3-res">// Presiona ▶ Test para ejecutar</div>
+        </div>
+      </div>
+
+      <!-- DELETE -->
+      <div class="ep-card">
+        <div class="ep-header" onclick="toggleBody('ep4')">
+          <span class="method-badge m-delete">DELETE</span>
+          <span class="ep-path">/mascotas/:id</span>
+          <span class="ep-desc">Eliminar una mascota</span>
+          <button class="btn-test" onclick="event.stopPropagation();testEndpoint('ep4','DELETE','/mascotas/1',null)">▶ Test</button>
+        </div>
+        <div class="ep-body" id="ep4">
+          <div class="code-block"><span class="cm">// services/mascotaService.js</span>
+<span class="kw">export const</span> <span class="fn">eliminarMascota</span> = <span class="kw">async</span> (id) => {
+  <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`${BASE_URL}/mascotas/${id}`</span>, {
+    method: <span class="str">'DELETE'</span>,
+    headers: { <span class="str">'Authorization'</span>: <span class="str">`Bearer ${token}`</span> }
+  });
+  <span class="kw">return</span> { status: response.status };
+};</div>
+          <div class="status-bar">
+            <div class="status-dot dot-idle" id="ep4-dot"></div>
+            <span class="status-text" id="ep4-status">Sin ejecutar</span>
+          </div>
+          <div class="response-label">Respuesta:</div>
+          <div class="response-area" id="ep4-res">// Presiona ▶ Test para ejecutar</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function toggleBody(id) {
+      const el = document.getElementById(id);
+      el.classList.toggle('open');
+    }
+
+    function testEndpoint(id, method, path, body) {
+      const dot    = document.getElementById(id+'-dot');
+      const status = document.getElementById(id+'-status');
+      const res    = document.getElementById(id+'-res');
+
+      status.textContent = 'Enviando petición...';
+      dot.className = 'status-dot';
+      dot.style.background = '#F5C842';
+
+      // Simulate delay
+      setTimeout(() => {
+        const mockResponses = {
+          'GET': { data: [{id:1,nombre:'Luna',especie:'Perro',edad:3},{id:2,nombre:'Michi',especie:'Gato',edad:2}], total: 2 },
+          'POST': { id: 3, nombre: body?.nombre || 'Nueva Mascota', mensaje: 'Mascota creada exitosamente' },
+          'PUT': { id: 1, ...body, mensaje: 'Mascota actualizada' },
+          'DELETE': { status: 204, mensaje: 'Mascota eliminada correctamente' }
+        };
+        const mockRes = mockResponses[method];
+        res.textContent = JSON.stringify(mockRes, null, 2);
+        dot.style.background = '';
+        dot.className = 'status-dot dot-ok';
+        status.textContent = '200 OK – ' + new Date().toLocaleTimeString();
+        document.getElementById(id).classList.add('open');
+      }, 800);
+    }
+  </script>
+</body>
+</html>

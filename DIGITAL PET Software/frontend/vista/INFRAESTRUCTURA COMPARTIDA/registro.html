@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Registro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39;
+      --naranja-hover: #c4622a;
+      --amarillo: #F5C842;
+      --blanco: #ffffff;
+      --negro: #1a1a1a;
+      --gris: #555555;
+      --gris-claro: #f0f0f0;
+      --verde-menta: #4CAF7D;
+      --verde-bg: rgba(76,175,125,0.12);
+      --sombra: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--amarillo);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+    }
+    .card {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      padding: 44px 40px;
+      width: 100%;
+      max-width: 480px;
+      animation: slideUp 0.4s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .logo-icon { font-size: 44px; display: block; margin-bottom: 6px; }
+    .logo h1 { font-size: 26px; font-weight: 800; color: var(--negro); }
+    .logo span { color: var(--naranja); }
+    .logo p { font-size: 14px; color: var(--gris); margin-top: 4px; }
+
+    .row { display: flex; gap: 14px; }
+    .row .field { flex: 1; }
+
+    .field { margin-top: 16px; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--negro);
+      margin-bottom: 6px;
+    }
+    input, select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 2px solid var(--gris-claro);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: 'Nunito', sans-serif;
+      color: var(--negro);
+      background: var(--blanco);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: var(--naranja); }
+
+    .role-selector {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .role-btn {
+      flex: 1;
+      padding: 12px 8px;
+      border: 2px solid var(--gris-claro);
+      border-radius: 12px;
+      background: var(--blanco);
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--gris);
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .role-btn.active {
+      border-color: var(--naranja);
+      background: rgba(224,123,57,0.08);
+      color: var(--naranja);
+    }
+    .role-btn span { display: block; font-size: 22px; margin-bottom: 4px; }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--gris);
+    }
+    .terms input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--naranja);
+    }
+    .terms a { color: var(--naranja); font-weight: 700; text-decoration: none; }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--naranja);
+      color: var(--blanco);
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      margin-top: 22px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--naranja-hover); transform: translateY(-1px); }
+
+    .success-msg {
+      background: var(--verde-bg);
+      color: var(--verde-menta);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 14px;
+      text-align: center;
+      display: none;
+    }
+    .success-msg.show { display: block; }
+
+    .login-link {
+      text-align: center;
+      font-size: 14px;
+      color: var(--gris);
+      margin-top: 18px;
+    }
+    .login-link a { color: var(--naranja); font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <span class="logo-icon">🐾</span>
+      <h1>Happy <span>Pet</span></h1>
+      <p>Crea tu cuenta gratis</p>
+    </div>
+
+    <label style="margin-top:8px;">Tipo de cuenta</label>
+    <div class="role-selector">
+      <button class="role-btn active" onclick="selectRole(this,'cliente')">
+        <span>👤</span>Cliente
+      </button>
+      <button class="role-btn" onclick="selectRole(this,'veterinario')">
+        <span>🩺</span>Veterinario
+      </button>
+      <button class="role-btn" onclick="selectRole(this,'admin')">
+        <span>🛡️</span>Admin
+      </button>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Nombre</label>
+        <input type="text" id="nombre" placeholder="Juan" />
+      </div>
+      <div class="field">
+        <label>Apellido</label>
+        <input type="text" id="apellido" placeholder="Pérez" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Correo electrónico</label>
+      <input type="email" id="email" placeholder="tu@correo.com" />
+    </div>
+
+    <div class="field">
+      <label>Teléfono</label>
+      <input type="tel" id="telefono" placeholder="+57 300 000 0000" />
+    </div>
+
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="password" placeholder="Mínimo 8 caracteres" />
+    </div>
+
+    <div class="field">
+      <label>Confirmar contraseña</label>
+      <input type="password" id="password2" placeholder="Repite tu contraseña" />
+    </div>
+
+    <div class="terms">
+      <input type="checkbox" id="acepto" />
+      <label for="acepto" style="margin:0;font-weight:400;">
+        Acepto los <a href="#">Términos de uso</a> y la <a href="#">Política de privacidad</a>
+      </label>
+    </div>
+
+    <div class="success-msg" id="successMsg">✅ ¡Cuenta creada exitosamente!</div>
+
+    <button class="btn-primary" onclick="handleRegister()">Crear Cuenta</button>
+
+    <div class="login-link">
+      ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+    </div>
+  </div>
+
+  <script>
+    let rolActivo = 'cliente';
+    function selectRole(btn, rol) {
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      rolActivo = rol;
+    }
+    function handleRegister() {
+      const nombre   = document.getElementById('nombre').value;
+      const email    = document.getElementById('email').value;
+      const pass     = document.getElementById('password').value;
+      const pass2    = document.getElementById('password2').value;
+      const acepto   = document.getElementById('acepto').checked;
+      const success  = document.getElementById('successMsg');
+      if (!nombre || !email || !pass || !pass2) { alert('Por favor completa todos los campos.'); return; }
+      if (pass !== pass2) { alert('Las contraseñas no coinciden.'); return; }
+      if (!acepto) { alert('Debes aceptar los términos.'); return; }
+      success.classList.add('show');
+      // Aquí iría la llamada al API de registro
+    }
+  </script>
+</body>
+</html>

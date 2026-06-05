@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Layouts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39;
+      --naranja-hover: #c4622a;
+      --amarillo: #F5C842;
+      --blanco: #ffffff;
+      --negro: #1a1a1a;
+      --gris: #555555;
+      --gris-claro: #f0f0f0;
+      --verde-menta: #4CAF7D;
+      --verde-bg: rgba(76,175,125,0.12);
+      --sombra: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f7f7f7; }
+
+    /* Selector de layout */
+    .selector-bar {
+      background: var(--amarillo);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      flex-wrap: wrap;
+    }
+    .selector-bar h1 { font-size: 20px; font-weight: 800; margin-right: auto; }
+    .selector-bar span { color: var(--naranja); }
+    .layout-tab {
+      padding: 8px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      border: 2px solid transparent;
+      background: rgba(255,255,255,0.5);
+      color: var(--negro);
+      transition: all 0.2s;
+    }
+    .layout-tab.active { background: var(--naranja); color: var(--blanco); }
+    .layout-tab:hover:not(.active) { background: rgba(0,0,0,0.06); }
+
+    /* Layouts */
+    .layout { display: none; min-height: calc(100vh - 68px); }
+    .layout.active { display: flex; flex-direction: column; }
+
+    /* ============================
+       LAYOUT CLIENTE
+    ============================ */
+    #layout-cliente .top-nav {
+      background: var(--amarillo);
+      padding: 0 24px;
+      height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    #layout-cliente .top-nav .brand { font-size: 20px; font-weight: 800; }
+    #layout-cliente .top-nav .brand em { color: var(--naranja); font-style:normal; }
+    #layout-cliente .top-nav .nav-links { display: flex; gap: 4px; }
+    #layout-cliente .top-nav .nav-links a {
+      padding: 7px 14px; border-radius: 10px; font-size: 13px; font-weight: 700;
+      color: var(--negro); text-decoration: none; transition: background 0.2s;
+    }
+    #layout-cliente .top-nav .nav-links a:hover, #layout-cliente .top-nav .nav-links a.active {
+      background: rgba(0,0,0,0.08);
+    }
+    #layout-cliente .top-nav .user-area { display: flex; align-items: center; gap: 10px; }
+    .avatar-sm {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--naranja); color: var(--blanco);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px; cursor: pointer;
+    }
+    #layout-cliente .hero {
+      background: var(--amarillo);
+      padding: 32px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    #layout-cliente .hero h2 { font-size: 26px; font-weight: 800; }
+    #layout-cliente .hero p { color: var(--gris); font-size: 14px; margin-top: 6px; }
+    #layout-cliente .hero .btn-hero {
+      padding: 12px 28px; background: var(--naranja); color: var(--blanco);
+      border: none; border-radius: 12px; font-size: 15px; font-weight: 800;
+      font-family: 'Nunito', sans-serif; cursor: pointer; transition: background 0.2s;
+    }
+    #layout-cliente .hero .btn-hero:hover { background: var(--naranja-hover); }
+    #layout-cliente .content { flex: 1; padding: 28px 24px; background: #f7f7f7; }
+    .cards-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; margin-bottom: 24px; }
+    .mini-card {
+      background: var(--blanco);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--sombra);
+    }
+    .mini-card .card-icon { font-size: 30px; margin-bottom: 10px; }
+    .mini-card h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .mini-card p { font-size: 13px; color: var(--gris); }
+    .mini-card .card-stat { font-size: 28px; font-weight: 800; color: var(--naranja); margin-top: 8px; }
+
+    /* ============================
+       LAYOUT VETERINARIO
+    ============================ */
+    #layout-vet { flex-direction: row; }
+    #layout-vet .vet-sidebar {
+      width: 220px; background: var(--negro); padding: 24px 14px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    #layout-vet .vet-sidebar .brand {
+      font-size: 18px; font-weight: 800; color: var(--blanco);
+      padding: 0 10px; margin-bottom: 20px;
+    }
+    #layout-vet .vet-sidebar .brand em { color: var(--amarillo); font-style: normal; }
+    .vet-nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px;
+      font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.6);
+      cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .vet-nav-item:hover { color: var(--blanco); background: rgba(255,255,255,0.08); }
+    .vet-nav-item.active { color: var(--negro); background: var(--amarillo); }
+    .vet-nav-item .icon { font-size: 18px; }
+    #layout-vet .vet-main { flex: 1; display: flex; flex-direction: column; }
+    .vet-topbar {
+      background: var(--blanco); padding: 0 24px; height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .vet-topbar h3 { font-size: 17px; font-weight: 800; }
+    .vet-topbar .actions { display: flex; gap: 10px; align-items: center; }
+    .btn-small {
+      padding: 7px 16px; background: var(--naranja); color: var(--blanco);
+      border: none; border-radius: 10px; font-size: 13px; font-weight: 700;
+      font-family: 'Nunito', sans-serif; cursor: pointer;
+    }
+    .vet-content { flex: 1; padding: 24px; background: #f7f7f7; }
+    .agenda-card {
+      background: var(--blanco); border-radius: 16px; padding: 20px;
+      box-shadow: var(--sombra); margin-bottom: 16px;
+    }
+    .agenda-card h4 { font-size: 15px; font-weight: 800; margin-bottom: 12px; }
+    .cita-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 0; border-bottom: 1px solid var(--gris-claro);
+    }
+    .cita-item:last-child { border-bottom: none; }
+    .cita-time {
+      font-size: 13px; font-weight: 800; color: var(--naranja);
+      width: 56px; flex-shrink: 0;
+    }
+    .cita-info { flex: 1; }
+    .cita-info strong { font-size: 14px; font-weight: 800; display: block; }
+    .cita-info span { font-size: 12px; color: var(--gris); }
+    .cita-badge {
+      padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700;
+    }
+    .cb-pendiente { background: rgba(245,200,66,0.2); color: #b8860b; }
+    .cb-confirmada { background: var(--verde-bg); color: var(--verde-menta); }
+
+    /* ============================
+       LAYOUT ADMIN
+    ============================ */
+    #layout-admin { flex-direction: column; }
+    .admin-header {
+      background: var(--negro); padding: 0 28px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-header .brand { font-size: 18px; font-weight: 800; color: var(--blanco); }
+    .admin-header .brand em { color: var(--naranja); font-style: normal; }
+    .admin-header .header-right { display: flex; align-items: center; gap: 14px; }
+    .admin-header .header-right span { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .admin-body { display: flex; flex: 1; }
+    .admin-sidebar {
+      width: 200px; background: #111; padding: 20px 12px;
+    }
+    .admin-nav-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 12px; border-radius: 10px;
+      font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.5);
+      cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .admin-nav-item:hover { color: var(--blanco); background: rgba(255,255,255,0.06); }
+    .admin-nav-item.active { color: var(--negro); background: var(--naranja); }
+    .admin-main { flex: 1; padding: 28px; background: #f4f4f4; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 14px; margin-bottom: 24px; }
+    .stat-card {
+      background: var(--blanco); border-radius: 16px; padding: 20px;
+      box-shadow: var(--sombra); text-align: center;
+    }
+    .stat-card .stat-icon { font-size: 28px; margin-bottom: 8px; }
+    .stat-card .stat-num { font-size: 32px; font-weight: 800; color: var(--naranja); }
+    .stat-card .stat-label { font-size: 12px; color: var(--gris); font-weight: 700; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <!-- Selector -->
+  <div class="selector-bar">
+    <h1>🐾 Happy <span>Pet</span> – Layouts</h1>
+    <button class="layout-tab active" onclick="showLayout('cliente',this)">👤 Cliente</button>
+    <button class="layout-tab" onclick="showLayout('vet',this)">🩺 Veterinario</button>
+    <button class="layout-tab" onclick="showLayout('admin',this)">🛡️ Admin</button>
+  </div>
+
+  <!-- LAYOUT CLIENTE -->
+  <div class="layout active" id="layout-cliente">
+    <nav class="top-nav">
+      <div class="brand">🐾 Happy <em>Pet</em></div>
+      <div class="nav-links">
+        <a href="#" class="active">Inicio</a>
+        <a href="#">Mis Mascotas</a>
+        <a href="#">Citas</a>
+        <a href="#">Tienda</a>
+      </div>
+      <div class="user-area">
+        <span style="font-size:13px;font-weight:700;color:var(--gris)">Hola, María 👋</span>
+        <div class="avatar-sm">M</div>
+      </div>
+    </nav>
+    <div class="hero">
+      <div>
+        <h2>¡Bienvenida, María! 🐾</h2>
+        <p>Tienes 1 cita pendiente para esta semana.</p>
+      </div>
+      <button class="btn-hero">+ Agendar Cita</button>
+    </div>
+    <div class="content">
+      <div class="cards-row">
+        <div class="mini-card">
+          <div class="card-icon">🐶</div>
+          <h4>Mis Mascotas</h4>
+          <p>Gestiona tus peludos</p>
+          <div class="card-stat">3</div>
+        </div>
+        <div class="mini-card">
+          <div class="card-icon">📅</div>
+          <h4>Próximas Citas</h4>
+          <p>Esta semana</p>
+          <div class="card-stat">1</div>
+        </div>
+        <div class="mini-card">
+          <div class="card-icon">🛒</div>
+          <h4>Mis Pedidos</h4>
+          <p>Historial de compras</p>
+          <div class="card-stat">5</div>
+        </div>
+        <div class="mini-card">
+          <div class="card-icon">❤️</div>
+          <h4>Favoritos</h4>
+          <p>Productos guardados</p>
+          <div class="card-stat">8</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYOUT VETERINARIO -->
+  <div class="layout" id="layout-vet">
+    <aside class="vet-sidebar">
+      <div class="brand">🐾 Happy <em>Pet</em></div>
+      <a class="vet-nav-item active" href="#"><span class="icon">📊</span> Dashboard</a>
+      <a class="vet-nav-item" href="#"><span class="icon">📅</span> Agenda</a>
+      <a class="vet-nav-item" href="#"><span class="icon">🐶</span> Pacientes</a>
+      <a class="vet-nav-item" href="#"><span class="icon">📋</span> Historial</a>
+      <a class="vet-nav-item" href="#"><span class="icon">💊</span> Tratamientos</a>
+      <a class="vet-nav-item" href="#"><span class="icon">⚙️</span> Configuración</a>
+    </aside>
+    <div class="vet-main">
+      <div class="vet-topbar">
+        <h3>📅 Agenda de Hoy</h3>
+        <div class="actions">
+          <span style="font-size:13px;color:var(--gris)">Dr. Carlos López</span>
+          <div class="avatar-sm">CL</div>
+        </div>
+      </div>
+      <div class="vet-content">
+        <div class="cards-row">
+          <div class="mini-card">
+            <div class="card-icon">📅</div>
+            <h4>Citas Hoy</h4>
+            <div class="card-stat">6</div>
+          </div>
+          <div class="mini-card">
+            <div class="card-icon">🐶</div>
+            <h4>Pacientes Activos</h4>
+            <div class="card-stat">24</div>
+          </div>
+          <div class="mini-card">
+            <div class="card-icon">✅</div>
+            <h4>Atendidos</h4>
+            <div class="card-stat">3</div>
+          </div>
+        </div>
+        <div class="agenda-card">
+          <h4>Próximas citas</h4>
+          <div class="cita-item">
+            <span class="cita-time">10:00</span>
+            <div class="cita-info">
+              <strong>Luna – Perro</strong>
+              <span>Dueño: María González · Vacunación anual</span>
+            </div>
+            <span class="cita-badge cb-confirmada">Confirmada</span>
+          </div>
+          <div class="cita-item">
+            <span class="cita-time">11:30</span>
+            <div class="cita-info">
+              <strong>Michi – Gato</strong>
+              <span>Dueño: Carlos Pérez · Revisión general</span>
+            </div>
+            <span class="cita-badge cb-pendiente">Pendiente</span>
+          </div>
+          <div class="cita-item">
+            <span class="cita-time">14:00</span>
+            <div class="cita-info">
+              <strong>Paco – Ave</strong>
+              <span>Dueño: Ana Rodríguez · Corte de plumas</span>
+            </div>
+            <span class="cita-badge cb-confirmada">Confirmada</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYOUT ADMIN -->
+  <div class="layout" id="layout-admin">
+    <div class="admin-header">
+      <div class="brand">🐾 Happy <em>Pet</em> <span style="font-size:11px;color:rgba(255,255,255,0.3);margin-left:8px;">ADMIN</span></div>
+      <div class="header-right">
+        <span>Admin Master</span>
+        <div class="avatar-sm" style="background:var(--amarillo);color:var(--negro);">A</div>
+      </div>
+    </div>
+    <div class="admin-body">
+      <aside class="admin-sidebar">
+        <a class="admin-nav-item active" href="#">📊 Dashboard</a>
+        <a class="admin-nav-item" href="#">👥 Usuarios</a>
+        <a class="admin-nav-item" href="#">🐶 Mascotas</a>
+        <a class="admin-nav-item" href="#">🩺 Veterinarios</a>
+        <a class="admin-nav-item" href="#">📅 Citas</a>
+        <a class="admin-nav-item" href="#">🛒 Tienda</a>
+        <a class="admin-nav-item" href="#">📈 Reportes</a>
+        <a class="admin-nav-item" href="#">⚙️ Config</a>
+      </aside>
+      <main class="admin-main">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-num">248</div>
+            <div class="stat-label">Usuarios Totales</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🐶</div>
+            <div class="stat-num">183</div>
+            <div class="stat-label">Mascotas Registradas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🩺</div>
+            <div class="stat-num">12</div>
+            <div class="stat-label">Veterinarios Activos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div class="stat-num">57</div>
+            <div class="stat-label">Citas Esta Semana</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-num">$4.2M</div>
+            <div class="stat-label">Ventas del Mes</div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function showLayout(id, btn) {
+      document.querySelectorAll('.layout').forEach(l => l.classList.remove('active'));
+      document.querySelectorAll('.layout-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('layout-'+id).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Componentes Globales</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39;
+      --naranja-hover: #c4622a;
+      --amarillo: #F5C842;
+      --blanco: #ffffff;
+      --negro: #1a1a1a;
+      --gris: #555555;
+      --gris-claro: #f0f0f0;
+      --verde-menta: #4CAF7D;
+      --verde-bg: rgba(76,175,125,0.12);
+      --naranja-bg: rgba(224,123,57,0.10);
+      --rosa: #FF8FAB;
+      --rosa-bg: rgba(255,143,171,0.15);
+      --rojo: #e53935;
+      --sombra: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f7f7f7; color: var(--negro); }
+
+    header {
+      background: var(--amarillo);
+      padding: 16px 32px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      position: sticky; top: 0; z-index: 10;
+    }
+    header h1 { font-size: 22px; font-weight: 800; }
+    header span { color: var(--naranja); }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+    .section { margin-bottom: 48px; }
+    .section-title {
+      font-size: 18px; font-weight: 800;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--gris-claro);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ===== INPUTS ===== */
+    .inputs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 20px; }
+    .input-group { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 13px; font-weight: 700; color: var(--negro); }
+    .input-wrap { position: relative; }
+    .input-wrap .icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      font-size: 17px; pointer-events: none;
+    }
+    .has-icon { padding-left: 40px !important; }
+
+    input[type="text"], input[type="email"], input[type="password"],
+    input[type="number"], input[type="tel"], input[type="date"],
+    select, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 2px solid var(--gris-claro);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: 'Nunito', sans-serif;
+      color: var(--negro);
+      background: var(--blanco);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--naranja);
+      box-shadow: 0 0 0 3px rgba(224,123,57,0.12);
+    }
+    input.error { border-color: var(--rojo); }
+    input.success { border-color: var(--verde-menta); }
+    .help-text { font-size: 12px; color: var(--gris); margin-top: 4px; }
+    .error-text { font-size: 12px; color: var(--rojo); font-weight: 700; margin-top: 4px; }
+    .success-text { font-size: 12px; color: var(--verde-menta); font-weight: 700; margin-top: 4px; }
+    textarea { resize: vertical; min-height: 90px; }
+
+    /* Checkbox y radio */
+    .check-group { display: flex; flex-direction: column; gap: 10px; }
+    .check-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .check-item input[type="checkbox"],
+    .check-item input[type="radio"] {
+      width: 18px; height: 18px; accent-color: var(--naranja); cursor: pointer;
+      flex-shrink: 0;
+    }
+    .check-item label { margin: 0; font-weight: 600; cursor: pointer; }
+
+    /* Toggle */
+    .toggle-wrap { display: flex; align-items: center; gap: 12px; }
+    .toggle {
+      position: relative; width: 46px; height: 26px;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0;
+      background: var(--gris-claro); border-radius: 26px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--blanco);
+      left: 3px; top: 3px;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+    .toggle input:checked + .slider { background: var(--naranja); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
+
+    /* ===== CARDS ===== */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 18px; }
+
+    .pet-card {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .pet-card:hover { transform: translateY(-4px); }
+    .pet-card .card-img {
+      background: var(--amarillo);
+      height: 100px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px;
+    }
+    .pet-card .card-body { padding: 16px; }
+    .pet-card .card-body h4 { font-size: 16px; font-weight: 800; }
+    .pet-card .card-body p { font-size: 13px; color: var(--gris); margin-top: 4px; }
+    .pet-card .card-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--gris-claro);
+      display: flex; gap: 8px;
+    }
+    .btn-card {
+      flex: 1; padding: 8px; border-radius: 10px;
+      font-size: 13px; font-weight: 700; font-family: 'Nunito', sans-serif;
+      cursor: pointer; border: 2px solid transparent; transition: all 0.2s;
+    }
+    .btn-card-primary { background: var(--naranja); color: var(--blanco); }
+    .btn-card-primary:hover { background: var(--naranja-hover); }
+    .btn-card-outline { background: transparent; border-color: var(--gris-claro); color: var(--gris); }
+    .btn-card-outline:hover { border-color: var(--naranja); color: var(--naranja); }
+    .card-badge {
+      display: inline-block; padding: 3px 10px; border-radius: 8px;
+      font-size: 11px; font-weight: 700; margin-top: 6px;
+    }
+    .badge-verde { background: var(--verde-bg); color: var(--verde-menta); }
+    .badge-naranja { background: var(--naranja-bg); color: var(--naranja); }
+    .badge-rosa { background: var(--rosa-bg); color: var(--rosa); }
+
+    /* Precio card */
+    .price-card {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      padding: 20px;
+    }
+    .price-card .price-img { font-size: 40px; margin-bottom: 10px; }
+    .price-card h4 { font-size: 15px; font-weight: 800; }
+    .price-card .desc { font-size: 13px; color: var(--gris); margin: 4px 0 10px; }
+    .price-main { font-size: 24px; font-weight: 800; color: var(--negro); }
+    .price-old { font-size: 14px; color: var(--gris); text-decoration: line-through; margin-left: 6px; }
+    .price-discount { font-size: 12px; font-weight: 800; color: var(--rojo); margin-left: 4px; }
+
+    /* ===== TABLA ===== */
+    .table-wrap {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      overflow: auto;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    thead tr { background: var(--amarillo); }
+    th {
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    td { padding: 14px 18px; font-size: 14px; border-bottom: 1px solid var(--gris-claro); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+    .status-pill {
+      display: inline-block; padding: 4px 12px;
+      border-radius: 999px; font-size: 12px; font-weight: 700;
+    }
+    .s-activo { background: var(--verde-bg); color: var(--verde-menta); }
+    .s-pendiente { background: var(--naranja-bg); color: var(--naranja); }
+    .s-inactivo { background: var(--gris-claro); color: var(--gris); }
+
+    /* ===== FORMULARIO ===== */
+    .form-card {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      padding: 32px;
+    }
+    .form-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 16px; }
+    .btn-submit {
+      padding: 13px 32px; background: var(--naranja); color: var(--blanco);
+      border: none; border-radius: 12px; font-size: 15px; font-weight: 800;
+      font-family: 'Nunito', sans-serif; cursor: pointer; transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--naranja-hover); }
+    .btn-cancel {
+      padding: 13px 24px; background: var(--gris-claro); color: var(--gris);
+      border: none; border-radius: 12px; font-size: 15px; font-weight: 800;
+      font-family: 'Nunito', sans-serif; cursor: pointer; transition: background 0.2s;
+      margin-top: 8px; margin-left: 10px;
+    }
+    .form-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .form-success {
+      background: var(--verde-bg); color: var(--verde-menta);
+      border-radius: 12px; padding: 12px 16px;
+      font-weight: 700; font-size: 14px;
+      display: none; margin-top: 12px;
+    }
+    .form-success.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span style="font-size:28px">🧩</span>
+    <h1>Happy <span>Pet</span> – Componentes Globales</h1>
+  </header>
+
+  <div class="container">
+
+    <!-- ===== INPUTS ===== -->
+    <div class="section">
+      <div class="section-title">⌨️ Inputs</div>
+      <div class="inputs-grid">
+
+        <div class="input-group">
+          <label>Texto simple</label>
+          <input type="text" placeholder="Escribe aquí..." />
+          <span class="help-text">Texto de ayuda opcional</span>
+        </div>
+
+        <div class="input-group">
+          <label>Con ícono</label>
+          <div class="input-wrap">
+            <span class="icon">🔍</span>
+            <input type="text" class="has-icon" placeholder="Buscar mascota..." />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Email</label>
+          <div class="input-wrap">
+            <span class="icon">📧</span>
+            <input type="email" class="has-icon" placeholder="correo@ejemplo.com" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Estado: Error</label>
+          <input type="text" class="error" value="valor incorrecto" />
+          <span class="error-text">⚠️ Este campo es requerido</span>
+        </div>
+
+        <div class="input-group">
+          <label>Estado: Éxito</label>
+          <input type="text" class="success" value="Juan Pérez" />
+          <span class="success-text">✅ Nombre válido</span>
+        </div>
+
+        <div class="input-group">
+          <label>Fecha</label>
+          <input type="date" />
+        </div>
+
+        <div class="input-group">
+          <label>Select</label>
+          <select>
+            <option>Selecciona especie...</option>
+            <option>🐶 Perro</option>
+            <option>🐱 Gato</option>
+            <option>🐦 Ave</option>
+            <option>🐠 Pez</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label>Textarea</label>
+          <textarea placeholder="Descripción o notas..."></textarea>
+        </div>
+
+        <div class="input-group">
+          <label>Checkboxes</label>
+          <div class="check-group">
+            <div class="check-item">
+              <input type="checkbox" id="c1" checked/>
+              <label for="c1">Vacunado ✅</label>
+            </div>
+            <div class="check-item">
+              <input type="checkbox" id="c2"/>
+              <label for="c2">Esterilizado</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Radio buttons</label>
+          <div class="check-group">
+            <div class="check-item">
+              <input type="radio" name="sexo" id="r1" checked/>
+              <label for="r1">Macho</label>
+            </div>
+            <div class="check-item">
+              <input type="radio" name="sexo" id="r2"/>
+              <label for="r2">Hembra</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Toggle</label>
+          <div class="toggle-wrap">
+            <label class="toggle">
+              <input type="checkbox" checked/>
+              <span class="slider"></span>
+            </label>
+            <span style="font-size:14px;font-weight:700;">Notificaciones activas</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== CARDS ===== -->
+    <div class="section">
+      <div class="section-title">🃏 Cards</div>
+      <div class="cards-grid">
+        <div class="pet-card">
+          <div class="card-img">🐶</div>
+          <div class="card-body">
+            <h4>Luna</h4>
+            <p>Labrador · 3 años</p>
+            <span class="card-badge badge-verde">✅ Vacunada</span>
+          </div>
+          <div class="card-footer">
+            <button class="btn-card btn-card-primary">Ver</button>
+            <button class="btn-card btn-card-outline">Editar</button>
+          </div>
+        </div>
+        <div class="pet-card">
+          <div class="card-img">🐱</div>
+          <div class="card-body">
+            <h4>Michi</h4>
+            <p>Siamés · 2 años</p>
+            <span class="card-badge badge-rosa">❤️ Favorito</span>
+          </div>
+          <div class="card-footer">
+            <button class="btn-card btn-card-primary">Ver</button>
+            <button class="btn-card btn-card-outline">Editar</button>
+          </div>
+        </div>
+        <div class="price-card">
+          <div class="price-img">🦴</div>
+          <h4>Snack Premium Perro</h4>
+          <p class="desc">Paquete x 20 unidades, natural</p>
+          <div>
+            <span class="price-main">$28.900</span>
+            <span class="price-old">$35.000</span>
+            <span class="price-discount">-17%</span>
+          </div>
+          <span class="card-badge badge-naranja" style="margin-top:8px;">🔥 Popular</span>
+          <br/>
+          <button class="btn-card btn-card-primary" style="margin-top:12px;width:100%;">🛒 Comprar</button>
+        </div>
+        <div class="price-card">
+          <div class="price-img">💊</div>
+          <h4>Vitaminas para Gatos</h4>
+          <p class="desc">30 tabletas · Sabor pollo</p>
+          <div>
+            <span class="price-main">$42.500</span>
+          </div>
+          <span class="card-badge badge-verde" style="margin-top:8px;">✅ Disponible</span>
+          <br/>
+          <button class="btn-card btn-card-primary" style="margin-top:12px;width:100%;">🛒 Comprar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TABLA ===== -->
+    <div class="section">
+      <div class="section-title">📋 Tabla Global</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Mascota</th>
+              <th>Especie</th>
+              <th>Dueño</th>
+              <th>Última Visita</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--gris);font-size:13px;">001</td>
+              <td><strong>Luna</strong></td>
+              <td>🐶 Perro</td>
+              <td>María González</td>
+              <td>15/05/2026</td>
+              <td><span class="status-pill s-activo">Activo</span></td>
+              <td style="display:flex;gap:6px;">
+                <button class="btn-card btn-card-outline btn-card-sm" style="padding:6px 12px;font-size:12px;border-radius:8px;">Ver</button>
+                <button class="btn-card btn-card-primary" style="padding:6px 12px;font-size:12px;border-radius:8px;">Editar</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="color:var(--gris);font-size:13px;">002</td>
+              <td><strong>Michi</strong></td>
+              <td>🐱 Gato</td>
+              <td>Carlos Pérez</td>
+              <td>02/06/2026</td>
+              <td><span class="status-pill s-pendiente">Pendiente</span></td>
+              <td style="display:flex;gap:6px;">
+                <button class="btn-card btn-card-outline" style="padding:6px 12px;font-size:12px;border-radius:8px;">Ver</button>
+                <button class="btn-card btn-card-primary" style="padding:6px 12px;font-size:12px;border-radius:8px;">Editar</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="color:var(--gris);font-size:13px;">003</td>
+              <td><strong>Paco</strong></td>
+              <td>🐦 Ave</td>
+              <td>Ana Rodríguez</td>
+              <td>20/04/2026</td>
+              <td><span class="status-pill s-inactivo">Inactivo</span></td>
+              <td style="display:flex;gap:6px;">
+                <button class="btn-card btn-card-outline" style="padding:6px 12px;font-size:12px;border-radius:8px;">Ver</button>
+                <button class="btn-card btn-card-primary" style="padding:6px 12px;font-size:12px;border-radius:8px;">Editar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== FORMULARIO ===== -->
+    <div class="section">
+      <div class="section-title">📝 Formulario – Registrar Mascota</div>
+      <div class="form-card">
+        <h3>🐾 Nueva Mascota</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre de la mascota *</label>
+            <input type="text" id="fNombre" placeholder="Luna" style="margin-top:6px;" />
+          </div>
+          <div class="form-group">
+            <label>Especie *</label>
+            <select id="fEspecie" style="margin-top:6px;">
+              <option value="">Selecciona...</option>
+              <option>🐶 Perro</option>
+              <option>🐱 Gato</option>
+              <option>🐦 Ave</option>
+              <option>🐠 Pez</option>
+              <option>🐹 Roedor</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Raza</label>
+            <input type="text" id="fRaza" placeholder="Ej: Labrador" style="margin-top:6px;" />
+          </div>
+          <div class="form-group">
+            <label>Edad (años)</label>
+            <input type="number" id="fEdad" min="0" max="30" placeholder="3" style="margin-top:6px;" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Fecha de nacimiento</label>
+            <input type="date" id="fFecha" style="margin-top:6px;" />
+          </div>
+          <div class="form-group">
+            <label>Sexo</label>
+            <select id="fSexo" style="margin-top:6px;">
+              <option value="">Selecciona...</option>
+              <option>Macho</option>
+              <option>Hembra</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Observaciones</label>
+          <textarea id="fObs" placeholder="Notas especiales, alergias, condiciones..." style="margin-top:6px;"></textarea>
+        </div>
+        <div class="form-group" style="margin-top:4px;">
+          <div class="check-item">
+            <input type="checkbox" id="fVacunado"/>
+            <label for="fVacunado">Mascota vacunada</label>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-submit" onclick="submitForm()">💾 Guardar Mascota</button>
+          <button class="btn-cancel">Cancelar</button>
+        </div>
+        <div class="form-success" id="formSuccess">✅ ¡Mascota registrada exitosamente!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function submitForm() {
+      const nombre = document.getElementById('fNombre').value;
+      const especie = document.getElementById('fEspecie').value;
+      if (!nombre || !especie) { alert('Por favor completa los campos requeridos (*)'); return; }
+      const s = document.getElementById('formSuccess');
+      s.textContent = `✅ ¡${nombre} registrado/a exitosamente!`;
+      s.classList.add('show');
+      setTimeout(() => s.classList.remove('show'), 4000);
+    }
+  </script>
+</body>
+</html>

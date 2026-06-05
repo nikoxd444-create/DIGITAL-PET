@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Shared Components</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39;
+      --naranja-hover: #c4622a;
+      --amarillo: #F5C842;
+      --blanco: #ffffff;
+      --negro: #1a1a1a;
+      --gris: #555555;
+      --gris-claro: #f0f0f0;
+      --verde-menta: #4CAF7D;
+      --verde-bg: rgba(76,175,125,0.15);
+      --naranja-claro: #FFB347;
+      --naranja-bg: rgba(255,179,71,0.15);
+      --rosa: #FF8FAB;
+      --rosa-bg: rgba(255,143,171,0.15);
+      --sombra: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f7f7f7; color: var(--negro); }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: var(--amarillo);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-brand { font-size: 22px; font-weight: 800; color: var(--negro); }
+    .nav-brand span { color: var(--naranja); }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a {
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--negro);
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: rgba(0,0,0,0.08);
+    }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-nav {
+      padding: 8px 20px;
+      background: var(--naranja);
+      color: var(--blanco);
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-nav:hover { background: var(--naranja-hover); }
+    .avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--naranja);
+      color: var(--blanco);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 15px;
+      cursor: pointer;
+    }
+
+    /* ===== LAYOUT ===== */
+    .page-layout { display: flex; min-height: calc(100vh - 64px); }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 240px;
+      background: var(--blanco);
+      padding: 24px 16px;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+      flex-shrink: 0;
+    }
+    .sidebar-section { margin-bottom: 24px; }
+    .sidebar-section h4 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gris);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0 12px;
+      margin-bottom: 8px;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--negro);
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+    .sidebar-item:hover { background: var(--gris-claro); }
+    .sidebar-item.active { background: rgba(224,123,57,0.12); color: var(--naranja); }
+    .sidebar-item .icon { font-size: 18px; }
+    .badge {
+      margin-left: auto;
+      background: var(--naranja);
+      color: var(--blanco);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 1px 7px;
+    }
+
+    /* ===== CONTENIDO ===== */
+    .main-content { flex: 1; padding: 32px; }
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--negro);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--gris-claro);
+    }
+
+    /* ===== BOTONES ===== */
+    .btn-group { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+    .btn {
+      padding: 10px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--naranja); color: var(--blanco); }
+    .btn-primary:hover { background: var(--naranja-hover); }
+    .btn-secondary { background: var(--amarillo); color: var(--negro); }
+    .btn-secondary:hover { background: #e0b530; }
+    .btn-outline { background: transparent; border-color: var(--naranja); color: var(--naranja); }
+    .btn-outline:hover { background: rgba(224,123,57,0.08); }
+    .btn-ghost { background: var(--gris-claro); color: var(--gris); border-color: var(--gris-claro); }
+    .btn-ghost:hover { background: #e0e0e0; }
+    .btn-danger { background: #e53935; color: var(--blanco); }
+    .btn-danger:hover { background: #c62828; }
+    .btn-sm { padding: 6px 14px; font-size: 12px; }
+    .btn-lg { padding: 14px 30px; font-size: 16px; }
+
+    /* Tags / Filtros / Badges */
+    .tags-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+    .tag {
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tag-active { background: var(--amarillo); color: var(--negro); }
+    .tag-inactive { background: var(--gris-claro); color: var(--gris); }
+    .tag-verde { background: var(--verde-bg); color: var(--verde-menta); }
+    .tag-naranja { background: var(--naranja-bg); color: var(--naranja); }
+    .tag-rosa { background: var(--rosa-bg); color: var(--rosa); }
+
+    /* ===== TABLA ===== */
+    .table-wrap {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--amarillo); }
+    thead th {
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--negro);
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--gris-claro);
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fafafa; }
+    td { padding: 14px 20px; font-size: 14px; color: var(--negro); }
+    .status-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .status-activo { background: var(--verde-bg); color: var(--verde-menta); }
+    .status-pendiente { background: var(--naranja-bg); color: var(--naranja); }
+    .status-inactivo { background: var(--gris-claro); color: var(--gris); }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      padding: 36px 32px;
+      width: 90%;
+      max-width: 460px;
+      transform: translateY(20px);
+      transition: transform 0.25s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .modal-header h3 { font-size: 20px; font-weight: 800; }
+    .modal-close {
+      background: var(--gris-claro);
+      border: none;
+      border-radius: 8px;
+      width: 32px; height: 32px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal p { color: var(--gris); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">🐾 Happy <span>Pet</span></div>
+    <div class="nav-links">
+      <a href="#" class="active">Inicio</a>
+      <a href="#">Mascotas</a>
+      <a href="#">Servicios</a>
+      <a href="#">Tienda</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-nav">+ Agregar</button>
+      <div class="avatar">JP</div>
+    </div>
+  </nav>
+
+  <div class="page-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h4>Principal</h4>
+        <a class="sidebar-item active" href="#">
+          <span class="icon">🏠</span> Dashboard
+        </a>
+        <a class="sidebar-item" href="#">
+          <span class="icon">🐶</span> Mascotas
+          <span class="badge">3</span>
+        </a>
+        <a class="sidebar-item" href="#">
+          <span class="icon">📅</span> Citas
+        </a>
+        <a class="sidebar-item" href="#">
+          <span class="icon">🛒</span> Tienda
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <h4>Cuenta</h4>
+        <a class="sidebar-item" href="#">
+          <span class="icon">👤</span> Perfil
+        </a>
+        <a class="sidebar-item" href="#">
+          <span class="icon">⚙️</span> Configuración
+        </a>
+        <a class="sidebar-item" href="#">
+          <span class="icon">🚪</span> Cerrar Sesión
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <!-- BOTONES -->
+      <div class="section-title">🔘 Botones</div>
+      <div class="btn-group">
+        <button class="btn btn-primary">Comprar</button>
+        <button class="btn btn-secondary">Ver más</button>
+        <button class="btn btn-outline">Detalles</button>
+        <button class="btn btn-ghost">Cancelar</button>
+        <button class="btn btn-danger">Eliminar</button>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm">Pequeño</button>
+        <button class="btn btn-primary">Normal</button>
+        <button class="btn btn-primary btn-lg">Grande</button>
+      </div>
+
+      <!-- TAGS / BADGES -->
+      <div class="section-title">🏷️ Tags / Filtros / Badges</div>
+      <div class="tags-row">
+        <span class="tag tag-active">Todos</span>
+        <span class="tag tag-inactive">Perros</span>
+        <span class="tag tag-inactive">Gatos</span>
+        <span class="tag tag-verde">✅ Disponible</span>
+        <span class="tag tag-naranja">🔥 Popular</span>
+        <span class="tag tag-rosa">❤️ Favorito</span>
+      </div>
+
+      <!-- TABLA -->
+      <div class="section-title">📋 Tabla</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Especie</th>
+              <th>Dueño</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Luna</strong></td>
+              <td>🐶 Perro</td>
+              <td>María González</td>
+              <td><span class="status-pill status-activo">Activo</span></td>
+              <td>
+                <button class="btn btn-outline btn-sm">Ver</button>
+                <button class="btn btn-ghost btn-sm">Editar</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Michi</strong></td>
+              <td>🐱 Gato</td>
+              <td>Carlos Pérez</td>
+              <td><span class="status-pill status-pendiente">Pendiente</span></td>
+              <td>
+                <button class="btn btn-outline btn-sm">Ver</button>
+                <button class="btn btn-ghost btn-sm">Editar</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Paco</strong></td>
+              <td>🐦 Ave</td>
+              <td>Ana Rodríguez</td>
+              <td><span class="status-pill status-inactivo">Inactivo</span></td>
+              <td>
+                <button class="btn btn-outline btn-sm">Ver</button>
+                <button class="btn btn-ghost btn-sm">Editar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- MODAL TRIGGER -->
+      <div class="section-title">💬 Modal</div>
+      <button class="btn btn-primary" onclick="openModal()">Abrir Modal</button>
+
+    </main>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeOnOverlay(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>🐾 Confirmar Acción</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <p>¿Estás seguro de que deseas continuar con esta acción? Esta operación no se puede deshacer.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="closeModal()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
+    function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+    function closeOnOverlay(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+  </script>
+</body>
+</html>

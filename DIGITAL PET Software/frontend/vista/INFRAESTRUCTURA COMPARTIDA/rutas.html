@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Rutas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39;
+      --naranja-hover: #c4622a;
+      --amarillo: #F5C842;
+      --blanco: #ffffff;
+      --negro: #1a1a1a;
+      --gris: #555555;
+      --gris-claro: #f0f0f0;
+      --verde-menta: #4CAF7D;
+      --verde-bg: rgba(76,175,125,0.12);
+      --naranja-bg: rgba(224,123,57,0.10);
+      --sombra: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f7f7f7; color: var(--negro); }
+
+    header {
+      background: var(--amarillo);
+      padding: 16px 32px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    header h1 { font-size: 22px; font-weight: 800; }
+    header span { color: var(--naranja); }
+
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+    .section { margin-bottom: 36px; }
+    .section-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-header h2 { font-size: 18px; font-weight: 800; }
+    .pill {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .pill-public { background: var(--verde-bg); color: var(--verde-menta); }
+    .pill-private { background: var(--naranja-bg); color: var(--naranja); }
+
+    .routes-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .route-card {
+      background: var(--blanco);
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: var(--sombra);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: transform 0.15s;
+    }
+    .route-card:hover { transform: translateY(-2px); }
+    .route-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .icon-public { background: var(--verde-bg); }
+    .icon-private { background: var(--naranja-bg); }
+    .icon-admin { background: rgba(245,200,66,0.25); }
+    .route-info { flex: 1; }
+    .route-path {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--negro);
+      font-family: 'Courier New', monospace;
+      background: var(--gris-claro);
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .route-desc {
+      font-size: 13px;
+      color: var(--gris);
+      margin-top: 4px;
+    }
+    .route-badge {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .role-tag {
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .role-cliente { background: var(--verde-bg); color: var(--verde-menta); }
+    .role-vet { background: rgba(33,150,243,0.12); color: #1976D2; }
+    .role-admin { background: rgba(245,200,66,0.3); color: #b8860b; }
+    .role-all { background: var(--gris-claro); color: var(--gris); }
+
+    /* Simulador */
+    .simulator {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      padding: 28px;
+      margin-bottom: 36px;
+    }
+    .simulator h2 { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+    .sim-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+    select, input[type="text"] {
+      padding: 10px 14px;
+      border: 2px solid var(--gris-claro);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: 'Nunito', sans-serif;
+      color: var(--negro);
+      outline: none;
+      background: var(--blanco);
+    }
+    select:focus, input:focus { border-color: var(--naranja); }
+    .btn-sim {
+      padding: 10px 22px;
+      background: var(--naranja);
+      color: var(--blanco);
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-sim:hover { background: var(--naranja-hover); }
+    .sim-result {
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      display: none;
+    }
+    .sim-result.allowed { background: var(--verde-bg); color: var(--verde-menta); }
+    .sim-result.denied  { background: rgba(229,57,53,0.1); color: #e53935; }
+    .sim-result.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span style="font-size:28px">🗺️</span>
+    <h1>Happy <span>Pet</span> – Rutas</h1>
+  </header>
+
+  <div class="container">
+
+    <!-- Simulador de acceso -->
+    <div class="simulator">
+      <h2>🔐 Simulador de Acceso</h2>
+      <div class="sim-controls">
+        <select id="simRol">
+          <option value="">Sin sesión</option>
+          <option value="cliente">Cliente</option>
+          <option value="veterinario">Veterinario</option>
+          <option value="admin">Admin</option>
+        </select>
+        <input type="text" id="simRuta" placeholder="Ej: /dashboard" style="flex:1;min-width:160px;" />
+        <button class="btn-sim" onclick="simular()">Verificar Acceso</button>
+      </div>
+      <div class="sim-result" id="simResult"></div>
+    </div>
+
+    <!-- RUTAS PÚBLICAS -->
+    <div class="section">
+      <div class="section-header">
+        <h2>🌐 Rutas Públicas</h2>
+        <span class="pill pill-public">Sin autenticación</span>
+      </div>
+      <div class="routes-grid">
+        <div class="route-card">
+          <div class="route-icon icon-public">🏠</div>
+          <div class="route-info">
+            <span class="route-path">/</span>
+            <div class="route-desc">Página de inicio – Landing principal</div>
+          </div>
+          <div class="route-badge"><span class="role-tag role-all">Todos</span></div>
+        </div>
+        <div class="route-card">
+          <div class="route-icon icon-public">🔑</div>
+          <div class="route-info">
+            <span class="route-path">/auth/login</span>
+            <div class="route-desc">Inicio de sesión</div>
+          </div>
+          <div class="route-badge"><span class="role-tag role-all">Todos</span></div>
+        </div>
+        <div class="route-card">
+          <div class="route-icon icon-public">📝</div>
+          <div class="route-info">
+            <span class="route-path">/auth/registro</span>
+            <div class="route-desc">Registro de nuevo usuario</div>
+          </div>
+          <div class="route-badge"><span class="role-tag role-all">Todos</span></div>
+        </div>
+        <div class="route-card">
+          <div class="route-icon icon-public">🔒</div>
+          <div class="route-info">
+            <span class="route-path">/auth/recuperar</span>
+            <div class="route-desc">Recuperación de contraseña</div>
+          </div>
+          <div class="route-badge"><span class="role-tag role-all">Todos</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RUTAS PROTEGIDAS -->
+    <div class="section">
+      <div class="section-header">
+        <h2>🔐 Rutas Protegidas</h2>
+        <span class="pill pill-private">Requiere autenticación</span>
+      </div>
+      <div class="routes-grid">
+        <div class="route-card">
+          <div class="route-icon icon-private">📊</div>
+          <div class="route-info">
+            <span class="route-path">/dashboard</span>
+            <div class="route-desc">Panel principal según rol</div>
+          </div>
+          <div class="route-badge">
+            <span class="role-tag role-cliente">Cliente</span>
+            <span class="role-tag role-vet">Veterinario</span>
+            <span class="role-tag role-admin">Admin</span>
+          </div>
+        </div>
+        <div class="route-card">
+          <div class="route-icon icon-private">🐶</div>
+          <div class="route-info">
+            <span class="route-path">/mascotas</span>
+            <div class="route-desc">Listado y gestión de mascotas</div>
+          </div>
+          <div class="route-badge">
+            <span class="role-tag role-cliente">Cliente</span>
+            <span class="role-tag role-vet">Veterinario</span>
+          </div>
+        </div>
+        <div class="route-card">
+          <div class="route-icon icon-private">📅</div>
+          <div class="route-info">
+            <span class="route-path">/citas</span>
+            <div class="route-desc">Agendar y ver citas veterinarias</div>
+          </div>
+          <div class="route-badge">
+            <span class="role-tag role-cliente">Cliente</span>
+            <span class="role-tag role-vet">Veterinario</span>
+          </div>
+        </div>
+        <div class="route-card">
+          <div class="route-icon icon-admin">🛡️</div>
+          <div class="route-info">
+            <span class="route-path">/admin</span>
+            <div class="route-desc">Panel de administración</div>
+          </div>
+          <div class="route-badge">
+            <span class="role-tag role-admin">Admin</span>
+          </div>
+        </div>
+        <div class="route-card">
+          <div class="route-icon icon-admin">👥</div>
+          <div class="route-info">
+            <span class="route-path">/admin/usuarios</span>
+            <div class="route-desc">Gestión de usuarios del sistema</div>
+          </div>
+          <div class="route-badge">
+            <span class="role-tag role-admin">Admin</span>
+          </div>
+        </div>
+        <div class="route-card">
+          <div class="route-icon icon-private">👤</div>
+          <div class="route-info">
+            <span class="route-path">/perfil</span>
+            <div class="route-desc">Perfil y configuración personal</div>
+          </div>
+          <div class="route-badge">
+            <span class="role-tag role-cliente">Cliente</span>
+            <span class="role-tag role-vet">Veterinario</span>
+            <span class="role-tag role-admin">Admin</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const rutasConfig = {
+      '/': { roles: ['*'], label: 'Inicio – Acceso permitido ✅' },
+      '/auth/login': { roles: ['*'], label: 'Login – Acceso permitido ✅' },
+      '/auth/registro': { roles: ['*'], label: 'Registro – Acceso permitido ✅' },
+      '/auth/recuperar': { roles: ['*'], label: 'Recuperar – Acceso permitido ✅' },
+      '/dashboard': { roles: ['cliente','veterinario','admin'], label: 'Dashboard – Acceso permitido ✅' },
+      '/mascotas': { roles: ['cliente','veterinario'], label: 'Mascotas – Acceso permitido ✅' },
+      '/citas': { roles: ['cliente','veterinario'], label: 'Citas – Acceso permitido ✅' },
+      '/admin': { roles: ['admin'], label: 'Admin – Acceso permitido ✅' },
+      '/admin/usuarios': { roles: ['admin'], label: 'Admin/Usuarios – Acceso permitido ✅' },
+      '/perfil': { roles: ['cliente','veterinario','admin'], label: 'Perfil – Acceso permitido ✅' },
+    };
+    function simular() {
+      const rol = document.getElementById('simRol').value;
+      const ruta = document.getElementById('simRuta').value.trim();
+      const res  = document.getElementById('simResult');
+      const cfg  = rutasConfig[ruta];
+      if (!cfg) {
+        res.textContent = `❓ Ruta "${ruta}" no encontrada en el sistema.`;
+        res.className = 'sim-result denied show';
+        return;
+      }
+      const publicRoute = cfg.roles.includes('*');
+      if (publicRoute) {
+        res.textContent = cfg.label;
+        res.className = 'sim-result allowed show';
+      } else if (!rol) {
+        res.textContent = `🔒 Sin sesión – Redirigir a /auth/login`;
+        res.className = 'sim-result denied show';
+      } else if (cfg.roles.includes(rol)) {
+        res.textContent = cfg.label + ` (Rol: ${rol})`;
+        res.className = 'sim-result allowed show';
+      } else {
+        res.textContent = `⛔ Acceso denegado. El rol "${rol}" no puede acceder a "${ruta}".`;
+        res.className = 'sim-result denied show';
+      }
+    }
+  </script>
+</body>
+</html>

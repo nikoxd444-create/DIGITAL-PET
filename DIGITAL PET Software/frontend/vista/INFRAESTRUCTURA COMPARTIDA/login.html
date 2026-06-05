@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Iniciar Sesión</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39;
+      --naranja-hover: #c4622a;
+      --amarillo: #F5C842;
+      --blanco: #ffffff;
+      --negro: #1a1a1a;
+      --gris: #555555;
+      --gris-claro: #f0f0f0;
+      --verde-menta: #4CAF7D;
+      --rojo: #e53935;
+      --sombra: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--amarillo);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      animation: slideUp 0.4s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .logo-icon {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .logo h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--negro);
+    }
+    .logo span { color: var(--naranja); }
+    .logo p {
+      font-size: 14px;
+      color: var(--gris);
+      margin-top: 4px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--negro);
+      margin-bottom: 6px;
+      margin-top: 18px;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--gris-claro);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: 'Nunito', sans-serif;
+      color: var(--negro);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    input:focus { border-color: var(--naranja); }
+    .forgot {
+      text-align: right;
+      margin-top: 6px;
+    }
+    .forgot a {
+      font-size: 12px;
+      color: var(--naranja);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .forgot a:hover { text-decoration: underline; }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--naranja);
+      color: var(--blanco);
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--naranja-hover); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .divider {
+      text-align: center;
+      color: var(--gris);
+      font-size: 13px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: var(--gris-claro);
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    .register-link {
+      text-align: center;
+      font-size: 14px;
+      color: var(--gris);
+    }
+    .register-link a {
+      color: var(--naranja);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .register-link a:hover { text-decoration: underline; }
+    .error-msg {
+      background: rgba(229,57,53,0.08);
+      color: var(--rojo);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 14px;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <span class="logo-icon">🐾</span>
+      <h1>Happy <span>Pet</span></h1>
+      <p>Bienvenido de nuevo</p>
+    </div>
+
+    <label for="email">Correo electrónico</label>
+    <input type="email" id="email" placeholder="tu@correo.com" />
+
+    <label for="password">Contraseña</label>
+    <input type="password" id="password" placeholder="••••••••" />
+
+    <div class="forgot"><a href="recuperar.html">¿Olvidaste tu contraseña?</a></div>
+
+    <div class="error-msg" id="errorMsg">Correo o contraseña incorrectos.</div>
+
+    <button class="btn-primary" onclick="handleLogin()">Iniciar Sesión</button>
+
+    <div class="divider">o</div>
+    <div class="register-link">
+      ¿No tienes cuenta? <a href="registro.html">Regístrate gratis</a>
+    </div>
+  </div>
+
+  <script>
+    function handleLogin() {
+      const email = document.getElementById('email').value;
+      const pass  = document.getElementById('password').value;
+      const err   = document.getElementById('errorMsg');
+      if (!email || !pass) {
+        err.textContent = 'Por favor completa todos los campos.';
+        err.classList.add('show');
+        return;
+      }
+      err.classList.remove('show');
+      // Aquí iría la llamada al servicio de autenticación
+      alert('Login con: ' + email);
+    }
+  </script>
+</body>
+</html>
