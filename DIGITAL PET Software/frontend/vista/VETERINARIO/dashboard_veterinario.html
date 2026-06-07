@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Dashboard Veterinario</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39;
+      --naranja-hover: #c4622a;
+      --amarillo: #F5C842;
+      --blanco: #ffffff;
+      --negro: #1a1a1a;
+      --gris: #555555;
+      --gris-claro: #f0f0f0;
+      --verde: #4CAF7D;
+      --verde-bg: rgba(76,175,125,0.12);
+      --naranja-bg: rgba(224,123,57,0.10);
+      --rojo: #e53935;
+      --rojo-bg: rgba(229,57,53,0.10);
+      --sombra: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f7f7f5; color: var(--negro); display: flex; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 230px; background: var(--negro); display: flex; flex-direction: column;
+      padding: 28px 14px; position: fixed; top: 0; left: 0; height: 100vh; z-index: 20;
+    }
+    .sidebar-brand {
+      font-size: 20px; font-weight: 900; color: var(--blanco);
+      padding: 0 10px; margin-bottom: 32px; display: flex; align-items: center; gap: 8px;
+    }
+    .sidebar-brand em { color: var(--amarillo); font-style: normal; }
+    .nav-section { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.3);
+      text-transform: uppercase; letter-spacing: 0.1em; padding: 0 10px; margin: 18px 0 6px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 12px;
+      font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.5);
+      cursor: pointer; transition: all 0.2s; text-decoration: none; margin-bottom: 2px;
+    }
+    .nav-item:hover { color: var(--blanco); background: rgba(255,255,255,0.07); }
+    .nav-item.active { background: var(--amarillo); color: var(--negro); }
+    .nav-item .icon { font-size: 17px; }
+    .nav-badge {
+      margin-left: auto; background: var(--naranja); color: var(--blanco);
+      border-radius: 999px; font-size: 10px; font-weight: 900; padding: 1px 7px;
+    }
+    .sidebar-footer {
+      margin-top: auto; padding: 14px 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .vet-profile { display: flex; align-items: center; gap: 10px; }
+    .vet-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--naranja); color: var(--blanco);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 15px; flex-shrink: 0;
+    }
+    .vet-info h5 { font-size: 13px; font-weight: 800; color: var(--blanco); }
+    .vet-info span { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+    /* MAIN */
+    .main { margin-left: 230px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--blanco); padding: 0 28px; height: 62px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 10;
+    }
+    .topbar-left h2 { font-size: 18px; font-weight: 900; }
+    .topbar-left span { font-size: 13px; color: var(--gris); font-weight: 600; display: block; margin-top: 1px; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .btn-top {
+      padding: 9px 20px; background: var(--naranja); color: var(--blanco);
+      border: none; border-radius: 12px; font-size: 13px; font-weight: 800;
+      font-family: 'Nunito', sans-serif; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-top:hover { background: var(--naranja-hover); }
+    .notif-btn {
+      width: 38px; height: 38px; border-radius: 10px; background: var(--gris-claro);
+      border: none; cursor: pointer; font-size: 18px;
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .notif-dot {
+      position: absolute; top: 6px; right: 6px;
+      width: 8px; height: 8px; background: var(--rojo); border-radius: 50%;
+    }
+
+    /* CONTENIDO */
+    .content { padding: 28px; flex: 1; }
+
+    /* ALERTAS */
+    .alert-bar {
+      background: var(--rojo-bg); border: 1.5px solid rgba(229,57,53,0.2);
+      border-radius: 14px; padding: 14px 18px;
+      display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+      animation: slideDown 0.4s ease;
+    }
+    @keyframes slideDown { from { opacity:0; transform: translateY(-10px); } to { opacity:1; transform: translateY(0); } }
+    .alert-bar .alert-icon { font-size: 22px; }
+    .alert-bar p { font-size: 14px; font-weight: 700; color: var(--rojo); }
+    .alert-bar p span { font-weight: 400; color: #666; }
+
+    /* STATS ROW */
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: var(--blanco); border-radius: 20px; padding: 22px 20px;
+      box-shadow: var(--sombra);
+      animation: fadeUp 0.5s ease both;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    .stat-card:nth-child(1) { animation-delay: 0.05s; }
+    .stat-card:nth-child(2) { animation-delay: 0.1s; }
+    .stat-card:nth-child(3) { animation-delay: 0.15s; }
+    .stat-card:nth-child(4) { animation-delay: 0.2s; }
+    .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .stat-icon-wrap {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .ic-amarillo { background: rgba(245,200,66,0.2); }
+    .ic-verde { background: var(--verde-bg); }
+    .ic-naranja { background: var(--naranja-bg); }
+    .ic-rojo { background: var(--rojo-bg); }
+    .stat-trend {
+      font-size: 11px; font-weight: 800; padding: 3px 8px;
+      border-radius: 8px; background: var(--verde-bg); color: var(--verde);
+    }
+    .stat-trend.down { background: var(--rojo-bg); color: var(--rojo); }
+    .stat-num { font-size: 34px; font-weight: 900; color: var(--negro); line-height: 1; }
+    .stat-label { font-size: 13px; color: var(--gris); margin-top: 4px; font-weight: 600; }
+
+    /* GRID 2 columnas */
+    .mid-grid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; margin-bottom: 20px; }
+
+    /* PACIENTES PENDIENTES */
+    .card {
+      background: var(--blanco); border-radius: 20px;
+      box-shadow: var(--sombra); overflow: hidden;
+    }
+    .card-header {
+      padding: 18px 22px; border-bottom: 1px solid var(--gris-claro);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-header h3 { font-size: 15px; font-weight: 800; }
+    .card-header a { font-size: 13px; color: var(--naranja); font-weight: 700; text-decoration: none; }
+    .patient-item {
+      padding: 14px 22px; display: flex; align-items: center; gap: 14px;
+      border-bottom: 1px solid var(--gris-claro); transition: background 0.15s;
+    }
+    .patient-item:last-child { border-bottom: none; }
+    .patient-item:hover { background: #fafafa; }
+    .pet-icon-wrap {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--amarillo); display: flex; align-items: center;
+      justify-content: center; font-size: 22px; flex-shrink: 0;
+    }
+    .patient-info { flex: 1; }
+    .patient-info strong { font-size: 14px; font-weight: 800; display: block; }
+    .patient-info span { font-size: 12px; color: var(--gris); }
+    .patient-time { font-size: 13px; font-weight: 800; color: var(--naranja); }
+    .status-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-ok { background: var(--verde); }
+    .dot-warn { background: var(--amarillo); }
+    .dot-late { background: var(--rojo); }
+
+    /* ALERTAS CLINICAS */
+    .alert-item {
+      padding: 14px 18px; display: flex; align-items: flex-start; gap: 12px;
+      border-bottom: 1px solid var(--gris-claro);
+    }
+    .alert-item:last-child { border-bottom: none; }
+    .alert-item .a-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .alert-item strong { font-size: 13px; font-weight: 800; display: block; }
+    .alert-item p { font-size: 12px; color: var(--gris); margin-top: 2px; }
+    .a-badge {
+      margin-left: auto; flex-shrink: 0;
+      padding: 3px 10px; border-radius: 8px; font-size: 11px; font-weight: 800;
+    }
+    .ab-rojo { background: var(--rojo-bg); color: var(--rojo); }
+    .ab-naranja { background: var(--naranja-bg); color: var(--naranja); }
+    .ab-verde { background: var(--verde-bg); color: var(--verde); }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">🐾 Happy <em>Pet</em></div>
+    <div class="nav-section">Principal</div>
+    <a class="nav-item active" href="index.html"><span class="icon">📊</span> Dashboard</a>
+    <a class="nav-item" href="../agenda/index.html"><span class="icon">📅</span> Agenda <span class="nav-badge">6</span></a>
+    <a class="nav-item" href="../historial/index.html"><span class="icon">📋</span> Historial Clínico</a>
+    <a class="nav-item" href="../consultas/index.html"><span class="icon">🩺</span> Consultas</a>
+    <a class="nav-item" href="../vacunas/index.html"><span class="icon">💉</span> Vacunas</a>
+    <a class="nav-item" href="../archivos/index.html"><span class="icon">📁</span> Archivos</a>
+    <div class="nav-section">Sistema</div>
+    <a class="nav-item" href="#"><span class="icon">⚙️</span> Configuración</a>
+    <a class="nav-item" href="../../auth/login.html"><span class="icon">🚪</span> Cerrar Sesión</a>
+    <div class="sidebar-footer">
+      <div class="vet-profile">
+        <div class="vet-avatar">CL</div>
+        <div class="vet-info">
+          <h5>Dr. Carlos López</h5>
+          <span>Veterinario</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <h2>Dashboard</h2>
+        <span>Lunes, 7 de junio de 2026</span>
+      </div>
+      <div class="topbar-right">
+        <button class="notif-btn">🔔<span class="notif-dot"></span></button>
+        <button class="btn-top">+ Nueva Consulta</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- Alerta -->
+      <div class="alert-bar">
+        <span class="alert-icon">⚠️</span>
+        <p>2 pacientes con vacunas vencidas · <span>Luna (Perro) y Michi (Gato) requieren atención urgente.</span></p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon-wrap ic-amarillo">📅</div>
+            <span class="stat-trend">+2 hoy</span>
+          </div>
+          <div class="stat-num">6</div>
+          <div class="stat-label">Citas del día</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon-wrap ic-verde">🐶</div>
+            <span class="stat-trend">↑ 3%</span>
+          </div>
+          <div class="stat-num">24</div>
+          <div class="stat-label">Pacientes activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon-wrap ic-naranja">⏳</div>
+            <span class="stat-trend down">3 pend.</span>
+          </div>
+          <div class="stat-num">3</div>
+          <div class="stat-label">Consultas pendientes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon-wrap ic-rojo">💉</div>
+            <span class="stat-trend down">Urgente</span>
+          </div>
+          <div class="stat-num">2</div>
+          <div class="stat-label">Vacunas vencidas</div>
+        </div>
+      </div>
+
+      <!-- Mid grid -->
+      <div class="mid-grid">
+
+        <!-- Pacientes hoy -->
+        <div class="card">
+          <div class="card-header">
+            <h3>🐾 Pacientes de Hoy</h3>
+            <a href="../agenda/index.html">Ver agenda →</a>
+          </div>
+          <div class="patient-item">
+            <div class="pet-icon-wrap">🐶</div>
+            <div class="patient-info">
+              <strong>Luna · Labrador</strong>
+              <span>Dueño: María González · Vacunación anual</span>
+            </div>
+            <span class="patient-time">10:00</span>
+            <div class="status-dot dot-ok"></div>
+          </div>
+          <div class="patient-item">
+            <div class="pet-icon-wrap">🐱</div>
+            <div class="patient-info">
+              <strong>Michi · Siamés</strong>
+              <span>Dueño: Carlos Pérez · Revisión general</span>
+            </div>
+            <span class="patient-time">11:30</span>
+            <div class="status-dot dot-warn"></div>
+          </div>
+          <div class="patient-item">
+            <div class="pet-icon-wrap">🐦</div>
+            <div class="patient-info">
+              <strong>Paco · Canario</strong>
+              <span>Dueño: Ana Rodríguez · Control plumas</span>
+            </div>
+            <span class="patient-time">14:00</span>
+            <div class="status-dot dot-ok"></div>
+          </div>
+          <div class="patient-item">
+            <div class="pet-icon-wrap">🐹</div>
+            <div class="patient-info">
+              <strong>Hammy · Hámster</strong>
+              <span>Dueño: Luis Martínez · Revisión dientes</span>
+            </div>
+            <span class="patient-time">15:30</span>
+            <div class="status-dot dot-late"></div>
+          </div>
+          <div class="patient-item">
+            <div class="pet-icon-wrap">🐶</div>
+            <div class="patient-info">
+              <strong>Thor · Pastor Alemán</strong>
+              <span>Dueño: Paola Jiménez · Desparasitación</span>
+            </div>
+            <span class="patient-time">16:00</span>
+            <div class="status-dot dot-ok"></div>
+          </div>
+        </div>
+
+        <!-- Alertas clínicas -->
+        <div class="card">
+          <div class="card-header">
+            <h3>🚨 Alertas Clínicas</h3>
+            <a href="#">Ver todas</a>
+          </div>
+          <div class="alert-item">
+            <span class="a-icon">💉</span>
+            <div>
+              <strong>Luna – Vacuna vencida</strong>
+              <p>Antirrábica venció hace 5 días</p>
+            </div>
+            <span class="a-badge ab-rojo">Urgente</span>
+          </div>
+          <div class="alert-item">
+            <span class="a-icon">💉</span>
+            <div>
+              <strong>Michi – Vacuna próxima</strong>
+              <p>Triple felina vence en 3 días</p>
+            </div>
+            <span class="a-badge ab-naranja">Próximo</span>
+          </div>
+          <div class="alert-item">
+            <span class="a-icon">📋</span>
+            <div>
+              <strong>Thor – Desparasitación</strong>
+              <p>Último tratamiento hace 6 meses</p>
+            </div>
+            <span class="a-badge ab-naranja">Pendiente</span>
+          </div>
+          <div class="alert-item">
+            <span class="a-icon">✅</span>
+            <div>
+              <strong>Hammy – Control al día</strong>
+              <p>Próxima visita en 30 días</p>
+            </div>
+            <span class="a-badge ab-verde">Al día</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
