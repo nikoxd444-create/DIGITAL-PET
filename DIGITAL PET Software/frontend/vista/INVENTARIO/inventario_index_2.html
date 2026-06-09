@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGITAL PET | Panel Admin</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body{
+            background: linear-gradient(135deg, #0f0b1e, #111c24, #1a102f);
+            overflow-x: hidden;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* ====== PARTICULAS ====== */
+        .particles{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particles span{
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #a855f7; /* Cambiado a morado */
+            border-radius: 50%;
+            animation: animate 15s linear infinite;
+            bottom: -150px;
+            opacity: 0.4;
+        }
+
+        @keyframes animate{
+            0%{
+                transform: translateY(0) scale(0);
+            }
+            100%{
+                transform: translateY(-120vh) scale(1);
+            }
+        }
+
+        /* ===== NAVBAR ===== */
+        nav{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        nav h1{
+            color: #a855f7; /* Morado */
+            font-size: 28px;
+        }
+
+        .btn-logout{
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            padding: 10px 20px;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-logout:hover{
+            transform: scale(1.05);
+            background: #ef4444;
+            color: white;
+        }
+
+        /* ===== HERO / BIENVENIDA ===== */
+        .hero{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 140px 8% 40px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-text{
+            max-width: 800px;
+        }
+
+        .hero-text h2{
+            font-size: 50px;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .hero-text span{
+            color: #a855f7; /* Morado */
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .hero-text p{
+            color: #9ca3af;
+            font-size: 18px;
+        }
+
+        @keyframes fadeInUp{
+            from{
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to{
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== MENÚ DE OPCIONES (TARJETAS BOTÓN) ===== */
+        .admin-menu{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            padding: 20px 8% 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .menu-btn-card {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 40px 30px;
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-btn-card:hover{
+            transform: translateY(-12px);
+            background: rgba(168, 85, 247, 0.1);
+            border-color: #a855f7;
+            box-shadow: 0 15px 30px rgba(168, 85, 247, 0.2);
+        }
+
+        .menu-btn-card i{
+            font-size: 50px;
+            color: #a855f7;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .menu-btn-card:hover i {
+            transform: scale(1.1);
+            color: #c084fc;
+        }
+
+        .menu-btn-card h3{
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .menu-btn-card p{
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer{
+            background: #090514;
+            padding: 30px 8%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p{
+            color: #6b7280;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width: 768px){
+            .hero-text h2{
+                font-size: 36px;
+            }
+            .admin-menu {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                padding-bottom: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="particles"></div>
+
+    <nav>
+        <h1>
+            <i class="fa-solid fa-paw"></i> DIGITAL PET
+        </h1>
+        <button class="btn-logout" onclick="cerrarSesion()">
+            <i class="fa-solid fa-right-from-bracket"></i> Salir
+        </button>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h2>¿Qué quieres hacer hoy, <span>Admin</span>?</h2>
+            <p>Selecciona una de las opciones del panel para gestionar el sistema veterinario.</p>
+        </div>
+    </section>
+
+    <section class="admin-menu">
+
+        <a href="/productos" class="menu-btn-card">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <h3>Productos</h3>
+            <p>Gestionar stock, precios y categorías.</p>
+        </a>
+
+        <a href="/proveedores" class="menu-btn-card">
+            <i class="fa-solid fa-truck-field"></i>
+            <h3>Proveedores</h3>
+            <p>Lista de contactos y distribución.</p>
+        </a>
+
+        <a href="/movimientos" class="menu-btn-card">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            <h3>Movimientos</h3>
+            <p>Kardex, entradas y salidas de stock.</p>
+        </a>
+
+        <a href="/compras" class="menu-btn-card">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <h3>Compras</h3>
+            <p>Registrar nuevas órdenes y facturas.</p>
+        </a>
+
+        <a href="/usuarios" class="menu-btn-card" data-solo-admin style="border-color:rgba(124,58,237,0.5);">
+            <i class="fa-solid fa-user-shield"></i>
+            <h3>Usuarios</h3>
+            <p>Crear administradores y cuentas del sistema.</p>
+        </a>
+
+    </section>
+
+    <footer>
+        <p>© 2026 DIGITAL PET - Panel de Administración Privado</p>
+    </footer>
+
+    <script>
+        // =========================================================
+        // GUARDIÁN ANTIRREBOTE FLEXIBLE (SOLO FRONTEND)
+        // =========================================================
+        
+        // Verificamos de forma muy tolerante si hay rastro de inicio de sesión
+        const sesionValida = 
+            sessionStorage.getItem('logged_in') === 'true' || 
+            sessionStorage.getItem('usuario_id') || 
+            sessionStorage.getItem('id') ||
+            sessionStorage.getItem('ID_USUARIOS');
+    
+        if (!sesionValida) {
+            console.warn("No se detectó sesión local activa. Redirigiendo a login...");
+            window.location.replace('/login');
+        } else {
+            console.log("¡Acceso concedido al Panel!");
+            // Si tienes algún elemento en el HTML para mostrar el nombre del usuario, lo pintamos:
+            const nombreUser = sessionStorage.getItem('usu_nombre') || sessionStorage.getItem('USU_NOMBRE') || 'Usuario';
+            const txtNombre = document.getElementById('nombre-usuario-pantalla'); // Cambia este ID por el tuyo si existe
+            if (txtNombre) txtNombre.textContent = nombreUser;
+        }
+    
+        // =========================================================
+        // FUNCIÓN CERRAR SESIÓN (CORREGIDA)
+        // =========================================================
+        function cerrarSesion() {
+            if (!confirm('¿Estás seguro de que quieres salir del panel?')) return;
+            
+            // Limpieza absoluta e inmediata de la memoria del navegador
+            sessionStorage.clear();
+            localStorage.clear();
+            
+            // Avisamos al backend que limpie la sesión en paralelo (sin importar si responde rápido o lento)
+            fetch('/api/auth/logout?action=logout', {
+                method: 'POST',
+                credentials: 'include',
+                keepalive: true
+            }).catch(() => {});
+            
+            // Te saca de inmediato de la página limpia
+            window.location.replace('/login');
+        }
+    </script>
+    <script src="/static/nav-common.js"></script>
+</body>
+</html>

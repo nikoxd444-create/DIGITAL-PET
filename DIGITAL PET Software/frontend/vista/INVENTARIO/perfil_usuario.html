@@ -1,0 +1,748 @@
+{% extends "layout.html" %}
+{% block title %}DIGITALPET · Mi Perfil{% endblock %}
+{% block section %}Mi Perfil{% endblock %}
+{% set active_nav = "perfil" %}
+{% block styles %}
+:root{
+    --c-purple:#6b21a8;--c-indigo:#4338ca;--c-violet:#7c3aed;
+    --c-bg:#f8fafc;--c-dark:#0f172a;--c-mid:#334155;--c-border:#e2e8f0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--c-bg);color:var(--c-dark);min-height:100vh;display:flex;flex-direction:column;}
+  h1,h2,h3,.brand{font-family:'Syne',sans-serif;}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(15,23,42,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(124,58,237,0.3);box-shadow:0 4px 24px rgba(107,33,168,0.18);}
+  .nav-link{color:#94a3b8;text-decoration:none;font-size:13.5px;font-weight:500;padding:6px 14px;border-radius:8px;transition:color .2s;}
+  .nav-link:hover{color:#c4b5fd;}
+  .nav-link.active{color:#a78bfa;border-bottom:2px solid #7c3aed;}
+
+  /* ── DROPDOWN ── */
+  .user-menu{position:relative;}
+  .user-trigger{display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 10px;border-radius:10px;transition:background .2s;}
+  .user-trigger:hover{background:rgba(124,58,237,0.12);}
+  .avatar-sm{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4338ca);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;flex-shrink:0;overflow:hidden;}
+  .avatar-sm img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+  .chevron{color:#64748b;font-size:10px;transition:transform .25s;}
+  .user-menu.open .chevron{transform:rotate(180deg);}
+  .dropdown{position:absolute;top:calc(100% + 10px);right:0;width:220px;background:#1e293b;border:1px solid rgba(124,58,237,0.25);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,0.4);overflow:hidden;opacity:0;pointer-events:none;transform:translateY(-8px) scale(.97);transition:all .2s cubic-bezier(.34,1.56,.64,1);z-index:200;}
+  .user-menu.open .dropdown{opacity:1;pointer-events:all;transform:translateY(0) scale(1);}
+  .dropdown-header{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .dropdown-item{display:flex;align-items:center;gap:10px;padding:11px 16px;color:#94a3b8;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;text-decoration:none;}
+  .dropdown-item:hover{background:rgba(124,58,237,0.12);color:#c4b5fd;}
+  .dropdown-item.active-item{color:#a78bfa;background:rgba(124,58,237,0.1);}
+  .dropdown-item.danger{color:#f87171;}
+  .dropdown-item.danger:hover{background:rgba(239,68,68,0.1);color:#fca5a5;}
+  .dropdown-divider{height:1px;background:rgba(255,255,255,0.06);margin:4px 0;}
+  .dropdown-icon{font-size:15px;width:18px;text-align:center;}
+  .divider{width:1px;height:22px;background:rgba(255,255,255,0.1);}
+
+  /* ── LAYOUT ── */
+  main{flex:1;padding:40px;max-width:960px;margin:0 auto;width:100%;}
+
+  /* ── CARDS ── */
+  .card{background:white;border:1px solid var(--c-border);border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.06);}
+  .card-header{padding:20px 24px;border-bottom:1px solid var(--c-border);background:linear-gradient(135deg,#0f172a,#1e1b4b);display:flex;align-items:center;gap:12px;}
+  .card-body{padding:28px;}
+
+  /* ── AVATAR GRANDE ── */
+  .avatar-lg{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4338ca);display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:36px;font-family:Syne,sans-serif;flex-shrink:0;overflow:hidden;border:4px solid rgba(124,58,237,0.3);box-shadow:0 8px 28px rgba(124,58,237,0.35);position:relative;}
+  .avatar-lg img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+  .avatar-overlay{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;cursor:pointer;font-size:22px;}
+  .avatar-lg:hover .avatar-overlay{opacity:1;}
+
+  /* ── FORMS ── */
+  .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .form-group{display:flex;flex-direction:column;gap:5px;}
+  label.field-label{font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;}
+  input[type=text],input[type=email],input[type=tel],input[type=password],select{
+    width:100%;padding:10px 14px;border:1px solid var(--c-border);border-radius:10px;font-size:14px;
+    font-family:'DM Sans',sans-serif;color:var(--c-dark);background:#fafafa;outline:none;
+    transition:border-color .2s,box-shadow .2s;}
+  input:focus,select:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,0.12);background:white;}
+  input:disabled{background:#f1f5f9;color:#64748b;cursor:not-allowed;}
+
+  /* ── BUTTONS ── */
+  .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+  .btn-primary{background:linear-gradient(135deg,#7c3aed,#4338ca);color:white;box-shadow:0 4px 14px rgba(124,58,237,0.35);}
+  .btn-primary:hover{box-shadow:0 6px 20px rgba(124,58,237,0.5);transform:translateY(-1px);}
+  .btn-secondary{background:#f1f5f9;color:var(--c-mid);}
+  .btn-secondary:hover{background:#e2e8f0;}
+  .btn-danger{background:linear-gradient(135deg,#dc2626,#991b1b);color:white;box-shadow:0 4px 14px rgba(220,38,38,0.25);}
+  .btn-danger:hover{box-shadow:0 6px 20px rgba(220,38,38,0.45);transform:translateY(-1px);}
+  .btn-upload{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;border:2px dashed #c4b5fd;background:#f5f3ff;color:#7c3aed;transition:all .2s;}
+  .btn-upload:hover{border-color:#7c3aed;background:#ede9fe;}
+
+  /* ── BADGES / TAGS ── */
+  .badge-role{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:600;background:#ede9fe;color:#6d28d9;}
+  .badge-status{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:600;background:#dcfce7;color:#166534;}
+
+  /* ── SECTION TABS ── */
+  .profile-tabs{display:flex;gap:4px;border-bottom:1px solid var(--c-border);margin-bottom:28px;}
+  .tab-btn{padding:10px 20px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .2s;font-family:'DM Sans',sans-serif;border-radius:8px 8px 0 0;}
+  .tab-btn:hover{color:#7c3aed;background:#f5f3ff;}
+  .tab-btn.active{color:#7c3aed;border-bottom-color:#7c3aed;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* ── PASSWORD STRENGTH ── */
+  .strength-bar{height:4px;border-radius:2px;margin-top:6px;background:#e2e8f0;overflow:hidden;}
+  .strength-fill{height:100%;border-radius:2px;transition:width .3s,background .3s;width:0%;}
+
+  /* ── TOAST ── */
+  #toast{position:fixed;bottom:28px;right:28px;z-index:999;display:flex;flex-direction:column;gap:8px;}
+  .toast-item{background:#0f172a;color:white;padding:12px 18px;border-radius:12px;font-size:13.5px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.25);animation:toastIn .35s cubic-bezier(.34,1.56,.64,1);border-left:3px solid #7c3aed;}
+  .toast-item.success{border-left-color:#22c55e;}
+  .toast-item.error{border-left-color:#ef4444;}
+
+  footer{background:#0f172a;color:#475569;text-align:center;padding:18px;font-size:12px;}
+  footer span{color:#7c3aed;}
+
+  @keyframes toastIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+
+  @media(max-width:680px){
+    main{padding:20px 16px;}
+    .form-grid-2{grid-template-columns:1fr;}
+    .profile-hero{flex-direction:column;align-items:center;text-align:center;}
+  }
+{% endblock %}
+{% block content %}
+<main>
+
+  <!-- HERO DE PERFIL -->
+  <div class="card" style="margin-bottom:28px;">
+    <div style="background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#2d1b69 100%);padding:36px 40px;">
+      <div class="profile-hero" style="display:flex;align-items:center;gap:32px;">
+        <!-- Avatar grande con subida de foto -->
+        <div style="position:relative;">
+          <div class="avatar-lg" id="avatarLg" onclick="document.getElementById('fotoInput').click()">
+            <span id="avatarInitials">AD</span>
+            <div class="avatar-overlay">📷</div>
+          </div>
+          <!-- Estado online -->
+          <div style="position:absolute;bottom:6px;right:6px;width:16px;height:16px;background:#22c55e;border-radius:50%;border:2px solid #0f172a;"></div>
+        </div>
+        <!-- Info básica -->
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+            <h1 style="font-size:26px;font-weight:800;color:white;" id="heroName">Admin DPET</h1>
+            <span class="badge-role" id="heroBadgeRole">Admin</span>
+            <span class="badge-status">● Activo</span>
+          </div>
+          <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;">
+            <div style="font-size:13px;color:#94a3b8;display:flex;align-items:center;gap:6px;">
+              <span>📧</span><span id="heroEmail">admin@digitalpet.com</span>
+            </div>
+            <div style="font-size:13px;color:#94a3b8;display:flex;align-items:center;gap:6px;">
+              <span>📱</span><span id="heroTel">—</span>
+            </div>
+            <div style="font-size:13px;color:#94a3b8;display:flex;align-items:center;gap:6px;">
+              <span>🆔</span><span id="heroCedula">—</span>
+            </div>
+          </div>
+          <div style="margin-top:16px;">
+            <button class="btn-upload" onclick="document.getElementById('fotoInput').click()">
+              📷 Cambiar foto de perfil
+            </button>
+            <!-- Input oculto para subir foto — name="foto_perfil" → guardado en servidor -->
+            <input type="file" id="fotoInput" accept="image/png,image/jpeg,image/webp"
+              style="display:none;" onchange="previewFoto(event)"/>
+            <span id="fotoNombre" style="font-size:12px;color:#64748b;margin-left:10px;"></span>
+          </div>
+        </div>
+        <!-- Fecha de registro → BD: USU_FECHA_REGISTRO -->
+        <div style="text-align:right;color:#64748b;">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;">Miembro desde</div>
+          <div style="font-size:15px;font-weight:600;color:#a78bfa;margin-top:4px;" id="heroFechaReg">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="profile-tabs">
+    <button class="tab-btn active" onclick="showTab('datos',this)">📋 Datos personales</button>
+    <button class="tab-btn" onclick="showTab('seguridad',this)">🔐 Seguridad</button>
+    <button class="tab-btn" onclick="showTab('actividad',this)">📊 Actividad reciente</button>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       TAB 1: DATOS PERSONALES
+  ════════════════════════════════════════ -->
+  <div id="tab-datos" class="tab-panel active">
+    <form id="formPerfil" onsubmit="guardarPerfil(event)">
+      <!-- Información personal -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <span style="font-size:18px;">👤</span>
+          <div>
+            <h2 style="font-size:14px;font-weight:700;color:white;">Información Personal</h2>
+            <p style="font-size:11px;color:#64748b;margin-top:2px;">Campos mapeados a tabla <code style="color:#a78bfa;">usuarios</code></p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="field-label">Nombre *</label>
+              <!-- BD: USU_NOMBRE — enviado como f_nombre al perfil_controller -->
+              <input type="text" id="usu_nombre" name="f_nombre" placeholder="Ej: María" required/>
+            </div>
+            <div class="form-group">
+              <label class="field-label">Apellido *</label>
+              <!-- BD: USU_APELLIDO — enviado como f_apellido al perfil_controller -->
+              <input type="text" id="usu_apellido" name="f_apellido" placeholder="Ej: García López" required/>
+            </div>
+            <div class="form-group">
+              <label class="field-label">Correo electrónico *</label>
+              <!-- BD: USU_CORREO — enviado como f_correo al perfil_controller -->
+              <input type="email" id="usu_correo" name="f_correo" placeholder="correo@digitalpet.com" required/>
+            </div>
+            <div class="form-group">
+              <label class="field-label">Teléfono</label>
+              <!-- BD: USU_TELEFONO — enviado como f_telefono al perfil_controller -->
+              <input type="tel" id="usu_telefono" name="f_telefono" placeholder="+57 300 000 0000"/>
+            </div>
+            <div class="form-group">
+              <label class="field-label">Cédula</label>
+              <!-- BD: USU_CEDULA — solo lectura desde perfil, no editable en perfil_controller -->
+              <input type="text" id="usu_cedula" name="usu_cedula" placeholder="1.234.567.890" disabled
+                style="background:#f1f5f9;color:#64748b;"/>
+            </div>
+            <div class="form-group">
+              <label class="field-label">Rol</label>
+              <!-- BD: roles.ROL_NOMBRE — solo lectura -->
+              <input type="text" id="rol_nombre" name="rol_nombre" disabled
+                style="background:#f1f5f9;color:#64748b;" value="—"/>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:18px;">
+            <label class="field-label">Dirección</label>
+            <!-- BD: USU_DIRECCION — solo lectura desde perfil_controller (no en payload actualizar) -->
+            <input type="text" id="usu_direccion" name="usu_direccion" placeholder="Calle 123 # 45-67, Bogotá" disabled
+              style="background:#f1f5f9;color:#64748b;"/>
+          </div>
+          <div class="form-group" style="margin-top:18px;">
+            <label class="field-label">ID de Usuario — BD: ID_USUARIOS (no editable)</label>
+            <input type="text" id="id_usuarios" name="id_usuarios" disabled
+              style="font-family:'JetBrains Mono',monospace;font-size:12px;background:#f1f5f9;color:#64748b;"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Foto de perfil → BD: USU_AVATAR -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <span style="font-size:18px;">📷</span>
+          <div>
+            <h2 style="font-size:14px;font-weight:700;color:white;">Foto de Perfil</h2>
+            <p style="font-size:11px;color:#64748b;margin-top:2px;">PNG, JPG o WEBP · Máximo 2 MB · BD: USU_AVATAR</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
+            <!-- Preview circular -->
+            <div style="position:relative;">
+              <div id="fotoPreviewCircle"
+                style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4338ca);
+                       display:flex;align-items:center;justify-content:center;overflow:hidden;
+                       border:3px solid rgba(124,58,237,0.3);box-shadow:0 4px 16px rgba(124,58,237,0.25);">
+                <span id="fotoPreviewInitials" style="color:white;font-size:28px;font-weight:800;font-family:Syne,sans-serif;">AD</span>
+              </div>
+            </div>
+            <div style="flex:1;">
+              <p style="font-size:14px;color:var(--c-mid);margin-bottom:14px;">
+                Tu foto aparecerá en la barra de navegación y en los registros del sistema.
+              </p>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                <button type="button" class="btn-upload" onclick="document.getElementById('fotoInput2').click()">
+                  📤 Subir nueva foto
+                </button>
+                <button type="button" class="btn btn-secondary" style="font-size:13px;padding:9px 16px;" onclick="eliminarFoto()">
+                  🗑️ Eliminar foto
+                </button>
+                <!-- Input secundario para subida de foto — BD: USU_AVATAR vía f_avatar -->
+                <input type="file" id="fotoInput2" name="foto_perfil" accept="image/png,image/jpeg,image/webp"
+                  style="display:none;" onchange="previewFoto(event)"/>
+              </div>
+              <div id="fotoInfo" style="margin-top:10px;font-size:12px;color:#64748b;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div style="display:flex;justify-content:flex-end;gap:12px;">
+        <button type="button" class="btn btn-secondary" onclick="cancelarEdicion()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">💾 Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       TAB 2: SEGURIDAD (CAMBIO DE CONTRASEÑA)
+  ════════════════════════════════════════ -->
+  <div id="tab-seguridad" class="tab-panel">
+    <div class="card">
+      <div class="card-header">
+        <span style="font-size:18px;">🔐</span>
+        <div>
+          <h2 style="font-size:14px;font-weight:700;color:white;">Cambiar Contraseña</h2>
+          <p style="font-size:11px;color:#64748b;margin-top:2px;">Conectado a <code style="color:#a78bfa;">perfil_controller → _cambiar_password</code></p>
+        </div>
+      </div>
+      <div class="card-body">
+        <form id="formPassword" onsubmit="cambiarPassword(event)">
+          <div style="max-width:480px;display:grid;gap:18px;">
+            <div class="form-group">
+              <label class="field-label">Contraseña actual *</label>
+              <!-- Enviado como f_password_actual → validado contra BD: USU_CONTRASENA (bcrypt) -->
+              <input type="password" id="pwd_actual" name="f_password_actual" placeholder="••••••••" required/>
+            </div>
+            <div class="form-group">
+              <label class="field-label">Nueva contraseña *</label>
+              <!-- Enviado como f_password_nueva → hasheado y guardado en BD: USU_CONTRASENA -->
+              <input type="password" id="usu_contrasena" name="f_password_nueva"
+                placeholder="Mínimo 6 caracteres" required oninput="checkStrength(this.value)"/>
+              <!-- Barra de fortaleza -->
+              <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+              <div id="strengthText" style="font-size:11px;color:#64748b;margin-top:4px;"></div>
+            </div>
+            <div class="form-group">
+              <label class="field-label">Confirmar nueva contraseña *</label>
+              <!-- Enviado como f_password_confirmar → comparado en perfil_controller -->
+              <input type="password" id="pwd_confirm" name="f_password_confirmar" placeholder="Repetir contraseña" required/>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary">🔐 Actualizar contraseña</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Sesiones activas (informativo) -->
+        <div style="margin-top:36px;padding-top:24px;border-top:1px solid var(--c-border);">
+          <h3 style="font-size:14px;font-weight:700;color:var(--c-dark);margin-bottom:16px;">🖥️ Sesión activa</h3>
+          <div style="background:#f8fafc;border:1px solid var(--c-border);border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--c-dark);">Navegador actual</div>
+              <div style="font-size:12px;color:#64748b;margin-top:2px;" id="sessionInfo">—</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;background:#dcfce7;color:#166534;padding:3px 10px;border-radius:99px;">● Activa ahora</span>
+              <button class="btn btn-secondary" style="font-size:12px;padding:6px 14px;"
+                onclick="if(confirm('¿Cerrar esta sesión?'))confirmarLogout()">Cerrar sesión</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       TAB 3: ACTIVIDAD RECIENTE
+       Tabla auditoria → columnas reales:
+       ACCION, TABLA_AFECTADA, DETALLE, FECHA_ACCION
+  ════════════════════════════════════════ -->
+  <div id="tab-actividad" class="tab-panel">
+    <div class="card">
+      <div class="card-header">
+        <span style="font-size:18px;">📊</span>
+        <div>
+          <h2 style="font-size:14px;font-weight:700;color:white;">Actividad Reciente</h2>
+          <p style="font-size:11px;color:#64748b;margin-top:2px;">Tabla <code style="color:#a78bfa;">auditoria</code> → ACCION · TABLA_AFECTADA · DETALLE · FECHA_ACCION</p>
+        </div>
+      </div>
+      <div class="card-body" style="padding:0;">
+        <table style="width:100%;border-collapse:collapse;" id="tablaAuditoria">
+          <thead>
+            <tr style="background:#f8fafc;border-bottom:1px solid var(--c-border);">
+              <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;">Acción</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;">Tabla afectada</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;">Detalle</th>
+              <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;">Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="auditBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL LOGOUT (único, sin duplicado) -->
+<div id="logoutModal" onclick="if(event.target===this)closeLogoutModal()"
+  style="position:fixed;inset:0;z-index:200;background:rgba(15,23,42,0.7);backdrop-filter:blur(8px);
+         display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;">
+  <div id="logoutModalBox" style="background:#1e293b;border:1px solid rgba(124,58,237,0.3);border-radius:20px;
+       width:380px;max-width:95vw;padding:32px;box-shadow:0 32px 80px rgba(0,0,0,0.5);
+       transform:scale(.92);transition:transform .3s cubic-bezier(.34,1.56,.64,1);">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:48px;margin-bottom:12px;">🚪</div>
+      <h2 style="font-family:Syne,sans-serif;color:white;font-size:20px;font-weight:700;">¿Cerrar sesión?</h2>
+      <p style="color:#64748b;font-size:14px;margin-top:8px;">Serás redirigido al inicio de sesión.</p>
+    </div>
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeLogoutModal()">Cancelar</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="confirmarLogout()">Sí, cerrar sesión</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+/* ─────────────────────────────────────────────────────────
+   MAPEO COLUMNAS REALES digital_pet.sql
+   usuarios  → ID_USUARIOS, USU_NOMBRE, USU_APELLIDO, USU_CORREO,
+               USU_TELEFONO, USU_CEDULA, USU_DIRECCION, USU_FECHA_REGISTRO,
+               USU_AVATAR, ID_ROLES, ID_ESTADO
+   auditoria → ID_AUDITORIA, ID_USUARIOS, ACCION, TABLA_AFECTADA,
+               FECHA_ACCION, DETALLE
+   roles     → ID_ROLES, ROL_NOMBRE
+   estados   → ID_ESTADOS, EST_NOMBRE
+   ───────────────────────────────────────────────────────── */
+
+const API_PERFIL = '/api/perfil';
+
+// Objeto de estado local alineado a columnas reales de usuarios
+let userData = {
+  ID_USUARIOS: null,
+  USU_NOMBRE: '',
+  USU_APELLIDO: '',
+  USU_CORREO: '',
+  USU_TELEFONO: '',
+  USU_CEDULA: '',
+  USU_DIRECCION: '',
+  USU_FECHA_REGISTRO: '',
+  USU_AVATAR: null,   // columna real: USU_AVATAR
+  ROL_NOMBRE: '',
+  NOMBRE_ESTADO: ''
+};
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (typeof cargarInfoUsuario === 'function') cargarInfoUsuario();
+  document.getElementById('sessionInfo').textContent =
+    `${navigator.platform} · ${navigator.userAgent.split(' ').pop()}`;
+  await Promise.all([cargarPerfilDesdeAPI(), cargarAuditoria()]);
+});
+
+/* ─── CARGA PERFIL desde /api/perfil?action=obtener
+   perfil_controller._obtener retorna:
+   ID_USUARIOS, USU_NOMBRE, USU_APELLIDO, USU_CORREO,
+   USU_TELEFONO, USU_AVATAR, ROL_NOMBRE, NOMBRE_ESTADO ─── */
+async function cargarPerfilDesdeAPI() {
+  try {
+    const res = await fetch(`${API_PERFIL}?action=obtener`, { credentials: 'include' });
+    const json = await res.json();
+    if (json.status !== 'success' || !json.data) {
+      showToast(json.message || 'No se pudo cargar el perfil', 'error');
+      return;
+    }
+    const p = json.data;
+    // Mapeo exacto de columnas reales → objeto local
+    userData = {
+      ID_USUARIOS:        p.ID_USUARIOS        || null,
+      USU_NOMBRE:         p.USU_NOMBRE         || '',
+      USU_APELLIDO:       p.USU_APELLIDO        || '',
+      USU_CORREO:         p.USU_CORREO         || '',
+      USU_TELEFONO:       p.USU_TELEFONO        || '',
+      USU_CEDULA:         p.USU_CEDULA          || '',   // columna real: USU_CEDULA
+      USU_DIRECCION:      p.USU_DIRECCION       || '',   // columna real: USU_DIRECCION
+      USU_FECHA_REGISTRO: p.USU_FECHA_REGISTRO  || '',   // columna real: USU_FECHA_REGISTRO
+      USU_AVATAR:         p.USU_AVATAR          || null, // columna real: USU_AVATAR
+      ROL_NOMBRE:         p.ROL_NOMBRE          || '',
+      NOMBRE_ESTADO:      p.NOMBRE_ESTADO       || ''
+    };
+
+    if (typeof cargarInfoUsuario === 'function') cargarInfoUsuario();
+    poblarFormulario();
+  } catch (e) {
+    showToast('Error de conexión al cargar perfil', 'error');
+  }
+}
+
+/* ─── CARGA AUDITORÍA desde /api/perfil?action=auditoria
+   perfil_controller._auditoria retorna alias:
+   ACCION, TABLA_AFECTADA, DETALLE, FECHA_ACCION
+   (columnas reales BD: ACCION, TABLA_AFECTADA, DETALLE, FECHA_ACCION) ─── */
+let auditData = [];
+
+async function cargarAuditoria() {
+  try {
+    const res = await fetch(`${API_PERFIL}?action=auditoria`, { credentials: 'include' });
+    const json = await res.json();
+    if (json.status === 'success' && Array.isArray(json.data)) {
+      auditData = json.data;
+      renderAuditoria();
+    }
+  } catch (_) {
+    auditData = [];
+    renderAuditoria();
+  }
+}
+
+function poblarFormulario() {
+  const nom      = userData.USU_NOMBRE  || 'U';
+  const ape      = userData.USU_APELLIDO || '';
+  const full     = `${nom} ${ape}`.trim();
+  const initials = (nom[0] + (ape[0] || nom[1] || '')).toUpperCase();
+
+  // ── Hero ──
+  document.getElementById('heroName').textContent     = full;
+  document.getElementById('heroBadgeRole').textContent = userData.ROL_NOMBRE;
+  document.getElementById('heroEmail').textContent    = userData.USU_CORREO;
+  document.getElementById('heroTel').textContent      = userData.USU_TELEFONO   || '—';
+  document.getElementById('heroCedula').textContent   = userData.USU_CEDULA     || '—';
+
+  // USU_FECHA_REGISTRO → fecha legible
+  document.getElementById('heroFechaReg').textContent = userData.USU_FECHA_REGISTRO
+    ? new Date(userData.USU_FECHA_REGISTRO).toLocaleDateString('es-CO', {year:'numeric', month:'long'})
+    : '—';
+
+  // ── Avatar (USU_AVATAR) ──
+  if (userData.USU_AVATAR) {
+    applyFotoToAvatars(userData.USU_AVATAR);
+  } else {
+    document.getElementById('avatarInitials').textContent      = initials;
+    document.getElementById('fotoPreviewInitials').textContent = initials;
+  }
+
+  // ── Formulario → names alineados a lo que espera perfil_controller._actualizar ──
+  document.getElementById('id_usuarios').value   = userData.ID_USUARIOS   || '';
+  document.getElementById('usu_nombre').value    = userData.USU_NOMBRE;
+  document.getElementById('usu_apellido').value  = userData.USU_APELLIDO;
+  document.getElementById('usu_correo').value    = userData.USU_CORREO;
+  document.getElementById('usu_telefono').value  = userData.USU_TELEFONO   || '';
+  document.getElementById('usu_cedula').value    = userData.USU_CEDULA     || '';   // read-only
+  document.getElementById('usu_direccion').value = userData.USU_DIRECCION  || '';   // read-only
+  document.getElementById('rol_nombre').value    = userData.ROL_NOMBRE;
+}
+
+/* ─── GUARDAR PERFIL
+   perfil_controller._actualizar espera:
+   f_nombre, f_apellido, f_correo, f_telefono, f_avatar ─── */
+async function guardarPerfil(e) {
+  e.preventDefault();
+  const nombre   = document.getElementById('usu_nombre').value.trim();
+  const apellido = document.getElementById('usu_apellido').value.trim();
+  const correo   = document.getElementById('usu_correo').value.trim();
+  const telefono = document.getElementById('usu_telefono').value.trim();
+
+  if (!nombre)              { showToast('El nombre es obligatorio', 'error'); return; }
+  if (!correo.includes('@')){ showToast('Correo inválido', 'error'); return; }
+
+  const payload = {
+    action:     'actualizar',
+    f_nombre:   nombre,           // → BD: USU_NOMBRE
+    f_apellido: apellido,         // → BD: USU_APELLIDO
+    f_correo:   correo,           // → BD: USU_CORREO (unique)
+    f_telefono: telefono,         // → BD: USU_TELEFONO
+    f_avatar:   userData.USU_AVATAR || null  // → BD: USU_AVATAR
+  };
+
+  try {
+    const res = await fetch(API_PERFIL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json();
+    if (json.status !== 'success') {
+      showToast(json.message || 'Error al guardar', 'error');
+      return;
+    }
+    // Actualizar estado local con los nuevos valores
+    userData.USU_NOMBRE   = nombre;
+    userData.USU_APELLIDO = apellido;
+    userData.USU_CORREO   = correo;
+    userData.USU_TELEFONO = telefono;
+    poblarFormulario();
+    showToast('Perfil actualizado correctamente ✓', 'success');
+  } catch (_) {
+    showToast('Error de conexión', 'error');
+  }
+}
+
+function cancelarEdicion() {
+  poblarFormulario();
+  showToast('Cambios descartados', 'success');
+}
+
+/* ─── FOTO DE PERFIL → BD: USU_AVATAR ─── */
+function previewFoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    showToast('La imagen debe ser menor a 2 MB', 'error');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const src = e.target.result;
+    applyFotoToAvatars(src);
+    userData.USU_AVATAR = src;   // columna real: USU_AVATAR
+    document.getElementById('fotoNombre').textContent = `📎 ${file.name}`;
+    document.getElementById('fotoInfo').textContent   = `✅ ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyFotoToAvatars(src) {
+  const avatarLg = document.getElementById('avatarLg');
+  avatarLg.innerHTML = `
+    <img src="${src}" alt="foto perfil"/>
+    <div class="avatar-overlay" onclick="document.getElementById('fotoInput').click()">📷</div>`;
+
+  const circle = document.getElementById('fotoPreviewCircle');
+  circle.innerHTML = `<img src="${src}" alt="preview"
+    style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+
+  const hAvatar = document.getElementById('headerAvatar');
+  if (hAvatar) hAvatar.innerHTML = `<img src="${src}" alt="foto"/>`;
+}
+
+function eliminarFoto() {
+  userData.USU_AVATAR = null;   // columna real: USU_AVATAR
+  const initials = ((userData.USU_NOMBRE[0] || '') + (userData.USU_APELLIDO[0] || '')).toUpperCase() || 'U';
+
+  document.getElementById('avatarLg').innerHTML =
+    `<span id="avatarInitials">${initials}</span>
+     <div class="avatar-overlay" onclick="document.getElementById('fotoInput').click()">📷</div>`;
+  document.getElementById('fotoPreviewCircle').innerHTML =
+    `<span id="fotoPreviewInitials"
+       style="color:white;font-size:28px;font-weight:800;font-family:Syne,sans-serif;">${initials}</span>`;
+  const hAvatar = document.getElementById('headerAvatar');
+  if (hAvatar) hAvatar.textContent = initials;
+  document.getElementById('fotoNombre').textContent = '';
+  document.getElementById('fotoInfo').textContent   = '';
+  showToast('Foto de perfil eliminada', 'success');
+}
+
+/* ─── CAMBIO DE CONTRASEÑA
+   perfil_controller._cambiar_password espera:
+   f_password_actual, f_password_nueva, f_password_confirmar
+   Valida contra BD: USU_CONTRASENA (bcrypt $2y$ / $2b$) ─── */
+async function cambiarPassword(e) {
+  e.preventDefault();
+  const actual   = document.getElementById('pwd_actual').value;
+  const nueva    = document.getElementById('usu_contrasena').value;
+  const confirm  = document.getElementById('pwd_confirm').value;
+
+  if (nueva.length < 6)    { showToast('Mínimo 6 caracteres', 'error'); return; }
+  if (nueva !== confirm)   { showToast('Las contraseñas no coinciden', 'error'); return; }
+
+  try {
+    const res = await fetch(API_PERFIL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        action:               'cambiar_password',
+        f_password_actual:    actual,    // validado contra USU_CONTRASENA
+        f_password_nueva:     nueva,     // hasheado → USU_CONTRASENA
+        f_password_confirmar: confirm    // comparado en controller
+      }),
+    });
+    const json = await res.json();
+    if (json.status !== 'success') {
+      showToast(json.message || 'Error al cambiar contraseña', 'error');
+      return;
+    }
+    document.getElementById('formPassword').reset();
+    document.getElementById('strengthFill').style.width = '0%';
+    document.getElementById('strengthText').textContent = '';
+    showToast('Contraseña actualizada correctamente 🔐', 'success');
+  } catch (_) {
+    showToast('Error de conexión', 'error');
+  }
+}
+
+function checkStrength(val) {
+  let score = 0;
+  if (val.length >= 8)          score++;
+  if (/[A-Z]/.test(val))        score++;
+  if (/[0-9]/.test(val))        score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+
+  const labels = ['','Muy débil','Débil','Buena','Fuerte'];
+  const colors = ['','#ef4444','#f97316','#eab308','#22c55e'];
+  document.getElementById('strengthFill').style.width      = `${score * 25}%`;
+  document.getElementById('strengthFill').style.background = colors[score] || '#e2e8f0';
+  document.getElementById('strengthText').textContent      = val ? labels[score] : '';
+  document.getElementById('strengthText').style.color      = colors[score] || '#64748b';
+}
+
+/* ─── AUDITORÍA
+   Columnas reales tabla auditoria:
+   ACCION, TABLA_AFECTADA, DETALLE, FECHA_ACCION ─── */
+function renderAuditoria() {
+  const tbody = document.getElementById('auditBody');
+  if (!auditData.length) {
+    tbody.innerHTML = `<tr><td colspan="4"
+      style="text-align:center;padding:28px;color:#94a3b8;">Sin actividad registrada</td></tr>`;
+    return;
+  }
+  const iconMap = {
+    'LOGIN':    '🔑',
+    'LOGOUT':   '🚪',
+    'CREAR':    '➕',
+    'ACTUALIZAR':'✏️',
+    'ELIMINAR': '🗑️',
+    'ANULAR':   '🚫',
+    'INACTIVAR':'⛔'
+  };
+  tbody.innerHTML = auditData.map(a => `
+    <tr style="border-bottom:1px solid var(--c-border);transition:background .15s;"
+      onmouseover="this.style.background='#f8f5ff'"
+      onmouseout="this.style.background=''">
+      <td style="padding:12px 16px;font-size:13px;font-weight:600;color:var(--c-dark);">
+        ${iconMap[a.ACCION] || '📌'} ${a.ACCION}
+      </td>
+      <td style="padding:12px 16px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;
+          background:#f1f5f9;color:#7c3aed;padding:3px 8px;border-radius:6px;">
+          ${a.TABLA_AFECTADA || '—'}
+        </span>
+      </td>
+      <td style="padding:12px 16px;font-size:13px;color:#64748b;">${a.DETALLE || '—'}</td>
+      <td style="padding:12px 16px;font-size:12px;color:#94a3b8;
+        font-family:'JetBrains Mono',monospace;">${a.FECHA_ACCION || '—'}</td>
+    </tr>`).join('');
+}
+
+/* ─── TABS ─── */
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ─── MODAL LOGOUT ─── */
+function confirmarLogout() {
+  window.location.href = '/api/auth?action=logout';
+}
+function closeLogoutModal() {
+  const m = document.getElementById('logoutModal');
+  m.style.opacity = '0';
+  m.style.pointerEvents = 'none';
+  document.getElementById('logoutModalBox').style.transform = 'scale(.92)';
+}
+
+/* ─── TOAST ─── */
+function showToast(msg, type = 'success') {
+  const t  = document.getElementById('toast');
+  const el = document.createElement('div');
+  el.className = `toast-item ${type}`;
+  el.innerHTML = `<span>${type === 'success' ? '✅' : '❌'}</span><span>${msg}</span>`;
+  t.appendChild(el);
+  setTimeout(() => {
+    el.style.opacity    = '0';
+    el.style.transition = 'opacity .3s';
+    setTimeout(() => el.remove(), 300);
+  }, 4000);
+}
+</script>
+{% endblock %}

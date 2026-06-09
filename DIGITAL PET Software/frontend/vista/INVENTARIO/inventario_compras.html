@@ -1,0 +1,970 @@
+{% extends "layout.html" %}
+{% block title %}DIGITALPET · Registro de Compras{% endblock %}
+{% block section %}Compras{% endblock %}
+{% block styles %}
+<style>
+
+  /* ── CARDS ── */
+  .card{background:white;border:1px solid var(--c-border);border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.06);}
+  .card-header{padding:20px 24px;border-bottom:1px solid var(--c-border);background:linear-gradient(135deg,#0f172a,#1e1b4b);}
+  .card-body{padding:24px;}
+  .stat-card{background:white;border:1px solid var(--c-border);border-radius:16px;padding:20px 24px;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.06);transition:transform .2s,box-shadow .2s;}
+  .stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(107,33,168,0.12);}
+  .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--c-purple),var(--c-indigo));}
+
+  /* ── FORMS ── */
+  label{font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;}
+  input,select,textarea{width:100%;padding:9px 13px;border:1px solid var(--c-border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--c-dark);background:#fafafa;transition:border-color .2s,box-shadow .2s;outline:none;}
+  input:focus,select:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,0.12);background:white;}
+  input:disabled{background:#f1f5f9;color:#64748b;cursor:not-allowed;border-color:#e2e8f0;}
+
+  /* ── BUTTONS ── */
+  .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+  .btn-primary{background:linear-gradient(135deg,#7c3aed,#4338ca);color:white;box-shadow:0 4px 14px rgba(124,58,237,0.35);}
+  .btn-primary:hover{box-shadow:0 6px 20px rgba(124,58,237,0.5);transform:translateY(-1px);}
+  .btn-secondary{background:#f1f5f9;color:var(--c-mid);}
+  .btn-secondary:hover{background:#e2e8f0;}
+  .btn-danger{background:#fee2e2;color:#991b1b;}
+  .btn-danger:hover{background:#fecaca;}
+  .btn-success{background:linear-gradient(135deg,#16a34a,#15803d);color:white;box-shadow:0 4px 14px rgba(22,163,74,0.35);}
+  .btn-success:hover{box-shadow:0 6px 20px rgba(22,163,74,0.5);transform:translateY(-1px);}
+  .btn-pdf{background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;box-shadow:0 4px 14px rgba(220,38,38,0.35);}
+  .btn-pdf:hover{box-shadow:0 6px 20px rgba(220,38,38,0.5);transform:translateY(-1px);}
+  .btn-sm{padding:5px 13px;font-size:12px;border-radius:7px;}
+
+  /* ── TABLES ── */
+  .detail-table{width:100%;border-collapse:collapse;}
+  .detail-table th{padding:11px 14px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.07em;background:#f8fafc;border-bottom:1px solid var(--c-border);}
+  .detail-table td{padding:10px 14px;border-bottom:1px solid var(--c-border);vertical-align:middle;}
+  .detail-table tr:last-child td{border-bottom:none;}
+  .detail-row{animation:rowSlide .3s cubic-bezier(.34,1.56,.64,1);}
+  .hist-table{width:100%;border-collapse:collapse;}
+  .hist-table th{padding:12px 14px;text-align:left;font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;}
+  .hist-table tbody tr{border-bottom:1px solid var(--c-border);transition:background .15s;}
+  .hist-table tbody tr:hover{background:#f8f5ff;}
+  .hist-table tbody td{padding:12px 14px;font-size:13px;color:var(--c-mid);}
+
+  /* ── BADGES ── */
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;}
+  .badge-ok{background:#dcfce7;color:#166534;}
+  .badge-pend{background:#fef9c3;color:#854d0e;}
+
+  /* ── FILTROS ── */
+  .filters-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:16px 24px;background:#f8fafc;border-bottom:1px solid var(--c-border);}
+  .filter-input{max-width:200px;width:auto;}
+
+  /* ── TOTAL BOX ── */
+  .total-box{background:linear-gradient(135deg,#1e1b4b,#0f172a);border-radius:16px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;}
+
+  .pulse-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse 1.8s infinite;display:inline-block;}
+  #toast{position:fixed;bottom:28px;right:28px;z-index:999;display:flex;flex-direction:column;gap:8px;}
+  .toast-item{background:#0f172a;color:white;padding:12px 18px;border-radius:12px;font-size:13.5px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.25);animation:toastIn .35s cubic-bezier(.34,1.56,.64,1);border-left:3px solid #7c3aed;}
+  .toast-item.success{border-left-color:#22c55e;}
+  .toast-item.error{border-left-color:#ef4444;}
+  .empty-state{text-align:center;padding:48px;color:#94a3b8;}
+  .empty-state div:first-child{font-size:40px;margin-bottom:10px;}
+  @keyframes rowSlide{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes toastIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+  @media(max-width:900px){main{padding:20px 16px;}.stats-grid{grid-template-columns:1fr 1fr!important;}.form-grid{grid-template-columns:1fr!important;}}
+  @media(max-width:600px){.stats-grid{grid-template-columns:1fr!important;}.filters-bar{flex-direction:column;align-items:stretch;}.filter-input{max-width:100%;}}
+</style>
+{% endblock %}
+{% block content %}
+
+  <!-- ═══════════════════════════ MAIN ═══════════════════════════ -->
+  <main>
+
+  <!-- PAGE TITLE -->
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h1 style="font-size:26px;font-weight:800;color:var(--c-dark);letter-spacing:-.02em;">Registro de Compras</h1>
+        <p style="color:#64748b;font-size:14px;margin-top:4px;">Órdenes de compra masiva · Maestro-detalle transaccional</p>
+      </div>
+      <!-- BOTÓN EXPORTAR PDF -->
+      <button class="btn btn-pdf" onclick="exportarPDF()">
+        <span>📄</span> Exportar a PDF
+      </button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
+      <div class="stat-card">
+        <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.07em;">Total Compras</div>
+        <div style="font-size:32px;font-weight:800;color:var(--c-dark);margin:6px 0;font-family:Syne,sans-serif;" id="sTotalOC">0</div>
+        <div style="font-size:12px;color:#94a3b8;">Órdenes registradas</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.07em;">Valor Total</div>
+        <div style="font-size:24px;font-weight:800;color:var(--c-violet);margin:6px 0;font-family:Syne,sans-serif;" id="sTotalVal">$0</div>
+        <div style="font-size:12px;color:#94a3b8;">Invertido en inventario</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.07em;">Último Proveedor</div>
+        <div style="font-size:15px;font-weight:700;color:var(--c-dark);margin:6px 0;" id="sLastProv">—</div>
+        <div style="font-size:12px;color:#94a3b8;">En la última compra</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.07em;">Última Compra</div>
+        <div style="font-size:20px;font-weight:800;color:var(--c-dark);margin:6px 0;font-family:Syne,sans-serif;" id="sLastDate">—</div>
+        <div style="font-size:12px;color:#94a3b8;">Fecha del último registro</div>
+      </div>
+    </div>
+
+    <!-- FORM + DETALLE -->
+    <div class="form-grid" style="display:grid;grid-template-columns:1fr 1.4fr;gap:24px;align-items:start;">
+
+      <!-- LEFT: NUEVA ORDEN -->
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header">
+            <h2 style="font-size:15px;font-weight:700;color:white;">📋 Cabecera de Orden de Compra</h2>
+            <p style="font-size:12px;color:#64748b;margin-top:3px;">Datos principales del pedido</p>
+          </div>
+          <div class="card-body">
+            <div style="display:grid;gap:14px;">
+              <div>
+                <label>Proveedor *</label>
+                <!-- ID_PROVEEDOR → tabla compras FK → proveedores.ID_PROVEEDOR -->
+                <select id="h_proveedor" name="id_proveedor" size="1"
+                  style="margin-top:5px;width:100%;min-height:42px;background:#fafafa;color:var(--c-dark);"
+                  onchange="onProvChange()">
+                  <option value="">— Seleccionar proveedor —</option>
+                </select>
+              </div>
+              <div>
+                <label>NIT Proveedor</label>
+                <!-- PROV_NIT de tabla proveedores -->
+                <input type="text" id="h_nit" name="prov_nit" disabled style="margin-top:5px;" placeholder="Se autocompleta"/>
+              </div>
+              <div>
+                <label>Fecha de Compra *</label>
+                <!-- FECHA_COMPRA → columna real en tabla compras -->
+                <input type="date" id="h_fecha" name="fecha_compra" style="margin-top:5px;"/>
+              </div>
+              <div>
+                <label>Número de Orden (generado)</label>
+                <!-- ORDEN → alias CONCAT('OC-', LPAD(ID_COMPRA, 4, '0')) del controller -->
+                <input type="text" id="h_orden" disabled style="margin-top:5px;" value="OC-0001"/>
+              </div>
+              <div>
+                <label>Total Compra (calculado)</label>
+                <!-- TOTAL_COMPRA → columna real en tabla compras -->
+                <input type="text" id="h_total" name="total_compra" disabled value="$0"
+                  style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#7c3aed;background:#f5f3ff;border-color:#c4b5fd;"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="total-box">
+          <div>
+            <div style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Total a Pagar</div>
+            <div style="font-size:36px;font-weight:800;color:white;font-family:'JetBrains Mono',monospace;" id="totalDisplay">$0</div>
+            <div style="font-size:13px;color:#64748b;margin-top:4px;" id="itemsCount">0 productos · 0 unidades totales</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button class="btn btn-success" onclick="submitOrder()" style="padding:13px 24px;font-size:15px;">✅ Registrar Compra</button>
+            <button class="btn btn-secondary" onclick="resetForm()">🔄 Limpiar Todo</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: DETALLE PRODUCTOS -->
+      <div class="card">
+        <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <h2 style="font-size:15px;font-weight:700;color:white;">📦 Detalle de Productos</h2>
+            <p style="font-size:12px;color:#64748b;margin-top:3px;">Agregue los productos de la orden</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="addRow()"
+            style="background:rgba(124,58,237,0.2);border:1px solid rgba(124,58,237,0.5);box-shadow:none;">
+            <span style="font-size:16px;">＋</span> Añadir Producto
+          </button>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <table class="detail-table">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th style="width:90px;text-align:center;">Cantidad</th>
+                <th style="width:130px;">P. Unitario</th>
+                <th style="width:120px;">Subtotal</th>
+                <th style="width:44px;"></th>
+              </tr>
+            </thead>
+            <tbody id="detailBody">
+              <tr id="emptyRow">
+                <td colspan="5">
+                  <div class="empty-state">
+                    <div>📦</div>
+                    <div>Presione <strong>"Añadir Producto"</strong> para comenzar</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ HISTORIAL DE COMPRAS ═══ -->
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+          <h2 style="font-size:15px;font-weight:700;color:white;">📜 Historial de Compras</h2>
+          <p style="font-size:12px;color:#64748b;margin-top:3px;">Órdenes registradas · <span id="totalFiltered" style="color:#a78bfa;">0 registros</span></p>
+        </div>
+        <button class="btn btn-pdf btn-sm" onclick="exportarPDF()">📄 Exportar PDF</button>
+      </div>
+
+      <!-- FILTROS -->
+      <div class="filters-bar">
+        <div style="flex:1;min-width:160px;">
+          <label style="display:block;margin-bottom:4px;">🔍 Buscar</label>
+          <input type="text" id="filtro_buscar" class="filter-input" style="max-width:100%;"
+            placeholder="Proveedor, NIT, orden…" oninput="aplicarFiltros()"/>
+        </div>
+        <div>
+          <label style="display:block;margin-bottom:4px;">📅 Desde</label>
+          <input type="date" id="filtro_desde" class="filter-input" oninput="aplicarFiltros()"/>
+        </div>
+        <div>
+          <label style="display:block;margin-bottom:4px;">📅 Hasta</label>
+          <input type="date" id="filtro_hasta" class="filter-input" oninput="aplicarFiltros()"/>
+        </div>
+        <div>
+          <label style="display:block;margin-bottom:4px;">🏭 Proveedor</label>
+          <select id="filtro_proveedor" class="filter-input" onchange="aplicarFiltros()">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div style="align-self:flex-end;">
+          <button class="btn btn-secondary btn-sm" onclick="limpiarFiltros()">✕ Limpiar filtros</button>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="hist-table" id="tablaHistorial">
+          <thead style="background:linear-gradient(135deg,#0f172a,#1e1b4b);">
+            <tr>
+              <th>Orden #</th>
+              <th>Proveedor</th>
+              <th>NIT</th>
+              <th>Fecha</th>
+              <th># Productos</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th style="text-align:center;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="histBody">
+            <tr><td colspan="8">
+              <div class="empty-state"><div>🛒</div><div>Sin compras registradas aún</div></div>
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+<!-- ═══════════════════ MODAL DETALLE COMPRA ═══════════════════ -->
+<div id="histModal" onclick="if(event.target===this)closeHistModal()"
+  style="position:fixed;inset:0;z-index:100;background:rgba(15,23,42,0.55);backdrop-filter:blur(8px);
+         display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;">
+  <div id="histModalBox"
+    style="background:white;border-radius:20px;width:700px;max-width:95vw;max-height:88vh;overflow-y:auto;
+           box-shadow:0 32px 80px rgba(107,33,168,0.22);transform:scale(.92);transition:transform .3s cubic-bezier(.34,1.56,.64,1);">
+    <div style="padding:24px 28px 20px;border-bottom:1px solid var(--c-border);display:flex;align-items:center;justify-content:space-between;">
+      <h2 style="font-size:18px;font-weight:800;" id="histModalTitle">Detalle de Orden</h2>
+      <button class="btn btn-secondary btn-sm" onclick="closeHistModal()">✕ Cerrar</button>
+    </div>
+    <div id="histModalContent" style="padding:24px 28px;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MODAL CONFIRMACIÓN LOGOUT ═══════════════════ -->
+<div id="logoutModal" onclick="if(event.target===this)closeLogoutModal()"
+  style="position:fixed;inset:0;z-index:200;background:rgba(15,23,42,0.7);backdrop-filter:blur(8px);
+         display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;">
+  <div style="background:#1e293b;border:1px solid rgba(124,58,237,0.3);border-radius:20px;width:380px;max-width:95vw;
+              padding:32px;box-shadow:0 32px 80px rgba(0,0,0,0.5);transform:scale(.92);transition:transform .3s cubic-bezier(.34,1.56,.64,1);"
+       id="logoutModalBox">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:48px;margin-bottom:12px;">🚪</div>
+      <h2 style="font-family:Syne,sans-serif;color:white;font-size:20px;font-weight:700;">¿Cerrar sesión?</h2>
+      <p style="color:#64748b;font-size:14px;margin-top:8px;">Se perderán los cambios no guardados.</p>
+    </div>
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeLogoutModal()">Cancelar</button>
+      <button class="btn btn-danger" style="flex:1;background:linear-gradient(135deg,#dc2626,#991b1b);color:white;"
+        onclick="confirmarLogout()">Sí, cerrar sesión</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script>
+// ──────────────────────────────────────────────
+//  HELPERS API
+//  Tabla compras: ID_COMPRA (PK), ID_PROVEEDOR, FECHA_COMPRA, TOTAL_COMPRA
+//  El controller devuelve alias: ID_COMPRA, FECHA_COMPRA, TOTAL_COMPRA, NOMBRE_PROVEEDOR, PROV_NIT, ORDEN
+//  Tabla productos: el controller devuelve PROD_NOMBRE, PROD_PRECIO_COMPRA (aliasados en SQL_SEL)
+//  Tabla proveedores: ID_PROVEEDOR, PROV_NOMBRE, PROV_NIT, ID_ESTADO
+// ──────────────────────────────────────────────
+function unwrapList(data, keys) {
+  if (Array.isArray(data)) return data;
+  if (!data || typeof data !== 'object') return [];
+  for (const k of (keys || [])) {
+    if (Array.isArray(data[k])) return data[k];
+  }
+  return Object.values(data).find(Array.isArray) || [];
+}
+
+async function apiFetch(url, options = {}) {
+  let res;
+  try {
+    res = await fetch(url, { credentials: 'same-origin', ...options });
+  } catch (e) {
+    console.error('[apiFetch] Red:', url, e);
+    throw e;
+  }
+  const raw = (await res.text()).trim();
+  const clean = raw.includes('{') ? raw.slice(raw.indexOf('{')) : raw;
+  let json;
+  try { json = JSON.parse(clean); } catch {
+    console.error('[apiFetch] JSON inválido:', raw.slice(0, 2000));
+    throw new Error(`Respuesta no JSON (HTTP ${res.status})`);
+  }
+  if (!res.ok || json.status !== 'success') {
+    console.error('[apiFetch]', json.message || res.status, { url, json });
+    throw new Error(json.message || `Error HTTP ${res.status}`);
+  }
+  return json.data;
+}
+
+// Normaliza cada fila de compras a campos canónicos del HTML
+// El controller retorna: ID_COMPRA, FECHA_COMPRA, TOTAL_COMPRA, NOMBRE_PROVEEDOR, PROV_NIT, ORDEN
+function mapCompraApi(c) {
+  return {
+    ID_COMPRA:    c.ID_COMPRA,
+    ORDEN:        c.ORDEN || `OC-${String(c.ID_COMPRA).padStart(4, '0')}`,
+    ID_PROVEEDOR: c.ID_PROVEEDOR,
+    PROV_NOMBRE:  c.NOMBRE_PROVEEDOR || c.PROV_NOMBRE || '—',
+    PROV_NIT:     c.PROV_NIT || '—',
+    FECHA_COMPRA: c.FECHA_COMPRA || '',
+    TOTAL_COMPRA: Number(c.TOTAL_COMPRA) || 0,
+    ESTADO:       c.NOMBRE_ESTADO || 'REGISTRADA',
+    DETALLES:     Array.isArray(c.DETALLES) ? c.DETALLES : [],
+  };
+}
+
+// Normaliza proveedores: el controller /api/proveedores devuelve ID_PROVEEDOR, PROV_NOMBRE, PROV_NIT, ID_ESTADO
+function normalizeProveedorCompra(s) {
+  return {
+    ID_PROVEEDOR: s.ID_PROVEEDOR,
+    PROV_NOMBRE:  s.PROV_NOMBRE || '—',
+    PROV_NIT:     s.PROV_NIT || '—',
+    ID_ESTADO:    s.ID_ESTADO ?? 1,
+  };
+}
+
+// Normaliza productos: el controller /api/productos devuelve PROD_NOMBRE y PROD_PRECIO_COMPRA (aliasados)
+function normalizeProductoCompra(p) {
+  return {
+    ID_PRODUCTOS:      p.ID_PRODUCTOS,
+    PROD_NOMBRE:       p.PROD_NOMBRE || p.PRO_NOMBRE || 'Sin nombre',
+    PROD_PRECIO_COMPRA: Number(p.PROD_PRECIO_COMPRA || p.PRO_PRECIO_COMPRA) || 0,
+    ID_ESTADO:         p.ID_ESTADO ?? 1,
+  };
+}
+
+// ──────────────────────────────────────────────
+//  ESTADO GLOBAL
+// ──────────────────────────────────────────────
+let suppliers = [], products = [], purchases = [];
+let purchasesFiltered = [];
+let rowCount = 0;
+
+// ──────────────────────────────────────────────
+//  INICIALIZACIÓN
+// ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  init();
+  if (typeof cargarInfoUsuario === 'function') cargarInfoUsuario();
+  await Promise.all([cargarDatosAPI(), cargarCompras()]);
+});
+
+async function cargarDatosAPI() {
+  const [resProv, resProd] = await Promise.allSettled([
+    // GET /api/proveedores → _listar() (sin action = lista todos)
+    apiFetch('/api/proveedores'),
+    // GET /api/productos → _listar() (sin action = lista todos)
+    apiFetch('/api/productos'),
+  ]);
+
+  if (resProv.status === 'fulfilled') {
+    suppliers = unwrapList(resProv.value, ['proveedores']).map(normalizeProveedorCompra);
+    poblarSelectorProveedoresCabecera();
+    poblarFiltroProveedor();
+  } else {
+    console.error('Proveedores:', resProv.reason);
+    suppliers = [];
+    poblarSelectorProveedoresCabecera();
+    showToast('❌ No se pudieron cargar los proveedores.', 'error');
+  }
+
+  if (resProd.status === 'fulfilled') {
+    products = unwrapList(resProd.value, ['productos']).map(normalizeProductoCompra);
+  } else {
+    console.error('Productos:', resProd.reason);
+    products = [];
+    showToast('⚠️ Error al cargar productos para el detalle.', 'error');
+  }
+}
+
+async function cargarCompras() {
+  try {
+    // GET /api/compras → _listar() sin action específica
+    const data = await apiFetch('/api/compras');
+    purchases = unwrapList(data, ['compras']).map(mapCompraApi);
+  } catch (e) {
+    purchases = [];
+    console.error('Error en cargarCompras:', e);
+    showToast('❌ Falló la lectura del historial de compras.', 'error');
+  }
+
+  purchasesFiltered = [...purchases];
+  updateStats();
+  renderHistory(purchasesFiltered);
+  poblarFiltroProveedor();
+
+  // Número correlativo basado en la cantidad real de órdenes en BD
+  const hOrden = document.getElementById('h_orden');
+  if (hOrden) {
+    hOrden.value = `OC-${String(purchases.length + 1).padStart(4, '0')}`;
+  }
+}
+
+// ──────────────────────────────────────────────
+//  INICIALIZAR FORMULARIO
+// ──────────────────────────────────────────────
+function init() {
+  const hFecha = document.getElementById('h_fecha');
+  if (hFecha) hFecha.value = new Date().toISOString().split('T')[0];
+}
+
+function poblarSelectorProveedoresCabecera() {
+  const sp = document.getElementById('h_proveedor');
+  if (!sp) return;
+
+  sp.innerHTML = '<option value="">— Seleccionar proveedor —</option>';
+
+  // Solo proveedores activos (ID_ESTADO = 1 según tabla estados)
+  let activos = suppliers.filter(s => Number(s.ID_ESTADO) === 1);
+  if (!activos.length && suppliers.length) activos = suppliers;
+
+  if (!activos.length) {
+    sp.innerHTML += '<option value="" disabled>— Sin proveedores: créalos en Proveedores —</option>';
+    showToast('No hay proveedores activos. Registra al menos uno.', 'error');
+    return;
+  }
+
+  activos.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = String(s.ID_PROVEEDOR);
+    opt.textContent = s.PROV_NOMBRE;
+    sp.appendChild(opt);
+  });
+}
+
+function onProvChange() {
+  const selectProv = document.getElementById('h_proveedor');
+  if (!selectProv) return;
+
+  const idSelected = parseInt(selectProv.value);
+  if (!idSelected) {
+    document.getElementById('h_nit').value = '';
+    return;
+  }
+
+  // Buscar por ID_PROVEEDOR (PK real de tabla proveedores)
+  const prov = suppliers.find(s => parseInt(s.ID_PROVEEDOR) === idSelected);
+  const hNit = document.getElementById('h_nit');
+  if (hNit) hNit.value = prov ? (prov.PROV_NIT || '—') : '';
+}
+
+// ──────────────────────────────────────────────
+//  DETALLE ROWS
+//  Productos vienen con PROD_NOMBRE y PROD_PRECIO_COMPRA del controller
+// ──────────────────────────────────────────────
+function addRow() {
+  const emptyRow = document.getElementById('emptyRow');
+  if (emptyRow) emptyRow.remove();
+
+  const id = 'row_' + Date.now() + '_' + (rowCount++);
+  const productosValidos = Array.isArray(products) ? products : [];
+
+  if (!productosValidos.length) {
+    showToast('⚠️ No hay productos cargados en el sistema.', 'error');
+    return;
+  }
+
+  // PROD_NOMBRE y PROD_PRECIO_COMPRA son los alias del SQL_SEL del controller de productos
+  const opts = productosValidos.map(p =>
+    `<option value="${p.ID_PRODUCTOS}" data-price="${p.PROD_PRECIO_COMPRA}">${p.PROD_NOMBRE}</option>`
+  ).join('');
+
+  const tr = document.createElement('tr');
+  tr.id = id;
+  tr.className = 'detail-row';
+  tr.innerHTML = `
+    <td>
+      <select onchange="onProductSelect(this,'${id}')" style="font-size:13px;padding:7px 10px;width:100%;border-radius:6px;">
+        <option value="">— Seleccionar —</option>
+        ${opts}
+      </select>
+    </td>
+    <td style="text-align:center;">
+      <input type="number" min="1" value="1"
+        oninput="recalcRow('${id}')" style="font-size:13px;padding:7px;text-align:center;width:72px;" id="${id}_qty"/>
+    </td>
+    <td>
+      <input type="number" min="0" step="100" value="0"
+        oninput="recalcRow('${id}')" style="font-size:13px;padding:7px;font-family:'JetBrains Mono',monospace;" id="${id}_price"/>
+    </td>
+    <td>
+      <span id="${id}_sub" style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:#7c3aed;">$0</span>
+    </td>
+    <td style="text-align:center;">
+      <button onclick="removeRow('${id}')" class="btn btn-danger" style="padding:5px 8px;border-radius:7px;font-size:12px;">✕</button>
+    </td>`;
+
+  const body = document.getElementById('detailBody');
+  if (body) {
+    body.appendChild(tr);
+    tr.querySelector('select').focus();
+    recalcTotal();
+  }
+}
+
+function onProductSelect(sel, rowId) {
+  const opt = sel.options[sel.selectedIndex];
+  document.getElementById(rowId + '_price').value = opt.getAttribute('data-price') || 0;
+  recalcRow(rowId);
+}
+
+function recalcRow(rowId) {
+  const qty   = parseFloat(document.getElementById(rowId + '_qty').value)   || 0;
+  const price = parseFloat(document.getElementById(rowId + '_price').value) || 0;
+  const el = document.getElementById(rowId + '_sub');
+  if (el) el.textContent = '$' + (qty * price).toLocaleString('es-CO');
+  recalcTotal();
+}
+
+function recalcTotal() {
+  let total = 0, units = 0;
+  getDetailRows().forEach(r => {
+    const qty   = parseFloat(document.getElementById(r + '_qty').value)   || 0;
+    const price = parseFloat(document.getElementById(r + '_price').value) || 0;
+    total += qty * price; units += qty;
+  });
+  const fmt = '$' + total.toLocaleString('es-CO');
+  document.getElementById('h_total').value             = fmt;
+  document.getElementById('totalDisplay').textContent  = fmt;
+  document.getElementById('itemsCount').textContent    =
+    `${getDetailRows().length} producto(s) · ${units} unidades totales`;
+}
+
+function getDetailRows() {
+  return Array.from(
+    document.getElementById('detailBody').querySelectorAll('tr[id^="row_"]')
+  ).map(r => r.id);
+}
+
+function removeRow(rowId) {
+  const row = document.getElementById(rowId);
+  row.style.transition = 'opacity .2s,transform .2s';
+  row.style.opacity = '0'; row.style.transform = 'translateX(10px)';
+  setTimeout(() => {
+    row.remove();
+    if (!getDetailRows().length) {
+      document.getElementById('detailBody').innerHTML =
+        `<tr id="emptyRow"><td colspan="5"><div class="empty-state"><div>📦</div><div>Presione <strong>"Añadir Producto"</strong> para comenzar</div></div></td></tr>`;
+    }
+    recalcTotal();
+  }, 200);
+}
+
+// ──────────────────────────────────────────────
+//  SUBMIT ORDEN
+//  POST /api/compras?action=crear
+//  Body JSON: { id_proveedor, fecha_compra, total_compra, detalles: [{id_producto, cantidad, precio_unitario}] }
+//  Mapeo al controller _crear(): f_id_proveedor→id_proveedor, f_fecha→fecha_compra, f_total→total_compra, f_detalle→detalles
+// ──────────────────────────────────────────────
+async function submitOrder() {
+  const provId = parseInt(document.getElementById('h_proveedor').value) || 0;
+  const fecha  = document.getElementById('h_fecha').value;
+  const rows   = getDetailRows();
+
+  if (!provId)      { showToast('Seleccione un proveedor', 'error'); return; }
+  if (!fecha)       { showToast('Seleccione la fecha de compra', 'error'); return; }
+  if (!rows.length) { showToast('Agregue al menos un producto', 'error'); return; }
+
+  const details = [];
+  let valid = true;
+  rows.forEach(rowId => {
+    const sel    = document.getElementById(rowId).querySelector('select');
+    const prodId = parseInt(sel.value) || 0;
+    const qty    = parseFloat(document.getElementById(rowId + '_qty').value)   || 0;
+    const price  = parseFloat(document.getElementById(rowId + '_price').value) || 0;
+    if (!prodId || qty <= 0 || price <= 0) { valid = false; return; }
+
+    // PROD_NOMBRE es el alias del controller para PRO_NOMBRE
+    const prod = products.find(p => p.ID_PRODUCTOS === prodId);
+    details.push({
+      id_producto:     prodId,
+      cantidad:        qty,
+      precio_unitario: price,
+      // Estos campos son solo para uso local en el modal de detalle
+      _PROD_NOMBRE:    prod ? prod.PROD_NOMBRE : '',
+      _SUBTOTAL:       qty * price,
+    });
+  });
+
+  if (!valid) { showToast('Complete todos los campos (cantidad y precio > 0)', 'error'); return; }
+
+  const total = details.reduce((s, d) => s + d._SUBTOTAL, 0);
+
+  try {
+    // El controller _crear() lee: id_proveedor (f_id_proveedor), fecha_compra (f_fecha),
+    // total_compra (f_total), detalles (f_detalle) — soporta ambos nombres via raw.get()
+    const res = await apiFetch('/api/compras?action=crear', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id_proveedor: provId,
+        fecha_compra: fecha,
+        total_compra: total,
+        detalles: details.map(d => ({
+          id_producto:     d.id_producto,
+          cantidad:        d.cantidad,
+          precio_unitario: d.precio_unitario,
+        })),
+      }),
+    });
+
+    // El controller devuelve { ID_COMPRA, ID_COMPRAS, TOTAL_COMPRA } en el data
+    const idCompra = res.ID_COMPRA ?? res.ID_COMPRAS;
+    const orderNum = `OC-${String(idCompra).padStart(4, '0')}`;
+
+    await cargarCompras();
+    await cargarDatosAPI();
+    resetForm();
+    showToast(`¡Orden ${orderNum} registrada! Total: $${total.toLocaleString('es-CO')} ✓`, 'success');
+  } catch (e) {
+    showToast(e.message || 'Error al registrar la compra', 'error');
+  }
+}
+
+// ──────────────────────────────────────────────
+//  RESET FORM
+// ──────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('h_proveedor').value        = '';
+  document.getElementById('h_nit').value              = '';
+  document.getElementById('h_fecha').value            = new Date().toISOString().split('T')[0];
+  document.getElementById('h_total').value            = '$0';
+  document.getElementById('totalDisplay').textContent = '$0';
+  document.getElementById('itemsCount').textContent   = '0 productos · 0 unidades totales';
+  document.getElementById('detailBody').innerHTML =
+    `<tr id="emptyRow"><td colspan="5"><div class="empty-state"><div>📦</div><div>Presione <strong>"Añadir Producto"</strong> para comenzar</div></div></td></tr>`;
+  // Actualizar correlativo
+  document.getElementById('h_orden').value = `OC-${String(purchases.length + 1).padStart(4, '0')}`;
+}
+
+// ──────────────────────────────────────────────
+//  STATS
+//  Usa TOTAL_COMPRA y FECHA_COMPRA (columnas reales de tabla compras)
+// ──────────────────────────────────────────────
+function updateStats() {
+  const total = purchases.reduce((s, p) => s + p.TOTAL_COMPRA, 0);
+  // El historial viene ordenado DESC desde BD; purchases[0] es el más reciente
+  const last  = purchases[0];
+  document.getElementById('sTotalOC').textContent  = purchases.length;
+  document.getElementById('sTotalVal').textContent = '$' + total.toLocaleString('es-CO');
+  document.getElementById('sLastProv').textContent = last ? last.PROV_NOMBRE : '—';
+  document.getElementById('sLastDate').textContent = last && last.FECHA_COMPRA
+    ? new Date(last.FECHA_COMPRA + 'T00:00:00').toLocaleDateString('es-CO') : '—';
+}
+
+// ──────────────────────────────────────────────
+//  HISTORIAL & FILTROS
+//  Filtra por FECHA_COMPRA (columna real), ID_PROVEEDOR (FK), PROV_NOMBRE, PROV_NIT, ORDEN
+// ──────────────────────────────────────────────
+function poblarFiltroProveedor() {
+  const sel = document.getElementById('filtro_proveedor');
+  if (!sel) return;
+  // Deduplica por ID_PROVEEDOR
+  const unique = [...new Map(purchases.map(p => [p.ID_PROVEEDOR, p])).values()];
+  sel.innerHTML = '<option value="">Todos</option>' +
+    unique.map(p => `<option value="${p.ID_PROVEEDOR}">${p.PROV_NOMBRE || '—'}</option>`).join('');
+}
+
+function aplicarFiltros() {
+  const buscar = document.getElementById('filtro_buscar').value.toLowerCase();
+  const desde  = document.getElementById('filtro_desde').value;
+  const hasta  = document.getElementById('filtro_hasta').value;
+  const provId = parseInt(document.getElementById('filtro_proveedor').value) || 0;
+
+  purchasesFiltered = purchases.filter(p => {
+    const matchBuscar = !buscar ||
+      (p.PROV_NOMBRE || '').toLowerCase().includes(buscar) ||
+      (p.PROV_NIT    || '').toLowerCase().includes(buscar) ||
+      (p.ORDEN       || '').toLowerCase().includes(buscar);
+    // FECHA_COMPRA viene como string 'YYYY-MM-DD' de la BD (tipo DATE)
+    const matchDesde = !desde || p.FECHA_COMPRA >= desde;
+    const matchHasta = !hasta || p.FECHA_COMPRA <= hasta;
+    const matchProv  = !provId || Number(p.ID_PROVEEDOR) === provId;
+    return matchBuscar && matchDesde && matchHasta && matchProv;
+  });
+  renderHistory(purchasesFiltered);
+}
+
+function limpiarFiltros() {
+  document.getElementById('filtro_buscar').value    = '';
+  document.getElementById('filtro_desde').value     = '';
+  document.getElementById('filtro_hasta').value     = '';
+  document.getElementById('filtro_proveedor').value = '';
+  purchasesFiltered = [...purchases];
+  renderHistory(purchasesFiltered);
+}
+
+function renderHistory(list) {
+  const tbody = document.getElementById('histBody');
+  document.getElementById('totalFiltered').textContent = `${list.length} registros`;
+
+  if (!list.length) {
+    tbody.innerHTML = `
+      <tr><td colspan="8">
+        <div class="empty-state" style="padding:56px 24px;">
+          <div style="font-size:52px;margin-bottom:14px;">🛒</div>
+          <div style="font-size:17px;font-weight:700;color:#334155;margin-bottom:8px;">Aún no hay compras registradas</div>
+          <div style="font-size:13px;color:#94a3b8;max-width:340px;margin:0 auto;line-height:1.6;">
+            Selecciona un proveedor, agrega los productos y presiona
+            <strong style="color:#7c3aed;">✅ Registrar Compra</strong> para comenzar.
+          </div>
+        </div>
+      </td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(p => `
+    <tr>
+      <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#7c3aed;">${p.ORDEN}</span></td>
+      <td style="font-weight:500;">${p.PROV_NOMBRE}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#64748b;">${p.PROV_NIT}</td>
+      <td>${p.FECHA_COMPRA ? new Date(p.FECHA_COMPRA + 'T00:00:00').toLocaleDateString('es-CO') : '—'}</td>
+      <td style="text-align:center;">${p.DETALLES.length}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-weight:600;color:#7c3aed;">$${p.TOTAL_COMPRA.toLocaleString('es-CO')}</td>
+      <td><span class="badge badge-ok">${p.ESTADO}</span></td>
+      <td style="text-align:center;display:flex;gap:6px;justify-content:center;">
+        <button class="btn btn-secondary btn-sm" onclick="showHistDetail(${p.ID_COMPRA})">👁 Ver</button>
+        <button class="btn btn-pdf btn-sm" onclick="exportarOrdenPDF(${p.ID_COMPRA})">📄</button>
+      </td>
+    </tr>`).join('');
+}
+
+// ──────────────────────────────────────────────
+//  MODAL DETALLE
+// ──────────────────────────────────────────────
+function showHistDetail(id) {
+  const p = purchases.find(x => x.ID_COMPRA === id);
+  if (!p) return;
+  document.getElementById('histModalTitle').textContent = `Orden ${p.ORDEN}`;
+  document.getElementById('histModalContent').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+      <div>
+        <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;">Proveedor</div>
+        <div style="font-weight:600;margin-top:4px;">${p.PROV_NOMBRE}</div>
+        <div style="font-size:12px;color:#64748b;font-family:'JetBrains Mono',monospace;">${p.PROV_NIT}</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;">Fecha</div>
+        <div style="font-weight:600;margin-top:4px;">${p.FECHA_COMPRA ? new Date(p.FECHA_COMPRA+'T00:00:00').toLocaleDateString('es-CO') : '—'}</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;">Total</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#7c3aed;margin-top:4px;">$${p.TOTAL_COMPRA.toLocaleString('es-CO')}</div>
+      </div>
+    </div>
+    ${p.DETALLES.length ? `
+    <table style="width:100%;border-collapse:collapse;">
+      <thead><tr style="background:#f8fafc;">
+        <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;border-bottom:1px solid var(--c-border);">Producto</th>
+        <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;border-bottom:1px solid var(--c-border);">Cantidad</th>
+        <th style="padding:10px 12px;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;border-bottom:1px solid var(--c-border);">P. Unitario</th>
+        <th style="padding:10px 12px;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;border-bottom:1px solid var(--c-border);">Subtotal</th>
+      </tr></thead>
+      <tbody>
+        ${p.DETALLES.map(d => `
+          <tr style="border-bottom:1px solid var(--c-border);">
+            <td style="padding:10px 12px;font-weight:500;">${d.PRO_NOMBRE || d.PROD_NOMBRE || '—'}</td>
+            <td style="padding:10px 12px;text-align:center;font-family:'JetBrains Mono',monospace;">${d.CANTIDAD_COMPRADA ?? d.cantidad ?? 0}</td>
+            <td style="padding:10px 12px;font-family:'JetBrains Mono',monospace;">$${Number(d.PRECIO_UNITARIO ?? d.precio_unitario ?? 0).toLocaleString('es-CO')}</td>
+            <td style="padding:10px 12px;font-family:'JetBrains Mono',monospace;font-weight:700;color:#7c3aed;">$${Number(d.SUBTOTAL ?? ((d.CANTIDAD_COMPRADA ?? 0) * (d.PRECIO_UNITARIO ?? 0))).toLocaleString('es-CO')}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>` : '<p style="color:#94a3b8;font-size:13px;">Sin líneas de detalle persistidas en este modelo.</p>'}`;
+
+  const m = document.getElementById('histModal');
+  m.style.opacity = '1'; m.style.pointerEvents = 'all';
+  document.getElementById('histModalBox').style.transform = 'scale(1)';
+}
+
+function closeHistModal() {
+  const m = document.getElementById('histModal');
+  m.style.opacity = '0'; m.style.pointerEvents = 'none';
+  document.getElementById('histModalBox').style.transform = 'scale(.92)';
+}
+
+// ──────────────────────────────────────────────
+//  EXPORTAR PDF — TABLA COMPLETA
+// ──────────────────────────────────────────────
+function exportarPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:'landscape', unit:'mm', format:'a4' });
+
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, 297, 28, 'F');
+  doc.setTextColor(167, 139, 250);
+  doc.setFontSize(18); doc.setFont('helvetica', 'bold');
+  doc.text('DIGITALPET', 14, 12);
+  doc.setTextColor(255, 255, 255); doc.setFontSize(11);
+  doc.text('Sistema de Gestión Veterinaria', 14, 19);
+  doc.setFontSize(9); doc.setTextColor(148, 163, 184);
+  doc.text(`Generado: ${new Date().toLocaleString('es-CO')}`, 220, 19);
+  doc.setTextColor(255, 255, 255); doc.setFontSize(13);
+  doc.text('REPORTE DE COMPRAS', 130, 12, { align:'center' });
+
+  const buscar = document.getElementById('filtro_buscar').value;
+  const desde  = document.getElementById('filtro_desde').value;
+  const hasta  = document.getElementById('filtro_hasta').value;
+  let filtroTxt = 'Filtros: ';
+  filtroTxt += buscar ? `Búsqueda: "${buscar}" ` : '';
+  filtroTxt += desde  ? `Desde: ${desde} ` : '';
+  filtroTxt += hasta  ? `Hasta: ${hasta} ` : '';
+  if (filtroTxt === 'Filtros: ') filtroTxt += 'Ninguno (todos los registros)';
+
+  doc.setFontSize(8); doc.setTextColor(100, 116, 139);
+  doc.text(filtroTxt, 14, 34);
+  doc.text(`Total registros: ${purchasesFiltered.length}`, 14, 39);
+
+  const head = [['Orden #', 'Proveedor', 'NIT', 'Fecha', '# Productos', 'Total', 'Estado']];
+  const body = purchasesFiltered.map(p => [
+    p.ORDEN,
+    p.PROV_NOMBRE,
+    p.PROV_NIT || '—',
+    p.FECHA_COMPRA ? new Date(p.FECHA_COMPRA + 'T00:00:00').toLocaleDateString('es-CO') : '—',
+    p.DETALLES.length,
+    '$' + p.TOTAL_COMPRA.toLocaleString('es-CO'),
+    p.ESTADO
+  ]);
+
+  doc.autoTable({
+    startY: 43, head, body,
+    headStyles:  { fillColor:[30,27,75], textColor:[167,139,250], fontStyle:'bold', fontSize:9 },
+    bodyStyles:  { fontSize:8, textColor:[51,65,85] },
+    alternateRowStyles: { fillColor:[248,250,252] },
+    columnStyles: {
+      0: { fontStyle:'bold', textColor:[124,58,237] },
+      5: { fontStyle:'bold', textColor:[124,58,237] },
+      6: { halign:'center' }
+    },
+    margin: { left:14, right:14 },
+    didDrawPage: () => {
+      doc.setFontSize(7); doc.setTextColor(148, 163, 184);
+      doc.text(`Pág. ${doc.internal.getCurrentPageInfo().pageNumber}  ·  DIGITALPET © 2026`,
+        148, doc.internal.pageSize.height - 6, { align:'center' });
+    }
+  });
+
+  const totalVal = purchasesFiltered.reduce((s, p) => s + p.TOTAL_COMPRA, 0);
+  const finalY   = doc.lastAutoTable.finalY + 6;
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(124, 58, 237);
+  doc.text(`TOTAL GENERAL: $${totalVal.toLocaleString('es-CO')}`, 14, finalY);
+
+  doc.save(`compras_digitalpet_${new Date().toISOString().slice(0,10)}.pdf`);
+  showToast('PDF generado exitosamente ✓', 'success');
+}
+
+// ─── PDF de una orden individual ─────────────
+function exportarOrdenPDF(id) {
+  const p = purchases.find(x => x.ID_COMPRA === id);
+  if (!p) return;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'mm', format:'a4' });
+
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, 210, 32, 'F');
+  doc.setTextColor(167, 139, 250);
+  doc.setFontSize(20); doc.setFont('helvetica','bold');
+  doc.text('DIGITALPET', 14, 14);
+  doc.setFontSize(9); doc.setTextColor(148,163,184);
+  doc.text('Sistema de Gestión Veterinaria', 14, 21);
+  doc.setTextColor(255,255,255); doc.setFontSize(13);
+  doc.text('ORDEN DE COMPRA', 105, 12, { align:'center' });
+  doc.setFontSize(11); doc.setTextColor(167,139,250);
+  doc.text(p.ORDEN, 105, 21, { align:'center' });
+
+  doc.setFontSize(9); doc.setTextColor(100,116,139); doc.setFont('helvetica','normal');
+  doc.text(`Proveedor: ${p.PROV_NOMBRE}`, 14, 42);
+  doc.text(`NIT: ${p.PROV_NIT}`,          14, 48);
+  doc.text(`Fecha: ${p.FECHA_COMPRA ? new Date(p.FECHA_COMPRA+'T00:00:00').toLocaleDateString('es-CO') : '—'}`, 14, 54);
+  doc.text(`Estado: ${p.ESTADO}`,          14, 60);
+
+  doc.autoTable({
+    startY: 68,
+    head: [['Producto', 'Cantidad', 'P. Unitario', 'Subtotal']],
+    body: p.DETALLES.map(d => [
+      d.PRO_NOMBRE || d.PROD_NOMBRE || '—',
+      d.CANTIDAD_COMPRADA ?? d.cantidad ?? 0,
+      '$' + Number(d.PRECIO_UNITARIO ?? d.precio_unitario ?? 0).toLocaleString('es-CO'),
+      '$' + Number(d.SUBTOTAL ?? ((d.CANTIDAD_COMPRADA ?? 0) * (d.PRECIO_UNITARIO ?? 0))).toLocaleString('es-CO'),
+    ]),
+    headStyles: { fillColor:[30,27,75], textColor:[167,139,250], fontStyle:'bold', fontSize:9 },
+    bodyStyles: { fontSize:9, textColor:[51,65,85] },
+    alternateRowStyles: { fillColor:[248,250,252] },
+    columnStyles: { 3:{ fontStyle:'bold', textColor:[124,58,237] } }
+  });
+
+  const fy = doc.lastAutoTable.finalY + 8;
+  doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.setTextColor(124,58,237);
+  doc.text(`TOTAL: $${p.TOTAL_COMPRA.toLocaleString('es-CO')}`, 14, fy);
+
+  doc.save(`orden_${p.ORDEN}.pdf`);
+  showToast(`PDF de ${p.ORDEN} generado ✓`, 'success');
+}
+
+// ──────────────────────────────────────────────
+//  TOAST
+// ──────────────────────────────────────────────
+function showToast(msg, type = 'success') {
+  const t  = document.getElementById('toast');
+  const el = document.createElement('div');
+  el.className = `toast-item ${type}`;
+  el.innerHTML = `<span>${type === 'success' ? '✅' : '❌'}</span><span>${msg}</span>`;
+  t.appendChild(el);
+  setTimeout(() => {
+    el.style.opacity = '0'; el.style.transition = 'opacity .3s';
+    setTimeout(() => el.remove(), 300);
+  }, 4000);
+}
+</script>
+
+{% endblock %}
