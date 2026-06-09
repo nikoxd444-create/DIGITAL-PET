@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Recuperar Contraseña</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39;
+      --naranja-hover: #c4622a;
+      --amarillo: #F5C842;
+      --blanco: #ffffff;
+      --negro: #1a1a1a;
+      --gris: #555555;
+      --gris-claro: #f0f0f0;
+      --verde-menta: #4CAF7D;
+      --verde-bg: rgba(76,175,125,0.12);
+      --sombra: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--amarillo);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: var(--blanco);
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      animation: slideUp 0.4s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .icon-wrap {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .icon-circle {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(224,123,57,0.12);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+    }
+    h2 {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--negro);
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: var(--gris);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--negro);
+      margin-bottom: 6px;
+    }
+    input[type="email"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--gris-claro);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: 'Nunito', sans-serif;
+      color: var(--negro);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--naranja); }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--naranja);
+      color: var(--blanco);
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--naranja-hover); transform: translateY(-1px); }
+
+    /* Step 2 - OTP */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .otp-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .otp-row input {
+      width: 52px;
+      height: 56px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+      border: 2px solid var(--gris-claro);
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .otp-row input:focus { border-color: var(--naranja); }
+
+    .success-msg {
+      background: var(--verde-bg);
+      color: var(--verde-menta);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .back-link {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+      color: var(--gris);
+    }
+    .back-link a { color: var(--naranja); font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <!-- Paso 1: Ingresar correo -->
+    <div class="step active" id="step1">
+      <div class="icon-wrap">
+        <div class="icon-circle">🔑</div>
+      </div>
+      <h2>Recuperar Contraseña</h2>
+      <p class="subtitle">Ingresa tu correo y te enviaremos un código para restablecer tu contraseña.</p>
+
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" placeholder="tu@correo.com" />
+
+      <button class="btn-primary" onclick="sendCode()">Enviar Código</button>
+      <div class="back-link"><a href="login.html">← Volver al login</a></div>
+    </div>
+
+    <!-- Paso 2: Código OTP -->
+    <div class="step" id="step2">
+      <div class="icon-wrap">
+        <div class="icon-circle">📩</div>
+      </div>
+      <h2>Código de Verificación</h2>
+      <p class="subtitle" id="step2sub">Ingresa el código de 4 dígitos enviado a tu correo.</p>
+
+      <div class="otp-row">
+        <input type="text" maxlength="1" class="otp" oninput="moveFocus(this,0)" />
+        <input type="text" maxlength="1" class="otp" oninput="moveFocus(this,1)" />
+        <input type="text" maxlength="1" class="otp" oninput="moveFocus(this,2)" />
+        <input type="text" maxlength="1" class="otp" oninput="moveFocus(this,3)" />
+      </div>
+
+      <button class="btn-primary" onclick="verifyCode()">Verificar Código</button>
+    </div>
+
+    <!-- Paso 3: Nueva contraseña -->
+    <div class="step" id="step3">
+      <div class="icon-wrap">
+        <div class="icon-circle">🔒</div>
+      </div>
+      <h2>Nueva Contraseña</h2>
+      <p class="subtitle">Elige una contraseña segura para tu cuenta.</p>
+
+      <label>Nueva contraseña</label>
+      <input type="password" id="newPass" placeholder="Mínimo 8 caracteres" />
+
+      <label style="margin-top:14px;">Confirmar contraseña</label>
+      <input type="password" id="newPass2" placeholder="Repite tu contraseña" style="margin-top:6px;" />
+
+      <button class="btn-primary" onclick="resetPass()">Restablecer Contraseña</button>
+    </div>
+
+    <!-- Paso 4: Éxito -->
+    <div class="step" id="step4">
+      <div class="icon-wrap">
+        <div class="icon-circle">✅</div>
+      </div>
+      <h2>¡Listo!</h2>
+      <div class="success-msg">Tu contraseña ha sido restablecida correctamente.</div>
+      <button class="btn-primary" onclick="location.href='login.html'">Ir al Login</button>
+    </div>
+
+  </div>
+
+  <script>
+    const steps = ['step1','step2','step3','step4'];
+    function goTo(n) {
+      steps.forEach((s,i) => document.getElementById(s).classList.toggle('active', i===n));
+    }
+    function sendCode() {
+      const email = document.getElementById('email').value;
+      if (!email) { alert('Ingresa tu correo.'); return; }
+      document.getElementById('step2sub').textContent = `Código enviado a: ${email}`;
+      goTo(1);
+    }
+    function moveFocus(el, idx) {
+      const inputs = document.querySelectorAll('.otp');
+      if (el.value && idx < 3) inputs[idx+1].focus();
+    }
+    function verifyCode() {
+      const vals = [...document.querySelectorAll('.otp')].map(i=>i.value).join('');
+      if (vals.length < 4) { alert('Ingresa el código completo.'); return; }
+      goTo(2);
+    }
+    function resetPass() {
+      const p1 = document.getElementById('newPass').value;
+      const p2 = document.getElementById('newPass2').value;
+      if (!p1 || !p2) { alert('Completa los campos.'); return; }
+      if (p1 !== p2) { alert('Las contraseñas no coinciden.'); return; }
+      goTo(3);
+    }
+  </script>
+</body>
+</html>

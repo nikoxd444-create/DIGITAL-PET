@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Historial Clínico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja:#E07B39;--naranja-hover:#c4622a;--amarillo:#F5C842;
+      --blanco:#ffffff;--negro:#1a1a1a;--gris:#555555;--gris-claro:#f0f0f0;
+      --verde:#4CAF7D;--verde-bg:rgba(76,175,125,0.12);
+      --naranja-bg:rgba(224,123,57,0.10);--rojo:#e53935;--rojo-bg:rgba(229,57,53,0.10);
+      --sombra:0 4px 24px rgba(0,0,0,0.08);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:#f7f7f5;color:var(--negro);display:flex;min-height:100vh;}
+
+    /* SIDEBAR */
+    .sidebar{width:230px;background:var(--negro);display:flex;flex-direction:column;padding:28px 14px;position:fixed;top:0;left:0;height:100vh;z-index:20;}
+    .sidebar-brand{font-size:20px;font-weight:900;color:var(--blanco);padding:0 10px;margin-bottom:32px;}
+    .sidebar-brand em{color:var(--amarillo);font-style:normal;}
+    .nav-section{font-size:10px;font-weight:800;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.1em;padding:0 10px;margin:18px 0 6px;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .2s;text-decoration:none;margin-bottom:2px;}
+    .nav-item:hover{color:var(--blanco);background:rgba(255,255,255,0.07);}
+    .nav-item.active{background:var(--amarillo);color:var(--negro);}
+    .sidebar-footer{margin-top:auto;padding:14px 10px;border-top:1px solid rgba(255,255,255,0.08);}
+    .vet-profile{display:flex;align-items:center;gap:10px;}
+    .vet-avatar{width:38px;height:38px;border-radius:50%;background:var(--naranja);color:var(--blanco);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;}
+    .vet-info h5{font-size:13px;font-weight:800;color:var(--blanco);}
+    .vet-info span{font-size:11px;color:rgba(255,255,255,0.4);}
+
+    /* MAIN */
+    .main{margin-left:230px;flex:1;display:flex;flex-direction:column;}
+    .topbar{background:var(--blanco);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:sticky;top:0;z-index:10;}
+    .topbar h2{font-size:18px;font-weight:900;}
+    .topbar-right{display:flex;gap:10px;}
+    .btn-primary{padding:9px 20px;background:var(--naranja);color:var(--blanco);border:none;border-radius:12px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .2s;}
+    .btn-primary:hover{background:var(--naranja-hover);}
+    .content{padding:28px;flex:1;display:flex;gap:22px;}
+
+    /* LISTA de pacientes */
+    .patients-panel{width:280px;flex-shrink:0;}
+    .search-box{position:relative;margin-bottom:14px;}
+    .search-box input{width:100%;padding:11px 14px 11px 38px;border:2px solid var(--gris-claro);border-radius:12px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--negro);outline:none;background:var(--blanco);}
+    .search-box input:focus{border-color:var(--naranja);}
+    .search-box .s-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;}
+    .patient-list{background:var(--blanco);border-radius:20px;box-shadow:var(--sombra);overflow:hidden;}
+    .pat-item{padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--gris-claro);cursor:pointer;transition:background .15s;}
+    .pat-item:last-child{border-bottom:none;}
+    .pat-item:hover{background:#fafafa;}
+    .pat-item.selected{background:rgba(245,200,66,0.15);border-left:3px solid var(--naranja);}
+    .pat-icon{width:40px;height:40px;border-radius:10px;background:var(--amarillo);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+    .pat-data strong{font-size:13px;font-weight:800;display:block;}
+    .pat-data span{font-size:11px;color:var(--gris);}
+
+    /* HISTORIAL DETALLE */
+    .historial-panel{flex:1;}
+    .pet-header{background:var(--blanco);border-radius:20px;box-shadow:var(--sombra);padding:22px 24px;margin-bottom:18px;display:flex;align-items:center;gap:18px;}
+    .pet-header .big-icon{width:64px;height:64px;border-radius:16px;background:var(--amarillo);display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;}
+    .pet-header-info h3{font-size:20px;font-weight:900;}
+    .pet-header-info p{font-size:13px;color:var(--gris);margin-top:4px;}
+    .pet-tags{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+    .tag{padding:4px 12px;border-radius:8px;font-size:12px;font-weight:700;}
+    .tag-verde{background:var(--verde-bg);color:var(--verde);}
+    .tag-naranja{background:var(--naranja-bg);color:var(--naranja);}
+    .tag-gris{background:var(--gris-claro);color:var(--gris);}
+    .pet-header-actions{margin-left:auto;display:flex;gap:8px;}
+    .btn-sm{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+    .btn-sm-primary{background:var(--naranja);color:var(--blanco);}
+    .btn-sm-ghost{background:var(--gris-claro);color:var(--gris);}
+
+    /* TIMELINE */
+    .timeline{display:flex;flex-direction:column;gap:0;}
+    .tl-item{display:flex;gap:16px;animation:fadeUp .4s ease both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+    .tl-item:nth-child(1){animation-delay:.05s;}
+    .tl-item:nth-child(2){animation-delay:.1s;}
+    .tl-item:nth-child(3){animation-delay:.15s;}
+    .tl-left{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;}
+    .tl-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:18px;}
+    .dot-verde{background:var(--verde);}
+    .dot-naranja{background:var(--naranja);}
+    .dot-amarillo{background:var(--amarillo);border:2px solid #c8a000;}
+    .dot-rojo{background:var(--rojo);}
+    .tl-line{width:2px;flex:1;background:var(--gris-claro);margin-top:4px;}
+    .tl-card{background:var(--blanco);border-radius:16px;box-shadow:var(--sombra);padding:18px 20px;margin-bottom:14px;flex:1;}
+    .tl-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    .tl-card-head .date{font-size:12px;color:var(--gris);font-weight:700;}
+    .tl-card-head h4{font-size:15px;font-weight:800;}
+    .tl-type{padding:3px 10px;border-radius:8px;font-size:11px;font-weight:800;}
+    .tl-consulta{background:var(--verde-bg);color:var(--verde);}
+    .tl-vacuna{background:var(--naranja-bg);color:var(--naranja);}
+    .tl-urgencia{background:var(--rojo-bg);color:var(--rojo);}
+    .tl-control{background:rgba(245,200,66,0.2);color:#8a7200;}
+    .tl-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+    .td-item{background:#fafafa;border-radius:10px;padding:8px 12px;}
+    .td-item label{font-size:10px;font-weight:800;color:var(--gris);text-transform:uppercase;display:block;margin-bottom:2px;}
+    .td-item span{font-size:13px;font-weight:700;}
+    .tl-obs{margin-top:10px;padding:10px 12px;background:#fafafa;border-radius:10px;font-size:13px;color:var(--gris);line-height:1.5;border-left:3px solid var(--naranja);}
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">🐾 Happy <em>Pet</em></div>
+    <div class="nav-section">Principal</div>
+    <a class="nav-item" href="../dashboard/index.html"><span>📊</span> Dashboard</a>
+    <a class="nav-item" href="../agenda/index.html"><span>📅</span> Agenda</a>
+    <a class="nav-item active" href="index.html"><span>📋</span> Historial Clínico</a>
+    <a class="nav-item" href="../consultas/index.html"><span>🩺</span> Consultas</a>
+    <a class="nav-item" href="../vacunas/index.html"><span>💉</span> Vacunas</a>
+    <a class="nav-item" href="../archivos/index.html"><span>📁</span> Archivos</a>
+    <div class="sidebar-footer">
+      <div class="vet-profile">
+        <div class="vet-avatar">CL</div>
+        <div class="vet-info"><h5>Dr. Carlos López</h5><span>Veterinario</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <h2>📋 Historial Clínico</h2>
+      <div class="topbar-right">
+        <button class="btn-primary">+ Nueva Consulta</button>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- Panel izquierdo: lista pacientes -->
+      <div class="patients-panel">
+        <div class="search-box">
+          <span class="s-icon">🔍</span>
+          <input type="text" placeholder="Buscar paciente..."/>
+        </div>
+        <div class="patient-list">
+          <div class="pat-item selected">
+            <div class="pat-icon">🐶</div>
+            <div class="pat-data"><strong>Luna</strong><span>Labrador · 3 años</span></div>
+          </div>
+          <div class="pat-item">
+            <div class="pat-icon">🐱</div>
+            <div class="pat-data"><strong>Michi</strong><span>Siamés · 2 años</span></div>
+          </div>
+          <div class="pat-item">
+            <div class="pat-icon">🐦</div>
+            <div class="pat-data"><strong>Paco</strong><span>Canario · 1 año</span></div>
+          </div>
+          <div class="pat-item">
+            <div class="pat-icon">🐹</div>
+            <div class="pat-data"><strong>Hammy</strong><span>Hámster · 1 año</span></div>
+          </div>
+          <div class="pat-item">
+            <div class="pat-icon">🐶</div>
+            <div class="pat-data"><strong>Thor</strong><span>Pastor Alemán · 5 años</span></div>
+          </div>
+          <div class="pat-item">
+            <div class="pat-icon">🐱</div>
+            <div class="pat-data"><strong>Oreo</strong><span>Mestizo · 4 años</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel derecho: historial -->
+      <div class="historial-panel">
+        <!-- Header mascota -->
+        <div class="pet-header">
+          <div class="big-icon">🐶</div>
+          <div class="pet-header-info">
+            <h3>Luna</h3>
+            <p>Labrador Retriever · Hembra · 3 años · Dueño: María González</p>
+            <div class="pet-tags">
+              <span class="tag tag-verde">✅ Vacunada</span>
+              <span class="tag tag-verde">✅ Esterilizada</span>
+              <span class="tag tag-naranja">⚠️ Revisión pendiente</span>
+              <span class="tag tag-gris">Peso: 24 kg</span>
+            </div>
+          </div>
+          <div class="pet-header-actions">
+            <button class="btn-sm btn-sm-ghost">📄 PDF</button>
+            <button class="btn-sm btn-sm-primary">+ Agregar</button>
+          </div>
+        </div>
+
+        <!-- Timeline consultas -->
+        <div class="timeline">
+
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot dot-verde"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-card">
+              <div class="tl-card-head">
+                <h4>Vacunación Anual</h4>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="tl-type tl-vacuna">Vacuna</span>
+                  <span class="date">15 Mayo 2026</span>
+                </div>
+              </div>
+              <div class="tl-details">
+                <div class="td-item"><label>Peso</label><span>24.2 kg</span></div>
+                <div class="td-item"><label>Temperatura</label><span>38.4 °C</span></div>
+                <div class="td-item"><label>Vacuna aplicada</label><span>Antirrábica</span></div>
+                <div class="td-item"><label>Próxima dosis</label><span>Mayo 2027</span></div>
+              </div>
+              <div class="tl-obs">Paciente en buen estado general. Sin reacciones adversas. Se recomienda seguimiento en 30 días.</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot dot-naranja"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-card">
+              <div class="tl-card-head">
+                <h4>Revisión General</h4>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="tl-type tl-consulta">Consulta</span>
+                  <span class="date">2 Febrero 2026</span>
+                </div>
+              </div>
+              <div class="tl-details">
+                <div class="td-item"><label>Peso</label><span>23.8 kg</span></div>
+                <div class="td-item"><label>Temperatura</label><span>38.6 °C</span></div>
+                <div class="td-item"><label>Diagnóstico</label><span>Sana</span></div>
+                <div class="td-item"><label>Tratamiento</label><span>Ninguno</span></div>
+              </div>
+              <div class="tl-obs">Control de rutina. Dientes en buenas condiciones. Pelaje saludable. Se recomienda desparasitación interna en 3 meses.</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot dot-rojo"></div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-card">
+              <div class="tl-card-head">
+                <h4>Urgencia – Vómito y decaimiento</h4>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="tl-type tl-urgencia">Urgencia</span>
+                  <span class="date">14 Octubre 2025</span>
+                </div>
+              </div>
+              <div class="tl-details">
+                <div class="td-item"><label>Peso</label><span>23.1 kg</span></div>
+                <div class="td-item"><label>Temperatura</label><span>39.2 °C</span></div>
+                <div class="td-item"><label>Diagnóstico</label><span>Gastroenteritis</span></div>
+                <div class="td-item"><label>Tratamiento</label><span>Metronidazol 3 días</span></div>
+              </div>
+              <div class="tl-obs">Paciente llegó con vómito y decaimiento severo. Se administró suero IV. Evolución satisfactoria a las 48h. Alta con dieta blanda.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Archivos Clínicos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--naranja:#E07B39;--naranja-hover:#c4622a;--amarillo:#F5C842;--blanco:#ffffff;--negro:#1a1a1a;--gris:#555555;--gris-claro:#f0f0f0;--verde:#4CAF7D;--verde-bg:rgba(76,175,125,0.12);--naranja-bg:rgba(224,123,57,0.10);--rojo:#e53935;--rojo-bg:rgba(229,57,53,0.10);--sombra:0 4px 24px rgba(0,0,0,0.08);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:#f7f7f5;color:var(--negro);display:flex;min-height:100vh;}
+    .sidebar{width:230px;background:var(--negro);display:flex;flex-direction:column;padding:28px 14px;position:fixed;top:0;left:0;height:100vh;z-index:20;}
+    .sidebar-brand{font-size:20px;font-weight:900;color:var(--blanco);padding:0 10px;margin-bottom:32px;}
+    .sidebar-brand em{color:var(--amarillo);font-style:normal;}
+    .nav-section{font-size:10px;font-weight:800;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.1em;padding:0 10px;margin:18px 0 6px;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .2s;text-decoration:none;margin-bottom:2px;}
+    .nav-item:hover{color:var(--blanco);background:rgba(255,255,255,0.07);}
+    .nav-item.active{background:var(--amarillo);color:var(--negro);}
+    .sidebar-footer{margin-top:auto;padding:14px 10px;border-top:1px solid rgba(255,255,255,0.08);}
+    .vet-profile{display:flex;align-items:center;gap:10px;}
+    .vet-avatar{width:38px;height:38px;border-radius:50%;background:var(--naranja);color:var(--blanco);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;}
+    .vet-info h5{font-size:13px;font-weight:800;color:var(--blanco);}
+    .vet-info span{font-size:11px;color:rgba(255,255,255,0.4);}
+    .main{margin-left:230px;flex:1;display:flex;flex-direction:column;}
+    .topbar{background:var(--blanco);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:sticky;top:0;z-index:10;}
+    .topbar h2{font-size:18px;font-weight:900;}
+    .topbar-right{display:flex;gap:10px;}
+    .btn-primary{padding:9px 20px;background:var(--naranja);color:var(--blanco);border:none;border-radius:12px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .2s;}
+    .btn-primary:hover{background:var(--naranja-hover);}
+    .content{padding:28px;flex:1;display:flex;gap:22px;}
+
+    /* SIDEBAR archivos */
+    .arch-sidebar{width:240px;flex-shrink:0;}
+    .arch-sidebar h3{font-size:14px;font-weight:900;margin-bottom:14px;}
+
+    /* Upload zone */
+    .upload-zone{border:2.5px dashed var(--naranja);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:background .2s;margin-bottom:18px;background:var(--naranja-bg);}
+    .upload-zone:hover{background:rgba(224,123,57,0.15);}
+    .upload-zone .u-icon{font-size:36px;margin-bottom:8px;}
+    .upload-zone p{font-size:13px;font-weight:700;color:var(--naranja);}
+    .upload-zone span{font-size:11px;color:var(--gris);}
+    #fileInput{display:none;}
+
+    /* Filtros tipo */
+    .type-filters{background:var(--blanco);border-radius:16px;box-shadow:var(--sombra);padding:16px;margin-bottom:14px;}
+    .type-filters h4{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);margin-bottom:10px;}
+    .type-btn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s;border:none;background:transparent;font-family:'Nunito',sans-serif;width:100%;color:var(--negro);}
+    .type-btn:hover{background:var(--gris-claro);}
+    .type-btn.active{background:rgba(245,200,66,0.25);color:var(--negro);}
+    .type-btn .t-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;}
+    .ti-pdf{background:var(--rojo-bg);}
+    .ti-img{background:var(--verde-bg);}
+    .ti-rx{background:rgba(33,150,243,0.1);}
+    .ti-all{background:rgba(245,200,66,0.2);}
+    .type-count{margin-left:auto;font-size:11px;font-weight:800;color:var(--gris);}
+
+    /* GRID archivos */
+    .arch-main{flex:1;}
+    .arch-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+    .arch-toolbar input{flex:1;padding:10px 14px;padding-left:36px;border:2px solid var(--gris-claro);border-radius:12px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--negro);outline:none;background:var(--blanco);}
+    .arch-toolbar input:focus{border-color:var(--naranja);}
+    .search-wrap{position:relative;flex:1;}
+    .search-wrap .s-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:16px;}
+    .view-btns{display:flex;gap:4px;}
+    .vb{width:36px;height:36px;border-radius:10px;background:var(--gris-claro);border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
+    .vb.active{background:var(--amarillo);}
+
+    /* SECTION files */
+    .files-section{margin-bottom:24px;}
+    .files-section h4{font-size:14px;font-weight:900;color:var(--gris);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+    .files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+    .file-card{background:var(--blanco);border-radius:16px;box-shadow:var(--sombra);padding:16px;cursor:pointer;transition:transform .2s;text-align:center;position:relative;}
+    .file-card:hover{transform:translateY(-3px);}
+    .file-card .fc-icon{font-size:40px;margin-bottom:10px;display:block;}
+    .file-card .fc-name{font-size:12px;font-weight:800;color:var(--negro);word-break:break-word;margin-bottom:4px;}
+    .file-card .fc-meta{font-size:10px;color:var(--gris);}
+    .file-card .fc-pet{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--naranja-bg);color:var(--naranja);display:inline-block;margin-bottom:6px;}
+    .fc-actions{display:flex;gap:4px;justify-content:center;margin-top:8px;}
+    .btn-fc{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+    .bfc-ghost{background:var(--gris-claro);color:var(--gris);}
+    .bfc-primary{background:var(--naranja);color:var(--blanco);}
+    .file-card .fc-badge{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;}
+    .fb-verde{background:var(--verde);}
+    .fb-naranja{background:var(--naranja);}
+    .fb-rojo{background:var(--rojo);}
+
+    /* Upload success */
+    .upload-toast{position:fixed;bottom:24px;right:24px;background:var(--negro);color:var(--blanco);border-radius:14px;padding:14px 20px;font-size:14px;font-weight:700;display:none;animation:slideIn .3s ease;z-index:300;display:flex;align-items:center;gap:10px;}
+    .upload-toast.show{display:flex;}
+    @keyframes slideIn{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">🐾 Happy <em>Pet</em></div>
+    <div class="nav-section">Principal</div>
+    <a class="nav-item" href="../dashboard/index.html"><span>📊</span> Dashboard</a>
+    <a class="nav-item" href="../agenda/index.html"><span>📅</span> Agenda</a>
+    <a class="nav-item" href="../historial/index.html"><span>📋</span> Historial</a>
+    <a class="nav-item" href="../consultas/index.html"><span>🩺</span> Consultas</a>
+    <a class="nav-item" href="../vacunas/index.html"><span>💉</span> Vacunas</a>
+    <a class="nav-item active" href="index.html"><span>📁</span> Archivos</a>
+    <div class="sidebar-footer">
+      <div class="vet-profile">
+        <div class="vet-avatar">CL</div>
+        <div class="vet-info"><h5>Dr. Carlos López</h5><span>Veterinario</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <h2>📁 Archivos Clínicos</h2>
+      <div class="topbar-right">
+        <button class="btn-primary" onclick="document.getElementById('fileInput').click()">⬆️ Subir Archivo</button>
+        <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.png,.dcm" onchange="handleUpload(this)"/>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- Sidebar izquierdo -->
+      <div class="arch-sidebar">
+
+        <!-- Zona de arrastrar -->
+        <div class="upload-zone" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+          <div class="u-icon">📤</div>
+          <p>Arrastrar archivos aquí</p>
+          <span>PDF, JPG, PNG, DICOM</span>
+        </div>
+
+        <!-- Filtros -->
+        <div class="type-filters">
+          <h4>Tipo de archivo</h4>
+          <button class="type-btn active" onclick="filterType(this)">
+            <div class="t-icon ti-all">📂</div> Todos <span class="type-count">18</span>
+          </button>
+          <button class="type-btn" onclick="filterType(this)">
+            <div class="t-icon ti-pdf">📄</div> PDF <span class="type-count">7</span>
+          </button>
+          <button class="type-btn" onclick="filterType(this)">
+            <div class="t-icon ti-img">🖼️</div> Imágenes <span class="type-count">6</span>
+          </button>
+          <button class="type-btn" onclick="filterType(this)">
+            <div class="t-icon ti-rx">🩻</div> Radiografías <span class="type-count">5</span>
+          </button>
+        </div>
+
+        <!-- Mascotas -->
+        <div class="type-filters">
+          <h4>Por Mascota</h4>
+          <button class="type-btn" onclick="filterType(this)"><div class="t-icon" style="background:rgba(245,200,66,.2);">🐶</div> Luna <span class="type-count">6</span></button>
+          <button class="type-btn" onclick="filterType(this)"><div class="t-icon" style="background:rgba(245,200,66,.2);">🐱</div> Michi <span class="type-count">4</span></button>
+          <button class="type-btn" onclick="filterType(this)"><div class="t-icon" style="background:rgba(245,200,66,.2);">🐶</div> Thor <span class="type-count">8</span></button>
+        </div>
+
+      </div>
+
+      <!-- Grid principal -->
+      <div class="arch-main">
+        <div class="arch-toolbar">
+          <div class="search-wrap">
+            <span class="s-ico">🔍</span>
+            <input type="text" placeholder="Buscar archivos..."/>
+          </div>
+          <div class="view-btns">
+            <button class="vb active">⊞</button>
+            <button class="vb">☰</button>
+          </div>
+        </div>
+
+        <!-- PDFs -->
+        <div class="files-section">
+          <h4>📄 PDFs & Documentos</h4>
+          <div class="files-grid">
+            <div class="file-card">
+              <div class="fc-badge fb-verde"></div>
+              <span class="fc-icon">📄</span>
+              <div class="fc-pet">Luna</div>
+              <div class="fc-name">Historial_Clinico_Luna_2026.pdf</div>
+              <div class="fc-meta">2.4 MB · 07/06/2026</div>
+              <div class="fc-actions">
+                <button class="btn-fc bfc-ghost">👁️ Ver</button>
+                <button class="btn-fc bfc-primary">⬇️</button>
+              </div>
+            </div>
+            <div class="file-card">
+              <div class="fc-badge fb-verde"></div>
+              <span class="fc-icon">📄</span>
+              <div class="fc-pet">Michi</div>
+              <div class="fc-name">Resultados_Lab_Michi.pdf</div>
+              <div class="fc-meta">1.1 MB · 02/06/2026</div>
+              <div class="fc-actions">
+                <button class="btn-fc bfc-ghost">👁️ Ver</button>
+                <button class="btn-fc bfc-primary">⬇️</button>
+              </div>
+            </div>
+            <div class="file-card">
+              <span class="fc-icon">📄</span>
+              <div class="fc-pet">Thor</div>
+              <div class="fc-name">Receta_Desparasitacion_Thor.pdf</div>
+              <div class="fc-meta">0.8 MB · 03/06/2026</div>
+              <div class="fc-actions">
+                <button class="btn-fc bfc-ghost">👁️ Ver</button>
+                <button class="btn-fc bfc-primary">⬇️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Imágenes -->
+        <div class="files-section">
+          <h4>🖼️ Imágenes Clínicas</h4>
+          <div class="files-grid">
+            <div class="file-card">
+              <div class="fc-badge fb-verde"></div>
+              <span class="fc-icon">🖼️</span>
+              <div class="fc-pet">Luna</div>
+              <div class="fc-name">Foto_Herida_Pata_Luna.jpg</div>
+              <div class="fc-meta">3.2 MB · 14/10/2025</div>
+              <div class="fc-actions">
+                <button class="btn-fc bfc-ghost">👁️ Ver</button>
+                <button class="btn-fc bfc-primary">⬇️</button>
+              </div>
+            </div>
+            <div class="file-card">
+              <span class="fc-icon">🖼️</span>
+              <div class="fc-pet">Michi</div>
+              <div class="fc-name">Dermatitis_Michi_control.jpg</div>
+              <div class="fc-meta">1.8 MB · 05/04/2026</div>
+              <div class="fc-actions">
+                <button class="btn-fc bfc-ghost">👁️ Ver</button>
+                <button class="btn-fc bfc-primary">⬇️</button>
+              </div>
+            </div>
+            <div class="file-card">
+              <span class="fc-icon">🖼️</span>
+              <div class="fc-pet">Thor</div>
+              <div class="fc-name">Pre_Cirugia_Thor.jpg</div>
+              <div class="fc-meta">4.5 MB · 12/02/2026</div>
+              <div class="fc-actions">
+                <button class="btn-fc bfc-ghost">👁️ Ver</button>
+                <button class="btn-fc bfc-primary">⬇️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Radiografías -->
+        <div class="files-section">
+          <h4>🩻 Radiografías</h4>
+          <div class="files-grid">
+            <div class="file-card" style="background:#1e1e2e;border-radius:16px;">
+              <div class="fc-badge fb-verde"></div>
+              <span class="fc-icon">🩻</span>
+              <div class="fc-name" style="color:#cdd6f4;">RX_Torax_Luna_AP.dcm</div>
+              <div class="fc-meta" style="color:#6c7086;">8.7 MB · 15/05/2026</div>
+              <div class="fc-actions">
+                <button class="btn-fc bfc-ghost">👁️ Ver</button>
+                <button class="btn-fc bfc-primary">⬇️</button>
+              </div>
+            </div>
+            <div class="file-card" style="background:#1e1e2e;border-radius:16px;">
+              <span class="fc-icon">🩻</span>
+              <div class="fc-name" style="color:#cdd6f4;">RX_Columna_Thor_Lat.dcm</div>
+              <div class="fc-meta" style="color:#6c7086;">10.2 MB · 12/02/2026</div>
+              <div class="fc-actions">
+                <button class="btn-fc bfc-ghost">👁️ Ver</button>
+                <button class="btn-fc bfc-primary">⬇️</button>
+              </div>
+            </div>
+            <div class="file-card" style="background:#1e1e2e;border-radius:16px;">
+              <span class="fc-icon">🩻</span>
+              <div class="fc-name" style="color:#cdd6f4;">RX_Abdomen_Michi.dcm</div>
+              <div class="fc-meta" style="color:#6c7086;">7.1 MB · 02/06/2026</div>
+              <div class="fc-actions">
+                <button class="btn-fc bfc-ghost">👁️ Ver</button>
+                <button class="btn-fc bfc-primary">⬇️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="upload-toast" id="toast">📁 Archivos subidos correctamente</div>
+
+  <script>
+    function filterType(btn){document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+    function handleUpload(input){
+      if(input.files.length>0){
+        const t=document.getElementById('toast');
+        t.textContent=`📁 ${input.files.length} archivo(s) subido(s) correctamente`;
+        t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'),3500);
+      }
+    }
+    function handleDrop(e){
+      e.preventDefault();
+      const files=e.dataTransfer.files;
+      if(files.length>0){
+        const t=document.getElementById('toast');
+        t.textContent=`📁 ${files.length} archivo(s) cargado(s)`;
+        t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'),3500);
+      }
+    }
+  </script>
+</body>
+</html>

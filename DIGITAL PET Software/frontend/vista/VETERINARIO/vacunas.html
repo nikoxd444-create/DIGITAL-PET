@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Control de Vacunas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--naranja:#E07B39;--naranja-hover:#c4622a;--amarillo:#F5C842;--blanco:#ffffff;--negro:#1a1a1a;--gris:#555555;--gris-claro:#f0f0f0;--verde:#4CAF7D;--verde-bg:rgba(76,175,125,0.12);--naranja-bg:rgba(224,123,57,0.10);--rojo:#e53935;--rojo-bg:rgba(229,57,53,0.10);--sombra:0 4px 24px rgba(0,0,0,0.08);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:#f7f7f5;color:var(--negro);display:flex;min-height:100vh;}
+    .sidebar{width:230px;background:var(--negro);display:flex;flex-direction:column;padding:28px 14px;position:fixed;top:0;left:0;height:100vh;z-index:20;}
+    .sidebar-brand{font-size:20px;font-weight:900;color:var(--blanco);padding:0 10px;margin-bottom:32px;}
+    .sidebar-brand em{color:var(--amarillo);font-style:normal;}
+    .nav-section{font-size:10px;font-weight:800;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.1em;padding:0 10px;margin:18px 0 6px;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .2s;text-decoration:none;margin-bottom:2px;}
+    .nav-item:hover{color:var(--blanco);background:rgba(255,255,255,0.07);}
+    .nav-item.active{background:var(--amarillo);color:var(--negro);}
+    .sidebar-footer{margin-top:auto;padding:14px 10px;border-top:1px solid rgba(255,255,255,0.08);}
+    .vet-profile{display:flex;align-items:center;gap:10px;}
+    .vet-avatar{width:38px;height:38px;border-radius:50%;background:var(--naranja);color:var(--blanco);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;}
+    .vet-info h5{font-size:13px;font-weight:800;color:var(--blanco);}
+    .vet-info span{font-size:11px;color:rgba(255,255,255,0.4);}
+    .main{margin-left:230px;flex:1;display:flex;flex-direction:column;}
+    .topbar{background:var(--blanco);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:sticky;top:0;z-index:10;}
+    .topbar h2{font-size:18px;font-weight:900;}
+    .topbar-right{display:flex;gap:10px;}
+    .btn-primary{padding:9px 20px;background:var(--naranja);color:var(--blanco);border:none;border-radius:12px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .2s;}
+    .btn-primary:hover{background:var(--naranja-hover);}
+    .content{padding:28px;flex:1;}
+
+    /* STATS */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:26px;}
+    .stat-card{background:var(--blanco);border-radius:18px;padding:20px;box-shadow:var(--sombra);display:flex;align-items:center;gap:14px;}
+    .s-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+    .si-verde{background:var(--verde-bg);}
+    .si-amarillo{background:rgba(245,200,66,0.2);}
+    .si-naranja{background:var(--naranja-bg);}
+    .si-rojo{background:var(--rojo-bg);}
+    .s-data .num{font-size:28px;font-weight:900;line-height:1;}
+    .s-data .lbl{font-size:12px;color:var(--gris);font-weight:700;margin-top:2px;}
+
+    /* FILTROS */
+    .filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+    .filter-btn{padding:7px 16px;border-radius:12px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;border:none;transition:all .2s;}
+    .filter-btn.active{background:var(--amarillo);color:var(--negro);}
+    .filter-btn:not(.active){background:var(--gris-claro);color:var(--gris);}
+
+    /* TABLA VACUNAS */
+    .table-wrap{background:var(--blanco);border-radius:20px;box-shadow:var(--sombra);overflow:hidden;margin-bottom:24px;}
+    .table-head{padding:16px 22px;background:var(--amarillo);display:flex;align-items:center;gap:12px;}
+    .table-head h3{font-size:15px;font-weight:900;}
+    .table-head .search{margin-left:auto;padding:8px 14px;padding-left:34px;border:none;background:rgba(255,255,255,0.6);border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;outline:none;width:200px;}
+    .search-wrap{position:relative;}
+    .search-wrap .s-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:15px;}
+    table{width:100%;border-collapse:collapse;}
+    thead tr{background:rgba(245,200,66,0.2);}
+    th{padding:12px 18px;text-align:left;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--gris);}
+    td{padding:14px 18px;font-size:14px;border-bottom:1px solid var(--gris-claro);}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:#fafafa;}
+    .pet-cell{display:flex;align-items:center;gap:10px;}
+    .pet-ico-sm{width:36px;height:36px;border-radius:10px;background:var(--amarillo);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+    .pet-cell strong{font-size:14px;font-weight:800;display:block;}
+    .pet-cell span{font-size:11px;color:var(--gris);}
+    .status-pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800;}
+    .sp-ok{background:var(--verde-bg);color:var(--verde);}
+    .sp-prox{background:rgba(245,200,66,0.25);color:#8a7200;}
+    .sp-venc{background:var(--rojo-bg);color:var(--rojo);}
+    .sp-pend{background:var(--naranja-bg);color:var(--naranja);}
+    .progress-bar{width:100px;height:8px;background:var(--gris-claro);border-radius:999px;overflow:hidden;}
+    .progress-fill{height:100%;border-radius:999px;transition:width .5s;}
+    .pf-verde{background:var(--verde);}
+    .pf-amarillo{background:var(--amarillo);}
+    .pf-rojo{background:var(--rojo);}
+    .btn-xs{padding:6px 12px;border-radius:8px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+    .bx-primary{background:var(--naranja);color:var(--blanco);}
+    .bx-ghost{background:var(--gris-claro);color:var(--gris);}
+
+    /* MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .25s;}
+    .modal-overlay.open{opacity:1;pointer-events:all;}
+    .modal{background:var(--blanco);border-radius:20px;padding:32px;width:90%;max-width:460px;transform:translateY(20px);transition:transform .25s;}
+    .modal-overlay.open .modal{transform:translateY(0);}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+    .modal-head h3{font-size:18px;font-weight:900;}
+    .modal-close{background:var(--gris-claro);border:none;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;}
+    .mfield{margin-bottom:14px;}
+    .mfield label{font-size:12px;font-weight:800;display:block;margin-bottom:5px;}
+    .mfield input,.mfield select{width:100%;padding:10px 13px;border:2px solid var(--gris-claro);border-radius:11px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--negro);outline:none;background:var(--blanco);}
+    .mfield input:focus,.mfield select:focus{border-color:var(--naranja);}
+    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px;}
+    .mrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">🐾 Happy <em>Pet</em></div>
+    <div class="nav-section">Principal</div>
+    <a class="nav-item" href="../dashboard/index.html"><span>📊</span> Dashboard</a>
+    <a class="nav-item" href="../agenda/index.html"><span>📅</span> Agenda</a>
+    <a class="nav-item" href="../historial/index.html"><span>📋</span> Historial</a>
+    <a class="nav-item" href="../consultas/index.html"><span>🩺</span> Consultas</a>
+    <a class="nav-item active" href="index.html"><span>💉</span> Vacunas</a>
+    <a class="nav-item" href="../archivos/index.html"><span>📁</span> Archivos</a>
+    <div class="sidebar-footer">
+      <div class="vet-profile">
+        <div class="vet-avatar">CL</div>
+        <div class="vet-info"><h5>Dr. Carlos López</h5><span>Veterinario</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <h2>💉 Control de Vacunas</h2>
+      <div class="topbar-right">
+        <button class="btn-primary" onclick="openModal()">+ Registrar Vacuna</button>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="s-icon si-verde">✅</div>
+          <div class="s-data"><div class="num">18</div><div class="lbl">Al día</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="s-icon si-amarillo">⏰</div>
+          <div class="s-data"><div class="num">4</div><div class="lbl">Próximas (7 días)</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="s-icon si-rojo">⚠️</div>
+          <div class="s-data"><div class="num">2</div><div class="lbl">Vencidas</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="s-icon si-naranja">📋</div>
+          <div class="s-data"><div class="num">24</div><div class="lbl">Total registradas</div></div>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filters">
+        <button class="filter-btn active" onclick="setFilter(this)">Todas</button>
+        <button class="filter-btn" onclick="setFilter(this)">✅ Al día</button>
+        <button class="filter-btn" onclick="setFilter(this)">⏰ Próximas</button>
+        <button class="filter-btn" onclick="setFilter(this)">⚠️ Vencidas</button>
+        <button class="filter-btn" onclick="setFilter(this)">🐶 Perros</button>
+        <button class="filter-btn" onclick="setFilter(this)">🐱 Gatos</button>
+      </div>
+
+      <!-- Tabla -->
+      <div class="table-wrap">
+        <div class="table-head">
+          <h3>💉 Registro de Vacunas</h3>
+          <div class="search-wrap">
+            <span class="s-ico">🔍</span>
+            <input class="table-head search" type="text" placeholder="Buscar..."/>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Mascota</th>
+              <th>Vacuna</th>
+              <th>Última Dosis</th>
+              <th>Próxima Dosis</th>
+              <th>Progreso</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="pet-cell"><div class="pet-ico-sm">🐶</div><div><strong>Luna</strong><span>Labrador</span></div></div></td>
+              <td>Antirrábica</td>
+              <td>15/05/2025</td>
+              <td>15/05/2026</td>
+              <td><div class="progress-bar"><div class="progress-fill pf-rojo" style="width:100%"></div></div></td>
+              <td><span class="status-pill sp-venc">⚠️ Vencida</span></td>
+              <td><button class="btn-xs bx-primary" onclick="openModal()">Aplicar</button></td>
+            </tr>
+            <tr>
+              <td><div class="pet-cell"><div class="pet-ico-sm">🐱</div><div><strong>Michi</strong><span>Siamés</span></div></div></td>
+              <td>Triple Felina</td>
+              <td>10/06/2025</td>
+              <td>10/06/2026</td>
+              <td><div class="progress-bar"><div class="progress-fill pf-amarillo" style="width:95%"></div></div></td>
+              <td><span class="status-pill sp-prox">⏰ Próxima</span></td>
+              <td><button class="btn-xs bx-primary" onclick="openModal()">Aplicar</button></td>
+            </tr>
+            <tr>
+              <td><div class="pet-cell"><div class="pet-ico-sm">🐶</div><div><strong>Thor</strong><span>Pastor Alemán</span></div></div></td>
+              <td>Pentavalente</td>
+              <td>01/01/2026</td>
+              <td>01/01/2027</td>
+              <td><div class="progress-bar"><div class="progress-fill pf-verde" style="width:45%"></div></div></td>
+              <td><span class="status-pill sp-ok">✅ Al día</span></td>
+              <td><button class="btn-xs bx-ghost">Ver</button></td>
+            </tr>
+            <tr>
+              <td><div class="pet-cell"><div class="pet-ico-sm">🐶</div><div><strong>Rex</strong><span>Beagle</span></div></div></td>
+              <td>Antirrábica</td>
+              <td>15/03/2026</td>
+              <td>15/03/2027</td>
+              <td><div class="progress-bar"><div class="progress-fill pf-verde" style="width:25%"></div></div></td>
+              <td><span class="status-pill sp-ok">✅ Al día</span></td>
+              <td><button class="btn-xs bx-ghost">Ver</button></td>
+            </tr>
+            <tr>
+              <td><div class="pet-cell"><div class="pet-ico-sm">🐱</div><div><strong>Oreo</strong><span>Mestizo</span></div></div></td>
+              <td>Leucemia Felina</td>
+              <td>20/12/2025</td>
+              <td>20/12/2026</td>
+              <td><div class="progress-bar"><div class="progress-fill pf-verde" style="width:48%"></div></div></td>
+              <td><span class="status-pill sp-ok">✅ Al día</span></td>
+              <td><button class="btn-xs bx-ghost">Ver</button></td>
+            </tr>
+            <tr>
+              <td><div class="pet-cell"><div class="pet-ico-sm">🐶</div><div><strong>Bruno</strong><span>Bulldog</span></div></div></td>
+              <td>Parvovirus</td>
+              <td>—</td>
+              <td>Pendiente</td>
+              <td><div class="progress-bar"><div class="progress-fill pf-rojo" style="width:0%"></div></div></td>
+              <td><span class="status-pill sp-pend">📋 Pendiente</span></td>
+              <td><button class="btn-xs bx-primary" onclick="openModal()">Aplicar</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeBg(event)">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>💉 Registrar Vacuna</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="mrow">
+        <div class="mfield"><label>Mascota</label><input type="text" placeholder="Nombre"/></div>
+        <div class="mfield"><label>Vacuna</label><select><option>Antirrábica</option><option>Triple Felina</option><option>Pentavalente</option><option>Parvovirus</option><option>Leucemia Felina</option></select></div>
+      </div>
+      <div class="mrow">
+        <div class="mfield"><label>Fecha aplicación</label><input type="date"/></div>
+        <div class="mfield"><label>Próxima dosis</label><input type="date"/></div>
+      </div>
+      <div class="mfield"><label>Lote / Fabricante</label><input type="text" placeholder="Ej: MSD Lot #A4921"/></div>
+      <div class="mfield"><label>Observaciones</label><input type="text" placeholder="Notas adicionales..."/></div>
+      <div class="modal-actions">
+        <button class="btn-xs bx-ghost" onclick="closeModal()">Cancelar</button>
+        <button class="btn-xs bx-primary" onclick="closeModal()">💾 Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setFilter(btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+    function openModal(){document.getElementById('modalOverlay').classList.add('open');}
+    function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+    function closeBg(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+  </script>
+</body>
+</html>
