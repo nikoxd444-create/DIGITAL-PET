@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGITAL PET | Login</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f0b1e, #111c24, #1a102f);
+            position: relative;
+        }
+
+        /* ===== PARTICULAS ===== */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particles span {
+            position: absolute;
+            display: block;
+            width: 15px;
+            height: 15px;
+            background: #a855f7; /* Morado neón */
+            border-radius: 50%;
+            opacity: 0.4;
+            bottom: -100px;
+            animation: animar 15s linear infinite;
+        }
+
+        @keyframes animar {
+            0% {
+                transform: translateY(0) scale(0);
+            }
+            100% {
+                transform: translateY(-120vh) scale(1);
+            }
+        }
+
+        /* ===== LOGIN ===== */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 400px;
+            padding: 45px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+            animation: subir 1s ease;
+        }
+
+        @keyframes subir {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 65px;
+            color: #a855f7;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: flotar 3s ease-in-out infinite;
+        }
+
+        @keyframes flotar {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .logo h2 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        /* ===== INPUTS ===== */
+        .input-box {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .input-box i {
+            position: absolute;
+            left: 15px;
+            top: 16px;
+            color: #a855f7;
+            font-size: 18px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            border: none;
+            outline: none;
+            border-radius: 14px;
+            background: #1a102f;
+            color: white;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .input-box input:focus {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+
+        .input-box input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* ===== BOTÓN ===== */
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            background: #a855f7;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor:pointer;
+            transition: 0.4s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            background: #9333ea;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+        
+        .btn-login:disabled {
+            background: #6b21a8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ===== EXTRA ===== */
+        .extra {
+            text-align: center;
+            margin-top: 20px;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .login-container {
+                width: 90%;
+                padding: 35px 25px;
+            }
+            .logo h2 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="particles"></div>
+
+    <div class="login-container">
+        <div class="logo">
+            <i class="fa-solid fa-paw"></i>
+            <h2>DIGITAL PET</h2>
+            <p>Acceso al sistema veterinario inteligente</p>
+        </div>
+        
+        <div class="input-box">
+            <i class="fa-solid fa-user"></i>
+            <input 
+                type="email" 
+                name="correo"
+                id="correo"
+                placeholder="Ingrese su correo"
+                required
+            >
+        </div>
+        
+        <div class="input-box">
+            <i class="fa-solid fa-lock"></i>
+            <input 
+                type="password" 
+                name="contrasena"
+                id="contrasena"
+                placeholder="Ingrese su contraseña"
+                required
+            >
+        </div>
+        
+        <button 
+            class="btn-login"
+            id="btnIngresar"
+            onclick="ingresar()"
+        >
+            Ingresar al Sistema
+        </button>
+        
+        <div class="extra">
+            DIGITAL PET © 2026
+        </div>
+    </div>
+    <script>
+        // ===== PARTICULAS OPTIMIZADAS (Uso de porcentajes para el diseño responsivo) =====
+        const particles = document.querySelector('.particles');
+        for (let i = 0; i < 45; i++) {
+            let span = document.createElement('span');
+            let size = Math.random() * 12;
+            span.style.width  = 10 + size + 'px';
+            span.style.height = 10 + size + 'px';
+            span.style.left   = Math.random() * 100 + '%';
+            span.style.animationDuration = 5 + Math.random() * 10 + 's';
+            span.style.animationDelay = Math.random() * 5 + 's';
+            particles.appendChild(span);
+        }
+
+        // Acceso rápido por teclado
+        document.getElementById('contrasena').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                ingresar();
+            }
+        });
+
+        // ===== LÓGICA DE ENVÍO DE FORMULARIO =====
+        async function ingresar() {
+            const correoInput = document.getElementById('correo');
+            const contrasenaInput = document.getElementById('contrasena');
+
+            if (!correoInput || !contrasenaInput) {
+                alert('⚠️ Error técnico: No se encontraron los campos del formulario.');
+                return;
+            }
+
+            const correo     = correoInput.value.trim();
+            const contrasena = contrasenaInput.value.trim();
+
+            if (!correo || !contrasena) {
+                alert('Por favor ingresa tu correo y contraseña.');
+                return;
+            }
+
+            const btn = document.getElementById('btnIngresar');
+            const btnText = btn ? btn.textContent : '';
+            if (btn) { 
+                btn.disabled = true; 
+                btn.textContent = 'Entrando...'; 
+            }
+
+            try {
+                const datosJSON = {
+                    correo: correo,
+                    contrasena: contrasena
+                };
+
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datosJSON),
+                    credentials: 'include' // OBLIGATORIO: Comparte cookies de sesión con Flask
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const textData = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(textData);
+                } catch (jsonError) {
+                    console.error("Error al procesar JSON:", textData);
+                    alert("⚠️ Error interno en el servidor.");
+                    if (btn) { btn.disabled = false; btn.textContent = btnText; }
+                    return;
+                }
+
+                if (data.status === 'success' || data.success === true) {
+                    // --- MAPEO DE VARIABLES HÍBRIDAS PARA EVITAR REBOTES EN INDEX2 ---
+                    
+                    // Variante 1: Minúsculas Directas (Estructura Flask)
+                    sessionStorage.setItem('id', String(data.data?.id ?? ''));
+                    sessionStorage.setItem('nombre', data.data?.nombre ?? '');
+                    sessionStorage.setItem('apellido', data.data?.apellido ?? '');
+                    sessionStorage.setItem('correo', data.data?.correo ?? '');
+                    sessionStorage.setItem('rol', data.data?.rol ?? '');
+
+                    // Variante 2: Prefijo 'usu_' (Como tu estructura original)
+                    sessionStorage.setItem('usu_nombre', data.data?.nombre ?? '');
+                    sessionStorage.setItem('usu_apellido', data.data?.apellido ?? '');
+                    sessionStorage.setItem('usu_correo', data.data?.correo ?? '');
+                    sessionStorage.setItem('rol_nombre', data.data?.rol ?? '');
+                    
+                    // Variante 3: MAYÚSCULAS Puras (Como viene de los campos SQL de la BD)
+                    sessionStorage.setItem('ID_USUARIOS', String(data.data?.id ?? ''));
+                    sessionStorage.setItem('USU_NOMBRE', data.data?.nombre ?? '');
+                    sessionStorage.setItem('USU_APELLIDO', data.data?.apellido ?? '');
+                    sessionStorage.setItem('USU_CORREO', data.data?.correo ?? '');
+                    sessionStorage.setItem('ROL_NOMBRE', data.data?.rol ?? '');
+
+                    // Variante 4: Banderas globales de acceso activo
+                    sessionStorage.setItem('logged_in', 'true');
+                    sessionStorage.setItem('sesion_activa', 'true');
+                    sessionStorage.setItem('usuario', JSON.stringify(data.data ?? {}));
+
+                    // Ejecutar funciones globales de sesión si existen en tu plantilla
+                    if (typeof guardarSesionDesdeLogin === 'function') guardarSesionDesdeLogin(data);
+                    if (typeof marcarSesionLocal === 'function') marcarSesionLocal();
+
+                    const redirectTo = data.data?.redirect_to || '/dashboard';
+                    window.location.replace(redirectTo);
+                } else {
+                    alert('❌ ' + (data.message || 'Credenciales incorrectas'));
+                    if (btn) { btn.disabled = false; btn.textContent = btnText; }
+                }
+            } catch (error) {
+                console.error('Error de conexión:', error);
+                alert('⚠️ No se pudo conectar con el servidor.');
+                if (btn) { btn.disabled = false; btn.textContent = btnText; }
+            }
+        }
+    </script>
+</budy>
+</html>

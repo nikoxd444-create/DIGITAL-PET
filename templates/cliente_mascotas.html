@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VetCare Client - Gestión de Mascotas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#6e7881",
+                        "primary-fixed": "#c9e6ff",
+                        "surface-container": "#eaedff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef0ff",
+                        "surface-dim": "#d2d9f4",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-secondary-container": "#00714d",
+                        "secondary-container": "#6cf8bb",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-tertiary-fixed": "#07006c",
+                        "surface-container-high": "#e2e7ff",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "tertiary": "#494bd6",
+                        "inverse-surface": "#283044",
+                        "on-primary-fixed": "#001e2f",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#dae2fd",
+                        "primary": "#006591",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-surface": "#131b2e",
+                        "outline-variant": "#bec8d2",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#c0c1ff",
+                        "tertiary-fixed": "#e1e0ff",
+                        "on-secondary-fixed": "#002113",
+                        "on-primary-container": "#003751",
+                        "on-primary": "#ffffff",
+                        "surface": "#faf8ff",
+                        "on-surface-variant": "#3e4850",
+                        "tertiary-container": "#8d90ff",
+                        "on-tertiary-fixed-variant": "#2f2ebe",
+                        "inverse-primary": "#89ceff",
+                        "surface-tint": "#006591",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-tertiary-container": "#1407ad",
+                        "primary-container": "#0ea5e9",
+                        "surface-bright": "#faf8ff",
+                        "surface-container-low": "#f2f3ff",
+                        "on-background": "#131b2e",
+                        "primary-fixed-dim": "#89ceff",
+                        "surface-container-highest": "#dae2fd",
+                        "background": "#faf8ff",
+                        "secondary": "#006c49",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "2xl": "48px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #faf8ff;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+<body class="text-on-background">
+<!-- New Consistent TopNavBar -->
+<header class="w-full h-20 fixed top-0 left-0 z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant">
+<div class="max-w-7xl mx-auto h-full px-lg flex items-center justify-between">
+<!-- Logo and Brand -->
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pets</span>
+</div>
+<div class="hidden sm:block">
+<h1 class="text-headline-md font-extrabold text-primary leading-none">VetCare Client</h1>
+<p class="text-label-sm text-outline">Portal Veterinario</p>
+</div>
+</div>
+<!-- Horizontal Navigation -->
+<nav class="hidden md:flex items-center gap-base">
+<a class="px-md py-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-all duration-200 font-label-md" href="#">Dashboard</a>
+<a class="px-md py-2 text-primary bg-primary-container/20 rounded-full font-bold" href="#">Mascotas</a>
+<a class="px-md py-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-all duration-200 font-label-md" href="#">Citas</a>
+<a class="px-md py-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-all duration-200 font-label-md" href="#">Historia Clínica</a>
+</nav>
+<!-- Right Side Actions -->
+<div class="flex items-center gap-md">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-label-md focus:outline-none focus:ring-2 focus:ring-primary/20 w-48 xl:w-64" placeholder="Buscar mascota..." type="text"/>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-outline-variant cursor-pointer">
+<img alt="User Profile Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWRLs4umS0ABqy0TXDMwEq88sv3jLnkWA3X1LzVCyJIDB5vKrenvej-i4JzQGNMvA20AZSrKFYHFCr9oDhBlGza8UO__IV_FAo5xtEB0erRN_YaDi-3BtvDNx4Ph-LC_zbzyvp3nvSCZ4W8bSgJ6mX9s7s_Z4yIOrPZbpf73PEpqkeyQKgH58yUqQum9QCuAPXpxawwHFj27GZ3i68bt2Mgm7cfEeyDJ5degMGcmXN2jOW9_4xe3xi7AJTaSKunJd8LYjJkyoOJD8"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas - Full Width -->
+<main class="pt-28 px-lg pb-xl max-w-7xl mx-auto w-full">
+<!-- Dashboard Header Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-xl gap-md">
+<div>
+<h3 class="text-headline-lg font-headline-lg text-on-surface">Tus Compañeros</h3>
+<p class="text-body-lg font-body-lg text-outline">Gestiona la información de salud y perfiles de tus mascotas.</p>
+</div>
+<button class="bg-secondary text-on-secondary px-lg py-md rounded-xl font-bold flex items-center gap-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+            Registrar nueva mascota
+        </button>
+</div>
+<!-- Pets Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Pet Card 1: Luna -->
+<div class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group relative">
+<div class="absolute top-0 left-0 w-full h-1.5 bg-primary"></div>
+<div class="h-48 relative overflow-hidden">
+<img alt="Luna - Golden Retriever" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj1XCquZTs3AuDwXtGZu-Ry-m_YQdoS9Z3fgsScvk4rB5-arbc8Qf1out0tnlhugL4CLWmIUznHTgBhgDQaLkCHyrgLJtg1vQSa78SZlmAMdEZ_os7843PBPliJvMWS3WnIKEseOPTcYHOBcv5OyQ7E38nED9GULEAlxMTWX3hU4YIKLW377crmvUR9yQ6Kidl8csiiyFOISGh6OBHJAQue_YmIg8KJaaClgVob0mVqht9CufwiK0NdCKlTucokuWrbnchP6mXDw8"/>
+<div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-label-sm">
+                    Vacunada
+                </div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h4 class="text-headline-md font-headline-md text-on-surface">Luna</h4>
+<p class="text-body-md font-body-md text-outline">Perro • Golden Retriever</p>
+</div>
+<div class="bg-surface-container text-primary p-sm rounded-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+</div>
+</div>
+<div class="flex items-center gap-md border-t border-outline-variant/30 pt-md mt-md">
+<div class="flex-1">
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Edad</span>
+<span class="text-body-md font-bold text-on-surface">3 años y 2 meses</span>
+</div>
+<div class="flex-1">
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Peso</span>
+<span class="text-body-md font-bold text-on-surface">24.5 kg</span>
+</div>
+</div>
+<div class="mt-lg">
+<button class="w-full py-2.5 rounded-lg border border-primary text-primary font-bold hover:bg-primary hover:text-on-primary transition-all">Ver Historial</button>
+</div>
+</div>
+</div>
+<!-- Pet Card 2: Oliver -->
+<div class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group relative">
+<div class="h-48 relative overflow-hidden">
+<img alt="Oliver - Gato" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB909Lyb7CIBgu5wKZgLPNjLbn9k3jEFrYTeB9i2TLrUfbi4K18hYMuVBOPKDDs1I24LgXh3OovexiF24yAQbh4DNehxJTUr-feyivz6-AqN8WUuCxk73vDG1TziiFqdIxkYfW9jX_Pw8ej7pkLXMfj0KUPHg0Uj7KGHShD4JFhZ4CDrwvFxlsK7rIz4fi4L9G4H-I4ljhyOyhv8QxW-UtPq6nhE3gc4km10HC_6EpzC0CkZYP6zNfn_B9-1rNxkIAEeBlGeRlqk1U"/>
+<div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-error-container text-on-error-container text-label-sm">
+                    Cita pendiente
+                </div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h4 class="text-headline-md font-headline-md text-on-surface">Oliver</h4>
+<p class="text-body-md font-body-md text-outline">Gato • British Shorthair</p>
+</div>
+<div class="bg-surface-container text-primary p-sm rounded-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+</div>
+<div class="flex items-center gap-md border-t border-outline-variant/30 pt-md mt-md">
+<div class="flex-1">
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Edad</span>
+<span class="text-body-md font-bold text-on-surface">5 años</span>
+</div>
+<div class="flex-1">
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Peso</span>
+<span class="text-body-md font-bold text-on-surface">4.2 kg</span>
+</div>
+</div>
+<div class="mt-lg">
+<button class="w-full py-2.5 rounded-lg border border-primary text-primary font-bold hover:bg-primary hover:text-on-primary transition-all">Ver Historial</button>
+</div>
+</div>
+</div>
+<!-- Pet Card 3: Max -->
+<div class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group relative">
+<div class="h-48 relative overflow-hidden">
+<img alt="Max - Frenchie" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEYra8ntoTDigYt7Op_Bgprj13biRb4M9HrBMcx9TjSPOBuA5A_rXjhI_FRYD_oqqpvF1mTxeNqPSF0mMf2oLhzbHfhGlYBrpvfn846SryIS-1HOjLIodC4aijcPjCmut3OXupTQ_gLG-KwQPoYKNgDYqX8qAWNSCJPpacdtmxKk1OjcyABJlAnVCR5G8_rG-t-2I_lOJOZPjyMbAzBRO-KKFSHhQzF-Bd3Sl3cDDoPP8lCSlGoCNsZpBhqGn-UGQjtIuKqcRERY8"/>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h4 class="text-headline-md font-headline-md text-on-surface">Max</h4>
+<p class="text-body-md font-body-md text-outline">Perro • Bulldog Francés</p>
+</div>
+<div class="bg-surface-container text-primary p-sm rounded-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">vaccines</span>
+</div>
+</div>
+<div class="flex items-center gap-md border-t border-outline-variant/30 pt-md mt-md">
+<div class="flex-1">
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Edad</span>
+<span class="text-body-md font-bold text-on-surface">11 meses</span>
+</div>
+<div class="flex-1">
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Peso</span>
+<span class="text-body-md font-bold text-on-surface">9.8 kg</span>
+</div>
+</div>
+<div class="mt-lg">
+<button class="w-full py-2.5 rounded-lg border border-primary text-primary font-bold hover:bg-primary hover:text-on-primary transition-all">Ver Historial</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Information Block -->
+<section class="mt-2xl grid grid-cols-1 lg:grid-cols-2 gap-lg">
+<div class="bg-primary-fixed text-on-primary-fixed p-xl rounded-2xl flex items-center gap-xl relative overflow-hidden shadow-md">
+<div class="relative z-10 flex-1">
+<h5 class="text-headline-md font-bold mb-sm">Recordatorio de Vacunación</h5>
+<p class="text-body-md opacity-90 mb-md">Luna tiene una vacuna contra la rabia pendiente para el próximo 15 de Octubre. Puedes agendarla ahora mismo.</p>
+<button class="bg-primary text-on-primary px-lg py-2.5 rounded-lg font-bold hover:brightness-110 transition-all shadow-sm">Agendar ahora</button>
+</div>
+<div class="relative z-10 hidden sm:block">
+<span class="material-symbols-outlined text-[80px] opacity-30">notifications_active</span>
+</div>
+<!-- Subtle pattern -->
+<div class="absolute right-0 bottom-0 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[160px]">pets</span>
+</div>
+</div>
+<div class="bg-surface-container-high p-xl rounded-2xl shadow-sm border border-outline-variant">
+<h5 class="text-headline-md font-bold text-on-surface mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">info</span>
+                Resumen de Salud
+            </h5>
+<div class="space-y-md">
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">Mascotas activas</span>
+<span class="font-bold text-on-surface">3</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-full"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">Próximas citas</span>
+<span class="font-bold text-on-surface">1</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[33%]"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Mobile Navigation (Bottom Bar) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant flex justify-around py-md z-50">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pets</span>
+<span class="text-[10px] font-bold">Mascotas</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-[10px] font-bold">Citas</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-bold">Perfil</span>
+</a>
+</nav>
+<script>
+    // Micro-interactions for pet cards
+    document.querySelectorAll('.glass-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-4px)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Search bar interaction
+    const searchInput = document.querySelector('input[type="text"]');
+    if(searchInput) {
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-105');
+            searchInput.parentElement.classList.add('transition-transform');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-105');
+        });
+    }
+</script>
+</body></html>

@@ -1,0 +1,299 @@
+{% extends "layout.html" %}
+{% block title %}DIGITALPET · Administración de usuarios{% endblock %}
+{% block section %}Usuarios{% endblock %}
+{% set active_nav = "usuarios" %}
+{% block styles %}
+:root{--c-purple:#6b21a8;--c-indigo:#4338ca;--c-violet:#7c3aed;--c-bg:#f8fafc;--c-dark:#0f172a;--c-mid:#334155;--c-border:#e2e8f0;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--c-bg);color:var(--c-dark);min-height:100vh;display:flex;flex-direction:column;}
+  h1,h2,h3,.brand{font-family:'Syne',sans-serif;}
+  header{position:sticky;top:0;z-index:50;background:rgba(15,23,42,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(124,58,237,0.3);box-shadow:0 4px 24px rgba(107,33,168,0.18);}
+  .nav-link{color:#94a3b8;text-decoration:none;font-size:13.5px;font-weight:500;padding:6px 14px;border-radius:8px;transition:color .2s;}
+  .nav-link:hover{color:#c4b5fd;}
+  .nav-link.active{color:#a78bfa;border-bottom:2px solid #7c3aed;}
+  .user-menu{position:relative;}
+  .user-trigger{display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 10px;border-radius:10px;transition:background .2s;}
+  .user-trigger:hover{background:rgba(124,58,237,0.12);}
+  .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4338ca);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;}
+  .chevron{color:#64748b;font-size:10px;transition:transform .25s;}
+  .user-menu.open .chevron{transform:rotate(180deg);}
+  .dropdown{position:absolute;top:calc(100% + 10px);right:0;width:240px;background:#1e293b;border:1px solid rgba(124,58,237,0.25);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,0.4);overflow:hidden;opacity:0;pointer-events:none;transform:translateY(-8px) scale(.97);transition:all .2s;z-index:200;}
+  .user-menu.open .dropdown{opacity:1;pointer-events:all;transform:translateY(0) scale(1);}
+  .dropdown-header{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .dropdown-item{display:flex;align-items:center;gap:10px;padding:11px 16px;color:#94a3b8;font-size:13px;font-weight:500;text-decoration:none;transition:all .15s;}
+  .dropdown-item:hover{background:rgba(124,58,237,0.12);color:#c4b5fd;}
+  .dropdown-item.danger{color:#f87171;}
+  .dropdown-divider{height:1px;background:rgba(255,255,255,0.06);margin:4px 0;}
+  .divider{width:1px;height:22px;background:rgba(255,255,255,0.1);}
+  main{flex:1;padding:32px 40px;max-width:1200px;margin:0 auto;width:100%;}
+  .card{background:white;border:1px solid var(--c-border);border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.06);margin-bottom:24px;}
+  .card-header{padding:20px 24px;border-bottom:1px solid var(--c-border);background:linear-gradient(135deg,#0f172a,#1e1b4b);}
+  .card-header h2{color:white;font-size:16px;font-weight:700;}
+  .card-header p{color:#94a3b8;font-size:12px;margin-top:4px;}
+  .card-body{padding:24px;}
+  label{font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px;}
+  input,select{width:100%;padding:9px 13px;border:1px solid var(--c-border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:#fafafa;outline:none;}
+  input:focus,select:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,0.12);background:white;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .field{display:flex;flex-direction:column;}
+  .field.full{grid-column:1/-1;}
+  .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;}
+  .btn-primary{background:linear-gradient(135deg,#7c3aed,#4338ca);color:white;box-shadow:0 4px 14px rgba(124,58,237,0.35);}
+  .btn-primary:hover{transform:translateY(-1px);}
+  .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+  .btn-secondary{background:#f1f5f9;color:var(--c-mid);}
+  table{width:100%;border-collapse:collapse;}
+  thead th{padding:12px 14px;text-align:left;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;background:#f8fafc;border-bottom:1px solid var(--c-border);}
+  tbody td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--c-border);color:var(--c-mid);}
+  tbody tr:hover{background:#f8f5ff;}
+  .badge{display:inline-flex;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;}
+  .badge-ok{background:#dcfce7;color:#166534;}
+  .badge-off{background:#f1f5f9;color:#64748b;}
+  .badge-admin{background:#ede9fe;color:#6d28d9;}
+  #toast{position:fixed;bottom:28px;right:28px;z-index:999;display:flex;flex-direction:column;gap:8px;}
+  .toast-item{background:#0f172a;color:white;padding:12px 18px;border-radius:12px;font-size:13.5px;display:flex;gap:10px;border-left:3px solid #7c3aed;transition:opacity 0.3s ease;animation:toastIn .35s;}
+  .toast-item.success{border-left-color:#22c55e;}
+  .toast-item.error{border-left-color:#ef4444;}
+  @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+  footer{background:#0f172a;color:#475569;text-align:center;padding:18px;font-size:12px;margin-top:auto;}
+  footer span{color:#7c3aed;}
+  @media(max-width:700px){.form-grid{grid-template-columns:1fr;}}
+{% endblock %}
+{% block content %}
+<main>
+  <div style="margin-bottom:28px;">
+    <h1 style="font-size:26px;font-weight:800;">Administración de usuarios</h1>
+    <p style="color:#64748b;font-size:14px;margin-top:6px;">Crea cuentas con rol Administrador u otros roles del sistema. Solo visible para administradores.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2>➕ Nuevo usuario</h2>
+      <p>La contraseña se guarda cifrada (bcrypt). El usuario podrá iniciar sesión de inmediato.</p>
+    </div>
+    <div class="card-body">
+      <form id="formUsuario" onsubmit="crearUsuario(event)">
+        <div class="form-grid">
+          <div class="field">
+            <label>Nombre *</label>
+            <input type="text" id="usu_nombre" required placeholder="Ej: María"/>
+          </div>
+          <div class="field">
+            <label>Apellido</label>
+            <input type="text" id="usu_apellido" placeholder="Ej: García"/>
+          </div>
+          <div class="field">
+            <label>Correo *</label>
+            <input type="email" id="usu_correo" required placeholder="correo@digitalpet.com"/>
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="tel" id="usu_telefono" placeholder="+57 300 000 0000"/>
+          </div>
+          <div class="field">
+            <label>Contraseña *</label>
+            <input type="password" id="usu_contrasena" required minlength="6" placeholder="Mínimo 6 caracteres"/>
+          </div>
+          <div class="field">
+            <label>Confirmar contraseña *</label>
+            <input type="password" id="usu_contrasena2" required minlength="6" placeholder="Repetir contraseña"/>
+          </div>
+          <div class="field">
+            <label>Rol *</label>
+            <select id="id_roles" required><option value="">Cargando roles…</option></select>
+          </div>
+          <div class="field">
+            <label>Estado *</label>
+            <select id="id_estado" required><option value="">Cargando…</option></select>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;">
+          <button type="submit" class="btn btn-primary" id="btnCrear">💾 Crear usuario</button>
+          <button type="button" class="btn btn-secondary" onclick="document.getElementById('formUsuario').reset(); seleccionarRolAdmin();">Limpiar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2>📋 Usuarios registrados</h2>
+        <p id="totalUsuarios">Cargando…</p>
+      </div>
+      <button type="button" class="btn btn-secondary" onclick="cargarUsuarios()">↺ Actualizar</button>
+    </div>
+    <div class="card-body" style="padding:0;overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tablaUsuarios">
+          <tr><td colspan="5" style="text-align:center;padding:32px;color:#94a3b8;">Cargando…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<div id="toast"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// NOTA: Se eliminó la inyección remota de Tailwind CSS para evitar romper tus estilos CSS nativos
+const API = '/api/usuarios';
+let rolesCache = [];
+
+async function apiGet(action) {
+  const res = await fetch(`${API}?action=${action}`, { credentials: 'include' });
+  const json = await res.json();
+  if (json.status !== 'success') throw new Error(json.message || 'Error en la solicitud');
+  return json.data;
+}
+
+async function apiPost(payload) {
+  const res = await fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json();
+  if (json.status !== 'success') throw new Error(json.message || 'Error al guardar');
+  return json;
+}
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  if (!t) return; // Salvaguarda pasiva
+  const el = document.createElement('div');
+  el.className = `toast-item ${type}`;
+  el.innerHTML = `<span>${type === 'success' ? '✅' : '❌'}</span><span>${msg}</span>`;
+  t.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 4000);
+}
+
+function seleccionarRolAdmin() {
+  const sel = document.getElementById('id_roles');
+  if (!sel || !rolesCache.length) return;
+  const admin = rolesCache.find(r =>
+    String(r.ROL_NOMBRE || '').toUpperCase().includes('ADMIN')
+  );
+  if (admin) sel.value = String(admin.ID_ROLES);
+}
+
+async function cargarSelects() {
+  try {
+    const [roles, estados] = await Promise.all([
+      apiGet('roles'),
+      apiGet('estados'),
+    ]);
+    rolesCache = Array.isArray(roles) ? roles : [];
+
+    const selRol = document.getElementById('id_roles');
+    if (selRol) {
+      selRol.innerHTML = '<option value="">— Seleccionar rol —</option>' +
+        rolesCache.map(r => `<option value="${r.ID_ROLES}">${r.ROL_NOMBRE}</option>`).join('');
+      seleccionarRolAdmin();
+    }
+
+    const selEst = document.getElementById('id_estado');
+    if (selEst) {
+      const listaEst = Array.isArray(estados) ? estados : [];
+      selEst.innerHTML = listaEst.map(e =>
+        `<option value="${e.ID_ESTADOS}">${e.EST_NOMBRE}</option>`
+      ).join('');
+      const activo = listaEst.find(e => String(e.EST_NOMBRE).toUpperCase().includes('ACTIV'));
+      if (activo) selEst.value = String(activo.ID_ESTADOS);
+    }
+  } catch (e) {
+    showToast('Error cargando catálogos estructurales: ' + e.message, 'error');
+  }
+}
+
+async function cargarUsuarios() {
+  const tbody = document.getElementById('tablaUsuarios');
+  if (!tbody) return;
+  try {
+    const lista = await apiGet('listar');
+    const users = Array.isArray(lista) ? lista : [];
+    
+    const labelTotal = document.getElementById('totalUsuarios');
+    if (labelTotal) labelTotal.textContent = `${users.length} usuario(s) en el sistema`;
+
+    if (!users.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:#94a3b8;">No hay usuarios registrados</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = users.map(u => {
+      const nom = `${u.USU_NOMBRE || ''} ${u.USU_APELLIDO || ''}`.trim();
+      const rol = (u.ROL_NOMBRE || '—').toUpperCase();
+      const esAdmin = rol.includes('ADMIN');
+      const est = String(u.NOMBRE_ESTADO || u.EST_NOMBRE || '').toUpperCase();
+      const estOk = est.includes('ACTIV');
+      return `<tr>
+        <td>${u.ID_USUARIOS}</td>
+        <td><strong>${nom}</strong></td>
+        <td>${u.USU_CORREO || '—'}</td>
+        <td><span class="badge ${esAdmin ? 'badge-admin' : 'badge-off'}">${u.ROL_NOMBRE || '—'}</span></td>
+        <td><span class="badge ${estOk ? 'badge-ok' : 'badge-off'}">${u.NOMBRE_ESTADO || u.EST_NOMBRE || '—'}</span></td>
+      </tr>`;
+    }).join('');
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:#dc2626;">${e.message}</td></tr>`;
+  }
+}
+
+async function crearUsuario(e) {
+  e.preventDefault();
+  const pass = document.getElementById('usu_contrasena').value;
+  const pass2 = document.getElementById('usu_contrasena2').value;
+  if (pass !== pass2) {
+    showToast('Las contraseñas no coinciden', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btnCrear');
+  btn.disabled = true;
+  btn.textContent = 'Guardando…';
+
+  try {
+    const res = await apiPost({
+      action: 'crear',
+      usu_nombre: document.getElementById('usu_nombre').value.trim(),
+      usu_apellido: document.getElementById('usu_apellido').value.trim(),
+      usu_correo: document.getElementById('usu_correo').value.trim(),
+      usu_telefono: document.getElementById('usu_telefono').value.trim(),
+      usu_contrasena: pass,
+      id_roles: parseInt(document.getElementById('id_roles').value, 10),
+      id_estado: parseInt(document.getElementById('id_estado').value, 10),
+    });
+    showToast(res.message || 'Usuario creado correctamente', 'success');
+    document.getElementById('formUsuario').reset();
+    seleccionarRolAdmin();
+    await cargarUsuarios();
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '💾 Crear usuario';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await Promise.all([cargarSelects(), cargarUsuarios()]);
+  } catch (e) {
+    showToast(e.message || 'No se pudo cargar el panel', 'error');
+  }
+});
+</script>
+{% endblock %}

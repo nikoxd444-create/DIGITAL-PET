@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block title %}DIGITALPET{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --c-purple: #6b21a8;
+            --c-indigo: #4338ca;
+            --c-violet: #7c3aed;
+            --c-bg: #f8fafc;
+            --c-dark: #0f172a;
+            --c-mid: #334155;
+            --c-border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--c-bg);
+            color: var(--c-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        h1, h2, h3, .brand { font-family: 'Syne', sans-serif; }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.97);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.3);
+            box-shadow: 0 4px 24px rgba(107, 33, 168, 0.18);
+            overflow: visible;
+        }
+        .nav-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 8px;
+            transition: color .2s;
+        }
+        .nav-link:hover { color: #c4b5fd; }
+        .nav-link.active { color: #a78bfa; border-bottom: 2px solid #7c3aed; }
+        .user-menu { position: relative; }
+        .user-trigger {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 10px;
+            transition: background .2s;
+        }
+        .user-trigger:hover { background: rgba(124, 58, 237, 0.12); }
+        .avatar-sm {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #4338ca);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .chevron { color: #64748b; font-size: 10px; transition: transform .25s; }
+        .user-menu.open .chevron { transform: rotate(180deg); }
+        .dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 220px;
+            background: #1e293b;
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            border-radius: 14px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-8px) scale(.97);
+            transition: all .2s;
+            z-index: 1100;
+        }
+        .user-menu.open .dropdown { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+        .dropdown-header { padding: 14px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 16px;
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .15s;
+            text-decoration: none;
+        }
+        .dropdown-item:hover { background: rgba(124, 58, 237, 0.12); color: #c4b5fd; }
+        .dropdown-item.active-item { color: #a78bfa; background: rgba(124, 58, 237, 0.1); }
+        .dropdown-item.danger { color: #f87171; }
+        .dropdown-item.danger:hover { background: rgba(239,68,68,0.1); color: #fca5a5; }
+        .dropdown-divider { height: 1px; background: rgba(255, 255, 255, 0.06); margin: 4px 0; }
+        .dropdown-icon { font-size: 15px; width: 18px; text-align: center; }
+        .divider { width: 1px; height: 22px; background: rgba(255, 255, 255, 0.1); }
+        main { flex: 1; padding: 40px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        footer { background: #0f172a; color: #475569; text-align: center; padding: 18px; font-size: 12px; }
+        footer span { color: #7c3aed; }
+        @media (max-width: 900px) {
+            header > div { padding: 0 16px !important; gap: 10px; }
+            header nav { display: none !important; }
+            .user-trigger > div[style*="line-height"] { display: none; }
+            .dropdown { position: fixed; top: 58px; right: 12px; width: min(260px, calc(100vw - 24px)); }
+            main { padding: 24px 16px; }
+        }
+        {% block styles %}{% endblock %}
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="max-width:100%; padding: 0 32px; height: 64px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="background: linear-gradient(135deg, #7c3aed, #4338ca); width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <span style="color: white; font-weight: 800; font-size: 14px; font-family: Syne, sans-serif;">DP</span>
+            </div>
+            <span class="brand" style="color: white; font-size: 18px; font-weight: 700;">DIGITAL<span style="color: #a78bfa;">PET</span></span>
+            <div class="divider"></div>
+            <span style="color: {% block section_color %}#64748b{% endblock %}; font-size: 12px; font-weight: 600; text-transform: uppercase;">
+                {% block section %}Inventario{% endblock %}
+            </span>
+        </div>
+
+        <nav style="display: flex; gap: 4px;">
+            <a href="/productos" class="nav-link {% if active_nav == 'productos' %}active{% endif %}">Productos</a>
+            <a href="/proveedores" class="nav-link {% if active_nav == 'proveedores' %}active{% endif %}">Proveedores</a>
+            <a href="/movimientos" class="nav-link {% if active_nav == 'movimientos' %}active{% endif %}">Movimientos</a>
+            <a href="/compras" class="nav-link {% if active_nav == 'compras' %}active{% endif %}">Compras</a>
+        </nav>
+
+        <div class="user-menu" id="userMenu">
+            <div class="user-trigger" onclick="toggleDropdown(event)">
+                <div class="avatar-sm" id="headerAvatar"><span id="avatarInitials">AD</span></div>
+                <div style="line-height: 1.2;">
+                    <div style="color: white; font-size: 13px; font-weight: 600;" id="headerUserName">Admin DPET</div>
+                    <div style="color: #475569; font-size: 11px;" id="headerUserRole">Veterinario Jefe</div>
+                </div>
+                <span class="chevron">▼</span>
+            </div>
+            <div class="dropdown">
+                <div class="dropdown-header">
+                    <div style="color: #e2e8f0; font-size: 13px; font-weight: 600;" id="dropdownName">Admin DPET</div>
+                    <div style="color: #64748b; font-size: 11px; margin-top: 2px;" id="dropdownEmail">admin@digitalpet.com</div>
+                </div>
+                <div style="padding: 6px 0;">
+                    <a href="/usuarios" class="dropdown-item {% if active_nav == 'usuarios' %}active-item{% endif %}" data-solo-admin><span class="dropdown-icon">👥</span> Usuarios</a>
+                    <a href="/ajustes" class="dropdown-item {% if active_nav == 'ajustes' %}active-item{% endif %}" data-solo-admin><span class="dropdown-icon">⚙️</span> Ajustes</a>
+                    <a href="/perfil" class="dropdown-item {% if active_nav == 'perfil' %}active-item{% endif %}"><span class="dropdown-icon">👤</span> Perfil</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item danger" onclick="cerrarSesion(event)"><span class="dropdown-icon">🚪</span> Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    © 2026 <span>DIGITALPET</span> · {% block footer_text %}Sistema Veterinario{% endblock %}
+</footer>
+
+<script>
+    // Control básico de la interfaz del Menú de Usuario
+    function toggleDropdown(event) {
+        event.stopPropagation();
+        document.getElementById('userMenu').classList.toggle('open');
+    }
+
+    // Cerrar el dropdown si se hace clic fuera del mismo
+    window.addEventListener('click', function() {
+        const menu = document.getElementById('userMenu');
+        if (menu.classList.contains('open')) {
+            menu.classList.remove('open');
+        }
+    });
+
+    // Lógica asíncrona para cerrar sesión adaptada al backend de DigitalPet
+    async function cerrarSesion(event) {
+        event?.preventDefault?.();
+        if (confirm('¿Estás seguro de que deseas cerrar la sesión?')) {
+            try {
+                if (typeof limpiarSesionLocal === 'function') {
+                    limpiarSesionLocal();
+                }
+                sessionStorage.clear();
+                const response = await fetch('/api/auth/logout?action=logout', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include'
+                });
+                if (response.ok || response.redirected) {
+                    window.location.href = '/login';
+                } else {
+                    alert('Error al cerrar sesión. Inténtalo de nuevo.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Fallback por si la API no está lista, redirigir directo
+                window.location.href = '/login'; 
+            }
+        }
+    }
+</script>
+
+<script src="/static/nav-common.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

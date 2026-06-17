@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shopping Cart | VetCare Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lexend:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #f8f9ff;
+            color: #0b1c30;
+        }
+        .treatment-card {
+            background-color: #ffffff;
+            border: 1px solid #bcc9c6;
+            transition: all 0.2s ease-in-out;
+        }
+        .zebra-row:nth-child(even) {
+            background-color: rgba(216, 229, 226, 0.25);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#d8e5e2",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#89f5e7",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-secondary-container": "#5b6765",
+                        "secondary-fixed": "#d8e5e2",
+                        "tertiary-container": "#a36700",
+                        "on-secondary-fixed": "#121e1c",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#005049",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#008378",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary": "#825100",
+                        "surface-variant": "#d3e4fe",
+                        "on-primary-container": "#f4fffc",
+                        "on-secondary": "#ffffff",
+                        "primary": "#00685f",
+                        "inverse-primary": "#6bd8cb",
+                        "inverse-surface": "#213145",
+                        "outline": "#6d7a77",
+                        "surface-container": "#e5eeff",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-secondary-fixed-variant": "#3d4947",
+                        "secondary": "#55615f",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "surface-bright": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-high": "#dce9ff",
+                        "on-primary-fixed": "#00201d",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-background": "#0b1c30",
+                        "on-surface-variant": "#3d4947",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-tint": "#006a61",
+                        "outline-variant": "#bcc9c6",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "secondary-fixed-dim": "#bcc9c6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "lg": "40px",
+                        "sm": "16px",
+                        "base": "4px",
+                        "container-max": "1440px",
+                        "md": "24px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Lexend"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Lexend"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Lexend"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline">
+<div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">VetCare Pro</span>
+<nav class="hidden md:flex gap-md ml-lg">
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 font-body-lg text-body-lg cursor-pointer active:scale-95 transition-all" href="#">Shop</a>
+<a class="text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-body-lg text-body-lg cursor-pointer active:scale-95" href="#">Appointments</a>
+<a class="text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 font-body-lg text-body-lg cursor-pointer active:scale-95" href="#">Services</a>
+</nav>
+</div>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined p-base text-on-surface-variant hover:text-primary transition-colors cursor-pointer" data-icon="shopping_cart">shopping_cart</button>
+<button class="material-symbols-outlined p-base text-on-surface-variant hover:text-primary transition-colors cursor-pointer" data-icon="notifications">notifications</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container overflow-hidden ml-xs border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7OM4vee7nHp3FU3hFeWhtYSUOSL-3fpxx-iZfD9m8LwqY4OIZAgmUTsx8sXVy1nMiw3-mf1sE--VQ1c5Hkld0HRjpFUSLm7yp3HHK8YS9VIbDw7Z7JwycR3iv-o7vOAhHU05Obix19OIc5EMCxx4aZQBzUAVs9q84i6UOsHQvGDLsIEJ9AYQ0u9zGhU1VDZJudbq7lCKQiEBiVhcMHFNo6tvLmY6Y0fydgaOYPIeVeVvW1xdExS2_EptMJs-mYDSTEdxijWrNwGo"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-xl px-gutter max-w-container-max mx-auto min-h-screen">
+<div class="flex flex-col lg:flex-row gap-lg">
+<!-- Shopping Cart Content -->
+<div class="flex-grow lg:w-2/3">
+<div class="flex items-baseline justify-between mb-md">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Your Shopping Cart</h1>
+<span class="font-body-md text-body-md text-on-surface-variant">3 Items</span>
+</div>
+<!-- Product List -->
+<div class="treatment-card rounded-xl overflow-hidden shadow-sm">
+<div class="hidden md:grid grid-cols-12 gap-md p-sm bg-surface-container-low border-b border-outline-variant">
+<div class="col-span-6 font-label-md text-label-md text-secondary uppercase tracking-widest">Product Details</div>
+<div class="col-span-2 font-label-md text-label-md text-secondary uppercase tracking-widest text-center">Unit Price</div>
+<div class="col-span-2 font-label-md text-label-md text-secondary uppercase tracking-widest text-center">Quantity</div>
+<div class="col-span-2 font-label-md text-label-md text-secondary uppercase tracking-widest text-right">Subtotal</div>
+</div>
+<!-- Item 1 -->
+<div class="grid grid-cols-12 gap-md p-md items-center zebra-row border-b border-outline-variant/30">
+<div class="col-span-12 md:col-span-6 flex items-center gap-md">
+<div class="w-20 h-20 bg-surface-container rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="Premium organic dog food packaging with a vibrant orange and teal aesthetic, set against a clean clinical white background with soft medical-grade lighting. The product looks professional and high-quality, reflecting a trustworthy veterinary clinic store atmosphere. The lighting is crisp and clear, emphasizing purity and health." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGUSuQRoHaOxXqY9T1IWr969GLFXDwPVw2z8eXp6xp6TEx-WIs4nNIy1wVpQk3gXq_XTx77SyVGO9xddwIQ7tti4ssX9BH0R1LRIeWlctyJ6BgaASjgu3UjsJjGoWCUgwN38gDxNs9JTeHVScIGZxSh8SE9wnbN-Gq_u6mG03asJRBOR_ty4hPiV1eeJ8Y4w9_7ANixOyg_SrIgwP4NEcE4ETRAD0TjeRHaS7AIJEvgUPMrx9WJAqooReEe6glCn2o_zWmootA124"/>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-primary">Premium Canine Growth Kibble</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">15kg Bag • Puppy Formulation</p>
+<button class="mt-base text-error font-label-md text-label-md flex items-center gap-base hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[16px]" data-icon="delete">delete</span> Remove
+                                </button>
+</div>
+</div>
+<div class="col-span-4 md:col-span-2 text-center md:block flex justify-between items-center">
+<span class="md:hidden font-label-md text-secondary">Price:</span>
+<span class="font-body-lg text-body-lg">$45.50</span>
+</div>
+<div class="col-span-4 md:col-span-2 flex justify-center items-center">
+<div class="flex items-center border border-outline rounded-lg bg-surface-container-lowest">
+<button class="p-xs hover:bg-surface-container transition-colors" onclick="decrement(this)">
+<span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span>
+</button>
+<span class="px-md font-label-md text-label-md w-12 text-center quantity-value">1</span>
+<button class="p-xs hover:bg-surface-container transition-colors" onclick="increment(this)">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+<div class="col-span-4 md:col-span-2 text-right md:block flex justify-between items-center">
+<span class="md:hidden font-label-md text-secondary">Subtotal:</span>
+<span class="font-headline-md text-headline-md text-primary">$45.50</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="grid grid-cols-12 gap-md p-md items-center zebra-row border-b border-outline-variant/30">
+<div class="col-span-12 md:col-span-6 flex items-center gap-md">
+<div class="w-20 h-20 bg-surface-container rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="A sleek, modern glass bottle of veterinary-grade feline supplements with a minimalist label. The lighting is high-key and medical, casting soft shadows on a sterile white surface with a hint of soft mint teal in the background. The mood is scientific yet approachable, perfectly aligning with a premium pet care corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWa2uS1-c5CPlaxnitibKDLKPjubT0bg7UUG9-eeTWlIyeZQX9etUxZP3tjO0rbcjJkLvxUMgQL2cIV5wSxaTdfEL6UemwC2XRIzSuas6dXTcJlr73Ansgb1inm3dx8zlBTFKkY3xpOVNjxjBeEjt1tVyzzWXCrb0hcUcuEbcDHUIFPkARe3uhDQdG7XDzosajEnqzrT4v8nl_qCjHvXJNuShciWV-rUZwvSRlk6QiKd8ftqd_2vFS_GEq3FnU5RtvXB47teBLWvU"/>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-primary">Advanced Joint Care Elixir</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">250ml • Liquid Supplement</p>
+<button class="mt-base text-error font-label-md text-label-md flex items-center gap-base hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[16px]" data-icon="delete">delete</span> Remove
+                                </button>
+</div>
+</div>
+<div class="col-span-4 md:col-span-2 text-center">
+<span class="md:hidden font-label-md text-secondary">Price:</span>
+<span class="font-body-lg text-body-lg">$28.00</span>
+</div>
+<div class="col-span-4 md:col-span-2 flex justify-center items-center">
+<div class="flex items-center border border-outline rounded-lg bg-surface-container-lowest">
+<button class="p-xs hover:bg-surface-container transition-colors" onclick="decrement(this)">
+<span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span>
+</button>
+<span class="px-md font-label-md text-label-md w-12 text-center quantity-value">2</span>
+<button class="p-xs hover:bg-surface-container transition-colors" onclick="increment(this)">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+<div class="col-span-4 md:col-span-2 text-right">
+<span class="md:hidden font-label-md text-secondary">Subtotal:</span>
+<span class="font-headline-md text-headline-md text-primary">$56.00</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="grid grid-cols-12 gap-md p-md items-center zebra-row">
+<div class="col-span-12 md:col-span-6 flex items-center gap-md">
+<div class="w-20 h-20 bg-surface-container rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="A durable, high-visibility orange pet safety harness presented in a modern, well-lit pet retail setting. The visual style is crisp and clean with a focus on tactical durability and safety. The color palette incorporates vibrant orange against a neutral, high-end gray and teal background, emphasizing professional pet gear quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByO2KkhcTZlXcYZq5CQ-KAOsYeMEYR_7VVpE5_WXBbROopwQqMqwu02LX3i02dH6YS7_zJmC9zBtfe4-Onc3nkNeGy_RJSpKa7nWTqecIissGGBhunz6hhHrLJ4OmEO4ngpoxQHRtWVVkkMfNk-wOnGVXcoqQ2LmFCylREUMCrFdluKAwz0nFKjPBlsQ_xKjv0pBT86epOnu1K4oiZui8xL82zQitOl2f3y6BG3U9HDHIAsEa8c4v7nTjHTjwWL9W0ogtb4Scc0k0"/>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-primary">Tuff-Walk Safety Harness</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Size L • High-Vis Orange</p>
+<button class="mt-base text-error font-label-md text-label-md flex items-center gap-base hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[16px]" data-icon="delete">delete</span> Remove
+                                </button>
+</div>
+</div>
+<div class="col-span-4 md:col-span-2 text-center">
+<span class="md:hidden font-label-md text-secondary">Price:</span>
+<span class="font-body-lg text-body-lg">$19.00</span>
+</div>
+<div class="col-span-4 md:col-span-2 flex justify-center items-center">
+<div class="flex items-center border border-outline rounded-lg bg-surface-container-lowest">
+<button class="p-xs hover:bg-surface-container transition-colors" onclick="decrement(this)">
+<span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span>
+</button>
+<span class="px-md font-label-md text-label-md w-12 text-center quantity-value">1</span>
+<button class="p-xs hover:bg-surface-container transition-colors" onclick="increment(this)">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+<div class="col-span-4 md:col-span-2 text-right">
+<span class="md:hidden font-label-md text-secondary">Subtotal:</span>
+<span class="font-headline-md text-headline-md text-primary">$19.00</span>
+</div>
+</div>
+</div>
+<a class="inline-flex items-center gap-xs mt-lg text-primary font-body-lg text-body-lg hover:underline transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+                    Continue Shopping
+                </a>
+</div>
+<!-- Order Summary Card -->
+<div class="lg:w-1/3">
+<div class="treatment-card rounded-xl p-md shadow-lg sticky top-24">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-md">Order Summary</h2>
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between items-center">
+<span class="font-body-lg text-body-lg text-on-surface-variant">Subtotal</span>
+<span class="font-body-lg text-body-lg font-semibold">$120.50</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-lg text-body-lg text-on-surface-variant">Shipping</span>
+<span class="font-body-lg text-body-lg font-semibold text-primary">Calculated at checkout</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-lg text-body-lg text-on-surface-variant">Tax</span>
+<span class="font-body-lg text-body-lg font-semibold">$0.00</span>
+</div>
+<div class="pt-sm mt-sm border-t border-outline-variant flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-on-surface">Total</span>
+<span class="font-headline-lg text-headline-lg text-primary">$120.50</span>
+</div>
+</div>
+<div class="space-y-sm">
+<button class="w-full py-md px-lg bg-tertiary text-on-tertiary rounded-lg font-headline-md text-headline-md hover:bg-tertiary-container transition-all active:scale-98 flex justify-center items-center gap-sm shadow-md">
+                            Proceed to Checkout
+                            <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+<div class="flex items-center gap-sm p-sm bg-surface-container-low rounded-lg border border-outline-variant/50">
+<span class="material-symbols-outlined text-primary" data-icon="verified">verified</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Secure checkout powered by VetCare Payments. Your health records and data are encrypted.</p>
+</div>
+</div>
+<div class="mt-lg">
+<div class="relative">
+<input class="w-full h-11 pl-md pr-24 rounded-lg border border-outline focus:border-primary focus:ring-1 focus:ring-primary-container bg-surface-container-lowest outline-none transition-all font-body-md" placeholder="Promo Code" type="text"/>
+<button class="absolute right-base top-base bottom-base px-md bg-secondary text-on-secondary rounded font-label-md text-label-md hover:opacity-90 transition-opacity">Apply</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-surface-container dark:bg-on-background border-t border-outline-variant dark:border-outline">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-xl px-gutter py-xl max-w-container-max mx-auto">
+<div class="flex flex-col gap-sm">
+<span class="font-headline-md text-headline-md text-primary">VetCare Pro</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Professional veterinary care and shop management systems. Delivering quality since 2012.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md text-secondary uppercase tracking-widest">Support</h4>
+<nav class="flex flex-col gap-xs">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Emergency Care</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Contact Us</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">FAQs</a>
+</nav>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md text-secondary uppercase tracking-widest">Company</h4>
+<nav class="flex flex-col gap-xs">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">About Us</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Terms of Service</a>
+</nav>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md text-secondary uppercase tracking-widest">Newsletter</h4>
+<div class="flex flex-col gap-xs">
+<p class="font-body-md text-body-md text-on-surface-variant">Get pet health tips and shop updates.</p>
+<div class="flex gap-base">
+<input class="flex-grow h-10 px-sm rounded border border-outline bg-surface-container-lowest outline-none font-body-md" placeholder="Email Address" type="email"/>
+<button class="bg-primary text-on-primary px-sm rounded hover:bg-primary-container transition-colors">Join</button>
+</div>
+</div>
+</div>
+</div>
+<div class="px-gutter py-md border-t border-outline-variant/30 text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 VetCare Pro Management Systems. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        function increment(btn) {
+            const valSpan = btn.parentElement.querySelector('.quantity-value');
+            let val = parseInt(valSpan.innerText);
+            valSpan.innerText = val + 1;
+            // Additional logic for subtotal updates could go here
+        }
+
+        function decrement(btn) {
+            const valSpan = btn.parentElement.querySelector('.quantity-value');
+            let val = parseInt(valSpan.innerText);
+            if (val > 1) {
+                valSpan.innerText = val - 1;
+            }
+        }
+
+        // Simple animation on scroll for sticky header
+        window.onscroll = function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        };
+    </script>
+</body></html>

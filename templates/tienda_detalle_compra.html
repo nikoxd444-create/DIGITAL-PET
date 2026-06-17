@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VetCare Pro - Premium Pet Nutrition</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lexend:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#d8e5e2",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#89f5e7",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "on-secondary-container": "#5b6765",
+                    "secondary-fixed": "#d8e5e2",
+                    "tertiary-container": "#a36700",
+                    "on-secondary-fixed": "#121e1c",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed-variant": "#005049",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#008378",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-variant": "#d3e4fe",
+                    "on-primary-container": "#f4fffc",
+                    "on-secondary": "#ffffff",
+                    "primary": "#00685f",
+                    "inverse-primary": "#6bd8cb",
+                    "inverse-surface": "#213145",
+                    "outline": "#6d7a77",
+                    "surface-container": "#e5eeff",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-secondary-fixed-variant": "#3d4947",
+                    "secondary": "#55615f",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "surface-bright": "#f8f9ff",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-fixed": "#00201d",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-background": "#0b1c30",
+                    "on-surface-variant": "#3d4947",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-tint": "#006a61",
+                    "outline-variant": "#bcc9c6",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "secondary-fixed-dim": "#bcc9c6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "lg": "40px",
+                    "sm": "16px",
+                    "base": "4px",
+                    "container-max": "1440px",
+                    "md": "24px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "xl": "64px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Lexend"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Lexend"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Lexend"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .zebra-stripe:nth-child(even) {
+            background-color: rgba(216, 229, 226, 0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #bcc9c6;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-lg">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant">
+<nav class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+<div class="flex items-center gap-xl">
+<span class="font-headline-md text-headline-md font-bold text-primary">VetCare Pro</span>
+<div class="hidden md:flex items-center gap-lg">
+<a class="font-body-lg text-body-lg text-primary border-b-2 border-primary pb-1 transition-colors duration-200" href="#">Shop</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Appointments</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Services</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer active:scale-95 transition-transform" data-icon="shopping_cart">shopping_cart</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer active:scale-95 transition-transform" data-icon="notifications">notifications</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional close-up portrait of a female veterinarian with a warm smile, wearing a clean white clinical coat. The background is a soft-focus medical office with subtle teal and mint green accents. High-quality studio lighting creates a professional yet approachable corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHarsn-hNZ172VCSzEV80EtKLYDLLI0cCEF23WUkDjEqJU-ul27o5Cv9lBFFKNEMGu1vKG7-kK352s-PogRa2pKj7gVhs-7mZ3nIoI_P9CZwFlbB5LJFYwnvTP3djfGdYjmq5txI5eGMIXG2-X3npZ5Gu_SFwdHsqVwj5L3qm23jRk9qd1TEoy-Te6H_mPyIKOeLtxdWm6JgtE4PwZ9ASMjVjY4mkWGqKEOrCXzVWVrx68e9EPuJjw5tUgC3186GZ3zuITzTgjx-4"/>
+</div>
+</div>
+</nav>
+</header>
+<main class="pt-16 max-w-container-max mx-auto min-h-screen">
+<div class="flex">
+<!-- Side Navigation -->
+<!-- Main Content Canvas -->
+<div class="flex-grow p-gutter mx-auto max-w-container-max">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-xs text-secondary mb-lg">
+<span class="font-label-md text-label-md">Shop</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+<span class="font-label-md text-label-md">Nutrition</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+<span class="font-label-md text-label-md text-primary">Advanced Joint Support</span>
+</nav>
+<!-- Product Section Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Left: Large Product Image -->
+<div class="lg:col-span-7">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden p-md flex items-center justify-center min-h-[500px]">
+<img alt="Pet Supplement Product" class="max-w-full h-auto max-h-[450px] object-contain drop-shadow-md" data-alt="A premium bottle of veterinary joint supplement standing elegantly on a clean white clinical surface. The background features a soft mint teal wash with subtle medical-grade lighting. The product packaging is minimalist and professional, reflecting a high-quality medical pet care brand with soft shadows and sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA34OWxfGe_UZ7JnBM2nYbliwYDkNDgUfzb1eWd1zL1YJtkgTrZbViQdTKQKmmAS-236frrepjaP0PTNNCddL4pIxCGh8z1n_5hehEdMqBA9ZGvrezqyUnhHk4Gkv2zWm-zcD3nZfX8QHcYCSvKuoUk2q97sqs4kFXPWRHulkvcfY70wF8IzpFNypzw3Bos_leMADNfzTDwswZwVKo0hBbhQ_wgLOsbMQ4-D4n1CJXqtKyebZGDR3cL7Zmw0_RtVuBWcLQW2IKT-uo"/>
+</div>
+<div class="grid grid-cols-4 gap-md mt-md">
+<button class="border-2 border-primary rounded-lg overflow-hidden bg-white p-2">
+<img class="w-full grayscale-0" data-alt="Detail view of veterinary product bottle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbXWHi7itu4r9nbr3r-8yhMMExLsg3jKlQtGWVSjpl9xHICHsBo51lR2VBdDCZn_MplGmR8kU51-VmCmWtA62alI-IYi7_pNyXlSkhXY375wDiiUFmwdNvhzOEA9xwagzVNrK2k8-dDXmuc0SQ4KKmJ6JR9Focn8CgqR8HwhY67dBRgUcEz4Y5kI-6b59KFMQ10DrJzCv5msjYQ8qqABWXJGne9QgpCuIITbQ2fPGFImVJTbfaiRH127jKDSf2mavA0yIkArnYY1k"/>
+</button>
+<button class="border border-outline-variant rounded-lg overflow-hidden bg-white p-2 hover:border-primary transition-colors">
+<img class="w-full grayscale opacity-70" data-alt="Pet health supplements ingredients close up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbqJOcgzBDID__p9Dpwtwo_fTbFco7dWKNJU_oqizBohzgarQSLnlDbbzMVr3panPf6YR0pWmS-3zFjWYP5q4OdkMOaeG3nMd4Q93am3Bi0cst1CAA0Dqm_mTBnpRg1tL96G5UOiOOS2fAQU1hn2NnKbKcX9_hDoi1-AnBf1dOWSo463vkAjqDwdFW2B2VD-hZs86CxzqsrfqAiCTo7W_qzToaTiKfO63aaxSEwwrfjSClz8lWAWeLgGGaJ4eNW5DCQc5WKfPD_L8"/>
+</button>
+<button class="border border-outline-variant rounded-lg overflow-hidden bg-white p-2 hover:border-primary transition-colors">
+<img class="w-full grayscale opacity-70" data-alt="Laboratory testing pet nutritional value" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0xVwfjs5AYvOXRvE2SGrXi-mzdc6cU00dsLej5I9AH2rcEEOo3NAtjdAe4J2ktSeDLOcYeOczoLyD3T9-OOALr-IgRrWvB1o8a-1pxzp9hj7lE-g8wn1Eiwia0lJ91nROURlcscbC7KWDlMDDOSWtx7Z0Fs09sweC3D6NKecnlrbZNIQ4sYQLWJwoKR77Uhg9CArRMMWYxO-PaBFmSnzGueVqDS1L1Pg3HDU7z5Bt9JBsgbiJrIcdw-ZvzDqn2EBphlwEfjOu6wE"/>
+</button>
+<button class="border border-outline-variant rounded-lg overflow-hidden bg-white p-2 hover:border-primary transition-colors">
+<img class="w-full grayscale opacity-70" data-alt="Scientific research pet health supplements" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAWf52WMc4D5KpNFIbcd4m-2xH0WyiElTIAnroeKc64HPKA_ad0_g9BoK_blMJZJCXcVbyFcFukd_Rskm_p4wQNQQonBHMFPUWWceoskqFX7qb6XG2iTOd6T8rAOS9UT-GF9AbQuXbB_9XIb8_dXJXi0C14QU0MyI4rJluZnhyy5rjqcgReqh9EfcFCFR_tal4I6TzY2op1MoD7qK9XcwqbOchVT5kMZ0WcVEcPW6KnVM9PqX7iGIR-fuOXFQP2qexrD2lyAPOf58"/>
+</button>
+</div>
+</div>
+<!-- Right: Product Details -->
+<div class="lg:col-span-5 flex flex-col gap-md">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-[0_4px_12px_rgba(0,131,120,0.04)]">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Advanced Joint Support Formula (120 Soft Chews)</h1>
+<div class="flex items-center gap-sm mb-md">
+<div class="flex text-tertiary">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star_half" style="font-variation-settings: 'FILL' 1;">star_half</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant">(142 Customer Reviews)</span>
+</div>
+<div class="flex items-baseline gap-sm mb-md">
+<span class="font-headline-lg text-headline-lg text-primary">$24.99</span>
+<span class="font-body-md text-body-md text-on-surface-variant line-through">$32.00</span>
+<span class="px-sm py-base bg-tertiary-container/10 text-tertiary font-label-md text-label-md rounded-full ml-auto">Save 22%</span>
+</div>
+<div class="flex items-center gap-xs mb-lg">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-md text-label-md text-primary font-bold uppercase">In Stock (Clinic Inventory: 42)</span>
+</div>
+<div class="space-y-md">
+<div class="flex items-center gap-md">
+<div class="flex items-center border border-outline rounded-lg h-11">
+<button class="px-md h-full hover:bg-secondary-container transition-colors" onclick="this.parentNode.querySelector('input').stepDown()">-</button>
+<input class="w-12 text-center bg-transparent border-none font-bold focus:ring-0" min="1" type="number" value="1"/>
+<button class="px-md h-full hover:bg-secondary-container transition-colors" onclick="this.parentNode.querySelector('input').stepUp()">+</button>
+</div>
+<button class="flex-grow bg-primary hover:bg-primary-container text-on-primary h-11 rounded-lg font-bold transition-all active:scale-95 flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+                                        Add to Cart
+                                    </button>
+</div>
+<button class="w-full bg-tertiary hover:bg-tertiary-container text-white h-11 rounded-lg font-bold transition-all active:scale-95">
+                                    Book Appointment for Consultation
+                                </button>
+</div>
+<div class="mt-xl border-t border-outline-variant pt-md flex gap-lg">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+<span class="font-label-md text-label-md">Fast Delivery</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-primary" data-icon="verified">verified</span>
+<span class="font-label-md text-label-md">Vet Approved</span>
+</div>
+</div>
+</div>
+<!-- Clinic Context Card -->
+<div class="bg-secondary-container/30 border border-secondary-container rounded-xl p-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-sm">Medical Notes</h3>
+<p class="font-body-md text-body-md text-on-secondary-container leading-relaxed">
+                                Specifically formulated for senior canines with Grade 1-2 mobility issues. Administer twice daily with meals.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Technical Specifications Section -->
+<section class="mt-xl">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden">
+<div class="border-b border-outline-variant flex gap-xl px-md">
+<button class="py-md font-headline-md text-headline-md text-primary border-b-2 border-primary">Product Specifications</button>
+<button class="py-md font-headline-md text-headline-md text-on-surface-variant hover:text-primary transition-colors">Ingredients</button>
+<button class="py-md font-headline-md text-headline-md text-on-surface-variant hover:text-primary transition-colors">Usage Guide</button>
+</div>
+<div class="p-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-xl">
+<div class="divide-y divide-outline-variant/30">
+<div class="flex justify-between py-sm zebra-stripe px-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Main Use</span>
+<span class="font-body-md text-body-md font-bold">Joint &amp; Mobility</span>
+</div>
+<div class="flex justify-between py-sm zebra-stripe px-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Form</span>
+<span class="font-body-md text-body-md font-bold">Soft Chews</span>
+</div>
+<div class="flex justify-between py-sm zebra-stripe px-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Animal</span>
+<span class="font-body-md text-body-md font-bold">Canine (Dogs)</span>
+</div>
+<div class="flex justify-between py-sm zebra-stripe px-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Count</span>
+<span class="font-body-md text-body-md font-bold">120 Pieces</span>
+</div>
+</div>
+<div class="divide-y divide-outline-variant/30">
+<div class="flex justify-between py-sm zebra-stripe px-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Weight Range</span>
+<span class="font-body-md text-body-md font-bold">All Sizes</span>
+</div>
+<div class="flex justify-between py-sm zebra-stripe px-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Shelf Life</span>
+<span class="font-body-md text-body-md font-bold">24 Months</span>
+</div>
+<div class="flex justify-between py-sm zebra-stripe px-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Origin</span>
+<span class="font-body-md text-body-md font-bold">USA (Vet-Certified)</span>
+</div>
+<div class="flex justify-between py-sm zebra-stripe px-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Storage</span>
+<span class="font-body-md text-body-md font-bold">Cool Dry Place</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Related Products Slider -->
+<section class="mt-xl mb-xl">
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Related Products</h2>
+<div class="flex gap-sm">
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-secondary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-secondary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex gap-md overflow-x-auto pb-md custom-scrollbar -mx-2 px-2">
+<!-- Product Item 1 -->
+<div class="min-w-[280px] bg-surface-container-lowest rounded-xl border border-outline-variant p-sm group cursor-pointer hover:shadow-lg transition-all">
+<div class="aspect-square bg-background rounded-lg mb-sm overflow-hidden p-md">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform" data-alt="Premium organic dog food packaging in a clean clinical environment. Bright high-key lighting, mint teal background, modern vet care professional aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAygY_P2TRnpuko6nSsPQct5meuJA9_0yLzcXcyGoo6SYHVdffWiJTnFNwmi-NFdC-3HYfyG-EzyqdmdTfv7oZ1vHD4MjzZ3j5JpOPGCdj_PBvP88Kd89TL84jUQDJz7n7CAZTiX4UJgggTpP-E0ZiV5ycp1FE6W23TnYoC97osKSo0pxVxLyHw55ICSE0CjH0V8UrJQhB62m_4BeytqG--jIjLiLPtw0ORsddeqnoJDV4xDNHYsUEvB9KSmY89MAF6_hELhBXrEUg"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-base truncate">Holistic Skin Care</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Dermatology Support</p>
+<div class="flex items-center justify-between">
+<span class="font-headline-md text-headline-md text-primary">$18.50</span>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+<!-- Product Item 2 -->
+<div class="min-w-[280px] bg-surface-container-lowest rounded-xl border border-outline-variant p-sm group cursor-pointer hover:shadow-lg transition-all">
+<div class="aspect-square bg-background rounded-lg mb-sm overflow-hidden p-md">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform" data-alt="Advanced veterinary probiotics bottle for pets. Sharp focus on high-quality packaging with minimal text. Set in a sterile medical clinic with warm orange and deep teal highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ6VOD5dPNuT_lkGX7HQT0B0AJvOOglC1KufA4wNO07VN76n5wlyXcFU7guDm651FnZ9mKXRWhGO8w57mpz9tC3FMKlXn4vN_MZZpQ0obuIbMNRU5YzA6D9-ZhUPmWDCGXFMvjzXx8y2mZcolbUK94RtUAd9cmJbOiRpmXUXMIZEalqIqG1Z-gJw9WVH8Ya8fNXtWh4zHIjayKBnOfxflHu96lzeVftAIRuT_594v0PdJd0gpb3c1xtYutiTAjqDTlinium5XxsYs"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-base truncate">Digestion Pro+</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Gastrointestinal Health</p>
+<div class="flex items-center justify-between">
+<span class="font-headline-md text-headline-md text-primary">$21.99</span>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+<!-- Product Item 3 -->
+<div class="min-w-[280px] bg-surface-container-lowest rounded-xl border border-outline-variant p-sm group cursor-pointer hover:shadow-lg transition-all">
+<div class="aspect-square bg-background rounded-lg mb-sm overflow-hidden p-md">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform" data-alt="Calming pet supplements in a stylish glass container. Soft ambient lighting creates a peaceful mood. Background is a warm wood and mint clinical setting. Corporate medical high-end style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrB2qbqXLNbpfp2GKWniLvDdtuC_7bmcVYtCLeqrbPCxX8m7mARjMgTHITh35n7eMeqZ32pdscAzFYD6XVA25sFt3LfF3G0leEmR6wR25wMePVZTXl41j7wAs4c0zNij8_fw8fSv4kCN3Txi0_f9KyAohXkNrTYtErpmIlgVe4oauAnP1wFwRRrTTbYL5AJbbd-BFDeXCuNqrrEBEzt1ofBMdw5BK4lBpi4IAdrqNWkV87Ye56tdsZ7ScYcCJYZAUy_Sz3rytI9og"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-base truncate">Zen Calming Chews</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Anxiety Relief</p>
+<div class="flex items-center justify-between">
+<span class="font-headline-md text-headline-md text-primary">$15.75</span>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+<!-- Product Item 4 -->
+<div class="min-w-[280px] bg-surface-container-lowest rounded-xl border border-outline-variant p-sm group cursor-pointer hover:shadow-lg transition-all">
+<div class="aspect-square bg-background rounded-lg mb-sm overflow-hidden p-md">
+<img class="w-full h-full object-contain group-hover:scale-105 transition-transform" data-alt="Liquid dental care for dogs in professional pump bottle. Medical grade studio photography with soft white and mint green aesthetic. Extremely clean and professional packaging design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAes2j4tPMLQuMcGMIlwIyMijwK1H0Rss03vCy5jslg2uxtzVRrdE1uYuRQN81m_v2aqSHy4H2bBV-ZSkz4wdQKFKBC0HBaFfZWK-33EjALz3wd5yhT3XMrhmba8zIf0SFpFm2JHr4AUZwltzIAWIP8wZ59_7xQzE_PFlwVROt-VXdydgAsGvLD_qvYqcwdHLKPTI1RnTRqxLboalHmIddJjaoI39jaiaSvazXdEHM1GjB8SV10XLiKi65WA8JlSyUW_empRhMER9I"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-base truncate">Fresh Breath Water Additive</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Oral Hygiene</p>
+<div class="flex items-center justify-between">
+<span class="font-headline-md text-headline-md text-primary">$12.99</span>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-surface-container border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-xl px-gutter py-xl max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-1">
+<span class="font-headline-md text-headline-md text-primary mb-md block">VetCare Pro</span>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    Connecting premium veterinary care with advanced management solutions for health-focused pet owners.
+                </p>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold text-on-surface mb-md uppercase">Support</h4>
+<div class="flex flex-col gap-sm">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Emergency Care</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Pharmacy Help</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Contact Us</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold text-on-surface mb-md uppercase">Legal</h4>
+<div class="flex flex-col gap-sm">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-label-md font-bold text-on-surface mb-md uppercase">Newsletter</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Join for pet health tips and clinic updates.</p>
+<div class="flex">
+<input class="flex-grow bg-white border border-outline-variant rounded-l-lg px-sm focus:ring-1 focus:ring-primary outline-none" placeholder="Email address" type="email"/>
+<button class="bg-primary text-on-primary px-md py-2 rounded-r-lg">Join</button>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant/30 py-md px-gutter text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">2024 VetCare Pro Management Systems. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        // Micro-interactions and UI logic
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Haptic-like visual feedback already handled by Tailwind classes (active:scale-95)
+            });
+        });
+
+        // Simple smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body></html>

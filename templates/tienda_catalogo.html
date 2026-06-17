@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Catalog | VetCare Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lexend:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #bcc9c6;
+            border-radius: 10px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .product-card {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#213145",
+                      "error": "#ba1a1a",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-secondary-fixed-variant": "#3d4947",
+                      "on-primary": "#ffffff",
+                      "primary-fixed-dim": "#6bd8cb",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-secondary-fixed": "#121e1c",
+                      "on-surface": "#0b1c30",
+                      "secondary-fixed-dim": "#bcc9c6",
+                      "error-container": "#ffdad6",
+                      "surface": "#f8f9ff",
+                      "background": "#f8f9ff",
+                      "on-primary-fixed-variant": "#005049",
+                      "surface-tint": "#006a61",
+                      "tertiary-fixed": "#ffddb8",
+                      "secondary-container": "#d8e5e2",
+                      "on-surface-variant": "#3d4947",
+                      "inverse-primary": "#6bd8cb",
+                      "surface-container-high": "#dce9ff",
+                      "outline-variant": "#bcc9c6",
+                      "primary-fixed": "#89f5e7",
+                      "secondary": "#55615f",
+                      "surface-dim": "#cbdbf5",
+                      "on-secondary": "#ffffff",
+                      "tertiary": "#825100",
+                      "surface-container": "#e5eeff",
+                      "on-error": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-bright": "#f8f9ff",
+                      "on-background": "#0b1c30",
+                      "on-tertiary-container": "#fffbff",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-container": "#a36700",
+                      "primary": "#00685f",
+                      "surface-variant": "#d3e4fe",
+                      "on-primary-container": "#f4fffc",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed": "#d8e5e2",
+                      "on-tertiary-fixed": "#2a1700",
+                      "on-primary-fixed": "#00201d",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "primary-container": "#008378",
+                      "outline": "#6d7a77",
+                      "on-secondary-container": "#5b6765",
+                      "surface-container-low": "#eff4ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "md": "24px",
+                      "xs": "8px",
+                      "sm": "16px",
+                      "gutter": "24px",
+                      "lg": "40px",
+                      "margin-mobile": "16px",
+                      "xl": "64px",
+                      "base": "4px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-md": ["Lexend"],
+                      "headline-lg-mobile": ["Lexend"],
+                      "body-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg": ["Lexend"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md custom-scrollbar overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30">
+<div class="max-w-container-max mx-auto px-gutter flex justify-between items-center h-20">
+<div class="flex items-center gap-xl">
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">VetCare Pro</span>
+<nav class="hidden lg:flex gap-lg items-center">
+<a class="text-primary font-semibold border-b-2 border-primary pb-1 transition-all" href="#">Shop</a>
+<a class="text-on-surface-variant/70 hover:text-primary transition-colors duration-200" href="#">Appointments</a>
+<a class="text-on-surface-variant/70 hover:text-primary transition-colors duration-200" href="#">Services</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:block group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/40 group-focus-within:text-primary transition-colors">search</span>
+<input class="w-64 pl-10 pr-4 py-2 bg-surface-container-low/30 border border-transparent focus:border-outline-variant/30 focus:bg-white rounded-full text-body-md focus:outline-none transition-all placeholder:text-on-surface-variant/30" placeholder="Search..." type="text"/>
+</div>
+<button class="relative p-2.5 hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined text-on-surface-variant/80">shopping_cart</span>
+<span class="absolute top-1.5 right-1.5 w-4 h-4 bg-primary text-white text-[9px] flex items-center justify-center rounded-full font-bold">2</span>
+</button>
+<div class="w-10 h-10 rounded-full border border-outline-variant/30 p-[2px] cursor-pointer overflow-hidden ml-xs">
+<img alt="User profile" class="w-full h-full rounded-full object-cover grayscale-[0.5] hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEgnjY2HnLW9oSp0fEx1sVbb9jQSVN6JDNLjiS2mBfWGg8Qc_a1SFTSo7-5cpl6UDZGyKeYwpbvcLmMPyLCUW_pA49sm_Mf4kMn6Q3C3CjPPp856QA0xXA6T9d1VHB-ecHgRzCGjP5JDfQKRUXn1_HsCmTm8Z4ENEe5jaKy5IuhkK90mLtbmnes94MQTUrNKFOez29eKlC8EB6hY5Twq6naftckDzXzDXavYvSXTqOK7CAJJDAGA0dQiUB2bl8bjktiRQXaHnVsm4"/>
+</div>
+</div>
+</div>
+</header>
+<div class="pt-20 min-h-screen">
+<main class="max-w-container-max mx-auto px-gutter py-xl">
+<!-- Centered Header -->
+<div class="text-center mb-xl animate-fade-in">
+<nav class="flex justify-center gap-xs text-label-sm text-on-surface-variant/40 mb-4 items-center uppercase tracking-widest">
+<a class="hover:text-primary transition-colors" href="#">Shop</a>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-primary/60 font-medium">Pet Supplies</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mb-4">Premium Pet Catalog</h1>
+<div class="flex justify-center items-center gap-4">
+<p class="text-body-md text-on-surface-variant/60">
+                    Curated medical-grade essentials for your loved ones
+                </p>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm">tune</span>
+<select class="bg-transparent border-none py-0 text-label-md font-semibold text-primary focus:ring-0 cursor-pointer appearance-none uppercase tracking-wider">
+<option>Newest Arrivals</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Centered Pet Selection -->
+<section class="mb-xl animate-fade-in" style="animation-delay: 0.1s;">
+<div class="flex flex-col items-center">
+<h2 class="text-label-sm uppercase tracking-[0.2em] text-on-surface-variant/40 mb-lg">¿Qué mascota estás buscando?</h2>
+<div class="flex justify-center gap-lg md:gap-xl overflow-x-auto pb-6 w-full custom-scrollbar">
+<div class="flex flex-col items-center gap-3 group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-outline-variant/30 p-1 transition-all duration-500 group-hover:border-primary/50 group-hover:scale-105">
+<div class="w-full h-full rounded-full overflow-hidden bg-surface-container">
+<img alt="Todos" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXkG09jhZW640RzlAZeCK8E08dnbYPjuRZo78AYgosqsSNwu08UdnlBmENcZndV1n8ImAYyNkLmiZ_x5dtrDnarJ7KQtHia2w4pFeyiFPefhfqIGqEG1tZUmfVj56U9COROZMqdHU6IEapTxeBqSsk6LBnCJo5rqUMLeeoNIfR5SQL8esR5gtiErO_C4JypdlC-RPqZzCFxi6-epGl76HErw3ogWRt1lfPOosPtsxeJ81ksZFJxcwlcFh3knys3JCIukkYoWJYLnk"/>
+</div>
+</div>
+<span class="text-label-md font-semibold text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">Todos</span>
+</div>
+<div class="flex flex-col items-center gap-3 group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-outline-variant/30 p-1 transition-all duration-500 group-hover:border-primary/50 group-hover:scale-105">
+<div class="w-full h-full rounded-full overflow-hidden bg-surface-container">
+<img alt="Perros" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeMVuCIxUjm065O-xW7-JbLzU_qcbRKbMvBWmdqrm_MEd9t0W8OBwu2ipV0Wm8D-kXn_jiif7GgAknmGwn42GMIkd7xD3q8R47Gyp3z-aV2VHqGvzXtsXtZIitns9udeQvwj_SgZcNaoWxn7pBcVoQmAiSQTXvANoq-eXkMdyN7f1_5b87DFMsmFAfsZxCgIGzT5pF_Wr_wVA5CAtA6xAxlrjaFVX4xxHVVnzN-hFsLVPcXTWsk83GW3rcQ8uM_SomCNGBU3Z7Mm4"/>
+</div>
+</div>
+<span class="text-label-md font-semibold text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">Perros</span>
+</div>
+<div class="flex flex-col items-center gap-3 group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-outline-variant/30 p-1 transition-all duration-500 group-hover:border-primary/50 group-hover:scale-105">
+<div class="w-full h-full rounded-full overflow-hidden bg-surface-container">
+<img alt="Gatos" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-gejqC2IdwKck3ekxZWJvSovd7cikbb8i9Wed2SpfXaJCPANhT323nbbFdfKJS88K4oigOCtQXmB7ywa6Ev7MnFtTaaWqfiVa8DdlMnLjeVK3sij124Oc1zaxSPgCsGoFddS3HM8fQplKLhWn_Fs_YhoKNhp4yli0AMViStVSQwKIKv3m9yyv_yUXC9sVS9KqZFTxmmbX8VKua1NtGdY08g8IFh37EUjvh2R-0T7Ez0hTvNWrUJY0BXiRL2MjANtaM-xhSsYur0k"/>
+</div>
+</div>
+<span class="text-label-md font-semibold text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">Gatos</span>
+</div>
+<div class="flex flex-col items-center gap-3 group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-outline-variant/30 p-1 transition-all duration-500 group-hover:border-primary/50 group-hover:scale-105">
+<div class="w-full h-full rounded-full overflow-hidden bg-surface-container">
+<img alt="Aves" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPFSXI6TSFjlNGFARbEhOqWM9tP7h6gna9urka6Lp7Z_TqiF_9nB7RuXFRe47Gbhm5W5roCTaFSpx7HmhOWK5WpXgdOrtGRoDbfGmU-W1V4piP1LxVhYw1vdM1OXxdLYtVbk4Cnj5PheGVqTFQm0rQBu8nnV0xXOsWsjzN5Jf8bIR0GitKaIO70mK9RHV1YSbY8qXLs0YJVB2XMJ-nn3iQkFikWY7fwvbVd2oThtQatyKNyemp7Hht_xekEH8vCrkYXI7AsCIw704"/>
+</div>
+</div>
+<span class="text-label-md font-semibold text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">Aves</span>
+</div>
+<div class="flex flex-col items-center gap-3 group cursor-pointer">
+<div class="w-24 h-24 rounded-full border border-outline-variant/30 p-1 transition-all duration-500 group-hover:border-primary/50 group-hover:scale-105">
+<div class="w-full h-full rounded-full overflow-hidden bg-surface-container">
+<img alt="Pequeños" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbkdzuu0Sw2ME4kEBmyIl_GuSuPG1zRgjN-eMFmTf3NBIYK73ePtaza66zRbBwwr1Amj5RCn6vuBVOHkGi9KVbprtraX3YJ92PTBjuuZ0kqMDvHCWzAGS97ASYroThuRz8kJjLcCa6Fyj_PoNSHIYaRNmJM8zyzI1BHaE3I-qZUf9e9oezA_tKmZU3f45PDSbJjEN5f7hVhxP0_FJ7CFyegQ2ijRp694NpMIhHXSsm_LvEgpit2o8Fmlhcl9OOEEeh10j4Cl3lyj0"/>
+</div>
+</div>
+<span class="text-label-md font-semibold text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">Pequeños</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Product Grid with gap-xl -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-xl mb-xl">
+<!-- Product Card 1 -->
+<div class="product-card group bg-white rounded-3xl overflow-hidden border border-outline-variant/20 animate-fade-in" style="animation-delay: 0.1s;">
+<div class="relative aspect-square overflow-hidden bg-surface-container-low/50">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD74yCmSMENHk3mNDsc_ElMWAD7IiZr6wCSxs69ERW-SnkEw_F3bEKxOyuUdNh1pQe5CFpv4b7XaKUbM9qPmykpg0KLqfpGXJ69gE-vGIFiV12Cw98X7WDm2TcVDuPVGQr-bWuZ0Vn80H6qiNyfpyykVvZBnc8NJCgQ8S54c0K1uujtFmFT-MQrdbnnVJKRXuNv4zTt4-3h0E1Eol-XYgJi7z1ox7M6Dd4JDbpJ9h73oimlINKE6DhwErks2Bj2wIEdi2zXG5clvTM"/>
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+<div class="absolute top-4 left-4">
+<span class="text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold">New Arrival</span>
+</div>
+<button class="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-white text-on-surface px-6 py-2.5 rounded-full shadow-xl hover:bg-primary hover:text-white flex items-center gap-2 font-bold text-label-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Add to Cart
+                    </button>
+</div>
+<div class="p-6 text-center">
+<p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-[0.2em] mb-1">Royal Canin</p>
+<h4 class="text-body-lg font-semibold text-on-surface mb-2 truncate">Adult Weight Care Kibble</h4>
+<div class="flex items-center justify-center gap-1.5 mb-2">
+<span class="material-symbols-outlined text-primary/40 text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold">4.8</span>
+</div>
+<p class="text-headline-md font-bold text-primary">$84.99</p>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="product-card group bg-white rounded-3xl overflow-hidden border border-outline-variant/20 animate-fade-in" style="animation-delay: 0.15s;">
+<div class="relative aspect-square overflow-hidden bg-surface-container-low/50">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7cOVPVz63NILsd7ksY7I8enM3vdOYui_fE0qcaIB1_oLhs60yUD3FAFhZvjwC-QSJxWMIY1N6ZBZLv-KEI7FZZYMCw8f3AkitU4OcD9JBCmxCS6kyqc_q249M-mAH_l6b3M0HQUEEQyNxceR6cs-BO4Fmdnktj-1uUE0MkvBKVK3HF6LAVmwgnH2ZkZ81O_02P9EKqENcZgh3uh0j_NlSYjiEmPZCoWHvgU5B_smy19HYk1DugXJfv0_fSLbKSi_ElRYf4irBjsE"/>
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+<button class="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-white text-on-surface px-6 py-2.5 rounded-full shadow-xl hover:bg-primary hover:text-white flex items-center gap-2 font-bold text-label-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Add to Cart
+                    </button>
+</div>
+<div class="p-6 text-center">
+<p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-[0.2em] mb-1">TravelSafe Pro</p>
+<h4 class="text-body-lg font-semibold text-on-surface mb-2 truncate">Ventilated Pet Carrier</h4>
+<div class="flex items-center justify-center gap-1.5 mb-2">
+<span class="material-symbols-outlined text-primary/40 text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold">4.9</span>
+</div>
+<p class="text-headline-md font-bold text-primary">$129.00</p>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="product-card group bg-white rounded-3xl overflow-hidden border border-outline-variant/20 animate-fade-in" style="animation-delay: 0.2s;">
+<div class="relative aspect-square overflow-hidden bg-surface-container-low/50">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfikTcOZb-54xIO84s58BCvDhpYrpE0FFX8rwNGV8m9UxVZUZffV_FJq0F0BiFlea6rT19VVwN8pEfYTcc_V0U-HhJ5f1SDE9MsiigWJl28L_Jv_zb7LEZydw-RjBoqg92d2ot1wdGHZx_GQW1g5XLy50e9ItTI92HUApH78hnTNCuvXx7eCZ-7fBflwDvgFU5wYygAbzYlVEnuSbbX1stpNP5z_Zveu8iytJk4q5jHz0VKayuVK8x-tQw1FZzSJWedy73qjlE8x8"/>
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+<button class="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-white text-on-surface px-6 py-2.5 rounded-full shadow-xl hover:bg-primary hover:text-white flex items-center gap-2 font-bold text-label-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Add to Cart
+                    </button>
+</div>
+<div class="p-6 text-center">
+<p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-[0.2em] mb-1">VetCare Labs</p>
+<h4 class="text-body-lg font-semibold text-on-surface mb-2 truncate">Hip &amp; Joint Supplements</h4>
+<div class="flex items-center justify-center gap-1.5 mb-2">
+<span class="material-symbols-outlined text-primary/40 text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold">4.7</span>
+</div>
+<p class="text-headline-md font-bold text-primary">$45.50</p>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="product-card group bg-white rounded-3xl overflow-hidden border border-outline-variant/20 animate-fade-in" style="animation-delay: 0.25s;">
+<div class="relative aspect-square overflow-hidden bg-surface-container-low/50">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWtHO2VxIDhmGuyvgYerwEA_uFICBvDsB44ltZHEXdM97en79QuwH1oWbRcrHPMSa8kCn6LhaGWIVi4s_iRlwwZ5M3oENu6AuwCF-_NHGsD_OrgADS5HbGto5WMA2oov15b1HSFMybCBHEqFKpOufKNkYPrRBBnE2BQQhJ86yQCx3NWcADP15wO04NETY66p5N19E8LB2DCzFo67A-Oiv-oCkXK_SFqlwm0IRFoGmoqrAVlzT2wPNAP0CLzp-aqFjGRMmzEa81-uI"/>
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+<button class="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-white text-on-surface px-6 py-2.5 rounded-full shadow-xl hover:bg-primary hover:text-white flex items-center gap-2 font-bold text-label-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Add to Cart
+                    </button>
+</div>
+<div class="p-6 text-center">
+<p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-[0.2em] mb-1">ToughPlay</p>
+<h4 class="text-body-lg font-semibold text-on-surface mb-2 truncate">Indestructible Chew Set</h4>
+<div class="flex items-center justify-center gap-1.5 mb-2">
+<span class="material-symbols-outlined text-primary/40 text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-bold">4.6</span>
+</div>
+<p class="text-headline-md font-bold text-primary">$29.99</p>
+</div>
+</div>
+<!-- More products following the same aesthetic... -->
+</div>
+<!-- Minimal Pagination -->
+<div class="flex justify-center items-center gap-8 py-xl">
+<button class="p-2 text-on-surface-variant/30 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex items-center gap-4">
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white text-label-md font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant/40 hover:text-primary transition-colors text-label-md">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant/40 hover:text-primary transition-colors text-label-md">3</button>
+<span class="text-on-surface-variant/20">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-full text-on-surface-variant/40 hover:text-primary transition-colors text-label-md">28</button>
+</div>
+<button class="p-2 text-on-surface-variant/30 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full bg-white border-t border-outline-variant/20 pt-xl">
+<div class="max-w-container-max mx-auto px-gutter pb-xl grid grid-cols-1 md:grid-cols-4 gap-xl">
+<div class="space-y-4 text-center md:text-left">
+<span class="font-headline-md text-headline-md text-primary font-bold tracking-tight">VetCare Pro</span>
+<p class="text-body-md text-on-surface-variant/60 leading-relaxed max-w-xs mx-auto md:mx-0">Medical-grade precision with neighborhood warmth. Your pet's health, simplified.</p>
+</div>
+<div class="space-y-4 text-center md:text-left">
+<h4 class="text-label-sm uppercase tracking-widest text-on-surface font-bold">Support</h4>
+<ul class="space-y-2 text-body-md text-on-surface-variant/60">
+<li><a class="hover:text-primary transition-colors" href="#">Emergency Care</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Tracking</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div class="space-y-4 text-center md:text-left">
+<h4 class="text-label-sm uppercase tracking-widest text-on-surface font-bold">Hours</h4>
+<ul class="space-y-2 text-body-md text-on-surface-variant/60">
+<li class="flex justify-between md:justify-start md:gap-4"><span>Mon - Fri</span> <span class="text-on-surface font-medium">8am - 8pm</span></li>
+<li class="flex justify-between md:justify-start md:gap-4"><span>Saturday</span> <span class="text-on-surface font-medium">9am - 6pm</span></li>
+<li class="flex justify-between md:justify-start md:gap-4"><span>Sunday</span> <span class="text-error font-medium">Emergencies</span></li>
+</ul>
+</div>
+<div class="space-y-4 text-center md:text-left">
+<h4 class="text-label-sm uppercase tracking-widest text-on-surface font-bold">Stay Updated</h4>
+<div class="relative flex items-center">
+<input class="w-full bg-surface-container-low/50 border-b border-outline-variant/30 py-2 focus:border-primary focus:outline-none transition-all placeholder:text-on-surface-variant/20" placeholder="Email address" type="email"/>
+<button class="absolute right-0 text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant/10 py-6">
+<div class="max-w-container-max mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-4 text-label-sm text-on-surface-variant/30 uppercase tracking-widest">
+<p>© 2024 VetCare Pro Systems.</p>
+<div class="flex gap-8">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms</a>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-base cursor-pointer hover:text-primary transition-colors">share</span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script>
+    // Minimal interactivity for premium feel
+    document.querySelectorAll('.product-card button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> Added';
+            btn.classList.add('bg-primary', 'text-white', 'opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('bg-primary', 'text-white');
+            }, 2000);
+        });
+    });
+</script>
+</body></html>

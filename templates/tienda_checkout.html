@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Secure Checkout | VetCare Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lexend:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#d8e5e2",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#89f5e7",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "on-secondary-container": "#5b6765",
+                    "secondary-fixed": "#d8e5e2",
+                    "tertiary-container": "#a36700",
+                    "on-secondary-fixed": "#121e1c",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed-variant": "#005049",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#008378",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary": "#825100",
+                    "surface-variant": "#d3e4fe",
+                    "on-primary-container": "#f4fffc",
+                    "on-secondary": "#ffffff",
+                    "primary": "#00685f",
+                    "inverse-primary": "#6bd8cb",
+                    "inverse-surface": "#213145",
+                    "outline": "#6d7a77",
+                    "surface-container": "#e5eeff",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-secondary-fixed-variant": "#3d4947",
+                    "secondary": "#55615f",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "surface-bright": "#f8f9ff",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-fixed": "#00201d",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-background": "#0b1c30",
+                    "on-surface-variant": "#3d4947",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-tint": "#006a61",
+                    "outline-variant": "#bcc9c6",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "secondary-fixed-dim": "#bcc9c6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "lg": "40px",
+                    "sm": "16px",
+                    "base": "4px",
+                    "container-max": "1440px",
+                    "md": "24px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "xl": "64px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Lexend"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Lexend"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Lexend"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .zebra-stripe:nth-child(even) {
+            background-color: rgba(240, 253, 250, 0.5);
+        }
+        .step-active { color: #00685f; font-weight: 700; }
+        .step-line-active { border-color: #00685f; }
+        .stepper-bubble-active { background-color: #00685f; color: white; border-color: #00685f; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar Component (Content/Styles from JSON) -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant">
+<div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">VetCare Pro</span>
+</div>
+<nav class="hidden md:flex gap-md">
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Shop</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Appointments</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Services</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined p-base cursor-pointer active:scale-95 transition-transform text-on-surface-variant" data-icon="shopping_cart">shopping_cart</button>
+<button class="material-symbols-outlined p-base cursor-pointer active:scale-95 transition-transform text-on-surface-variant" data-icon="notifications">notifications</button>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-f-2_3Mcesa9hLqesSB3SbJzR8g-trPFPykh2_Ix0H3jDk2_hWccOfswccSkbzVyQE_ClfLya1QExlXUnsB-Qal_7c1xaKolUeypZvropW-8CciDlrllZVeEDfTcj4i5V9YToyDulGdIw81CsJZA9Ukih1Oz839bOmhUyKpylhOd2wqV5Tp5AF9rG3E5ob78UwI08j5XLu9THXgbvBq9Jr8s3CbUFkfW_LoN5Z9Tp8wVeu4jajWq7yXVFasT8uNIMb_xs6xbMOyo"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-24 pb-xl px-gutter max-w-container-max mx-auto w-full">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+<!-- Left Column: Checkout Stepper & Forms -->
+<div class="lg:col-span-8 space-y-md">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-md">Checkout</h1>
+<!-- Stepper -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant flex items-center justify-between mb-md">
+<div class="flex flex-col items-center gap-xs flex-1" id="step-shipping">
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-primary text-white flex items-center justify-center font-bold">1</div>
+<span class="font-label-md text-label-md text-primary">Shipping</span>
+</div>
+<div class="h-px bg-outline-variant flex-1 mx-xs mb-sm"></div>
+<div class="flex flex-col items-center gap-xs flex-1" id="step-payment">
+<div class="w-10 h-10 rounded-full border-2 border-outline-variant bg-surface-container text-on-surface-variant flex items-center justify-center font-bold">2</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Payment</span>
+</div>
+<div class="h-px bg-outline-variant flex-1 mx-xs mb-sm"></div>
+<div class="flex flex-col items-center gap-xs flex-1" id="step-review">
+<div class="w-10 h-10 rounded-full border-2 border-outline-variant bg-surface-container text-on-surface-variant flex items-center justify-center font-bold">3</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Review</span>
+</div>
+</div>
+<!-- Form Section (Shipping Address) -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center gap-sm mb-md border-b border-surface-container pb-sm">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+<h2 class="font-headline-md text-headline-md">Shipping Information</h2>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">First Name</label>
+<input class="w-full h-11 px-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="John" type="text"/>
+</div>
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">Last Name</label>
+<input class="w-full h-11 px-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="Doe" type="text"/>
+</div>
+<div class="md:col-span-2 space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">Address Line 1</label>
+<input class="w-full h-11 px-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="123 Puppy Lane" type="text"/>
+</div>
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">City</label>
+<input class="w-full h-11 px-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="Petaluma" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">State</label>
+<input class="w-full h-11 px-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="CA" type="text"/>
+</div>
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">Zip</label>
+<input class="w-full h-11 px-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="94952" type="text"/>
+</div>
+</div>
+</form>
+</div>
+<!-- Form Section (Payment Details) -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center justify-between mb-md border-b border-surface-container pb-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="lock">lock</span>
+<h2 class="font-headline-md text-headline-md">Secure Payment</h2>
+</div>
+<div class="flex gap-xs opacity-60">
+<span class="material-symbols-outlined text-secondary" data-icon="credit_card">credit_card</span>
+<span class="material-symbols-outlined text-secondary" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+</div>
+<form class="space-y-md">
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">Cardholder Name</label>
+<input class="w-full h-11 px-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="Johnathan Doe" type="text"/>
+</div>
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">Card Number</label>
+<div class="relative">
+<input class="w-full h-11 pl-sm pr-12 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="0000 0000 0000 0000" type="text"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="credit_card">credit_card</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">Expiry Date</label>
+<input class="w-full h-11 px-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="MM/YY" type="text"/>
+</div>
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant">CVC</label>
+<input class="w-full h-11 px-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface transition-all" placeholder="***" type="password"/>
+</div>
+</div>
+</form>
+</div>
+</div>
+<!-- Right Column: Order Summary -->
+<aside class="lg:col-span-4 sticky top-24">
+<div class="bg-surface-container-low rounded-xl border border-outline-variant p-md shadow-sm">
+<h2 class="font-headline-md text-headline-md text-primary mb-sm">Order Summary</h2>
+<!-- Item List -->
+<div class="space-y-sm mb-md border-b border-outline-variant pb-md">
+<div class="flex gap-sm zebra-stripe p-xs rounded-lg items-center">
+<div class="w-12 h-12 rounded-lg bg-surface border border-outline-variant overflow-hidden flex-shrink-0">
+<img alt="Premium Kibble" class="w-full h-full object-cover" data-alt="Close up of high quality organic dog food kibble shaped like small hearts and stars on a clean white surface with soft morning light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYluVUP41vFtNN6XJoZB8lc8EhtFQWsUmFz4R7hEHyGgA4ra3S8flprVBqM60Qgc14P5gaqWe2UMLkizVPGVsAstUVl4ltpuBMftEYkipuoHt5je76e0ThiykyA0fiCH1qeIosrTjd5UQLLib-o55aVMgHqDKyRhXkN0W7kSw44VoN5XiwHAACp4Dx3tfVufeVLsn6F6pXfTgDHhSZ8nwjGWIgF8Ec3QCB7R2JV4ajjnbr7VPgURiCxidQ8_xKG28YaAG6PBda-m8"/>
+</div>
+<div class="flex-grow">
+<p class="font-label-md text-label-md text-on-surface truncate">Premium Wellness Kibble (5kg)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Qty: 1</p>
+</div>
+<p class="font-label-md text-label-md text-on-surface">$45.00</p>
+</div>
+<div class="flex gap-sm zebra-stripe p-xs rounded-lg items-center">
+<div class="w-12 h-12 rounded-lg bg-surface border border-outline-variant overflow-hidden flex-shrink-0">
+<img alt="Pet Shampoo" class="w-full h-full object-cover" data-alt="A bottle of professional grade pet shampoo with a soft teal label sitting on a wet marble shelf with gentle water droplets and soft lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANnTdma7o3srYUyAjBnDN_8eRwaNJW-ToPNNk8nlDsKSiOcpEG2A59mgeRSFdviQ6eGR_VHM_YCfRqhpl-z_PYTMxfzyEXXzJfrTZPubLmcvFfW6qXvyGbbLckfTcIzxMR8IRxj6vxu-sQjrLGLhob1pUjwZAzr6jJ_o6aELoUwgTLvqRjAoOFBnAbDcBkx3p31MvQmUyC6-iN2BqHNV6EOcfMgnuFopSNAqcHBun-orHaxlx0ulAIDBpx-brkqh3r1ZSLQ-BiY_I"/>
+</div>
+<div class="flex-grow">
+<p class="font-label-md text-label-md text-on-surface truncate">Soothing Oats Shampoo</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Qty: 2</p>
+</div>
+<p class="font-label-md text-label-md text-on-surface">$24.00</p>
+</div>
+<div class="flex gap-sm zebra-stripe p-xs rounded-lg items-center">
+<div class="w-12 h-12 rounded-lg bg-surface border border-outline-variant overflow-hidden flex-shrink-0">
+<img alt="Chew Toy" class="w-full h-full object-cover" data-alt="Durable rubber chew toy in a vibrant orange color for large breeds resting on a green lawn with realistic textures and warm sunshine." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUGOGWRjnpZSSGT_w6jTvJ2cgbEqqlC97kp-qX2bmcPztFUfmtXn3hCHhzWfi0pDNKa47qaISPgQdBb7FCMza3N9HEu73ir6PIOsL6vMYaNLvfYavr3OwUgLcnWjt4con3elWlEmLeebdA4ugxHRFRuDu6wYE8EW0Mj3zGscX-ACP72zj_nbcJ5JwvKImj2PPtv73h0LbPQuk7tLih6hU3ZlB_I5HR3yn7GCVFU7PL88gQL5v5Vcp4Bs-4NDy-_U0r2FCPH10KHZM"/>
+</div>
+<div class="flex-grow">
+<p class="font-label-md text-label-md text-on-surface truncate">Indestructible Chew Toy</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Qty: 1</p>
+</div>
+<p class="font-label-md text-label-md text-on-surface">$12.50</p>
+</div>
+</div>
+<!-- Totals -->
+<div class="space-y-xs font-body-md text-body-md text-on-surface-variant">
+<div class="flex justify-between">
+<span>Subtotal</span>
+<span>$81.50</span>
+</div>
+<div class="flex justify-between">
+<span>Shipping</span>
+<span class="text-primary font-semibold">FREE</span>
+</div>
+<div class="flex justify-between">
+<span>Estimated Tax</span>
+<span>$6.52</span>
+</div>
+<div class="flex justify-between text-on-surface pt-sm border-t border-outline-variant mt-sm">
+<span class="font-headline-md text-headline-md font-bold">Total</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">$88.02</span>
+</div>
+</div>
+<!-- Place Order CTA -->
+<button class="w-full mt-md bg-tertiary text-on-tertiary h-12 rounded-lg font-headline-md text-headline-md flex items-center justify-center gap-sm hover:opacity-90 active:scale-95 transition-all shadow-md">
+<span>Place Order</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<div class="mt-md flex items-center justify-center gap-xs text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified_user">verified_user</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">AES-256 Encrypted Payment</span>
+</div>
+</div>
+<!-- Atmospheric Ad/Promo or Trust Badge -->
+<div class="mt-md p-md bg-secondary-container rounded-xl border border-outline-variant text-center">
+<p class="font-label-md text-label-md text-on-secondary-container italic">"Your pets deserve the best medical-grade care products delivered straight to your door."</p>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer Component (Content/Styles from JSON) -->
+<footer class="w-full mt-auto bg-surface-container border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-xl px-gutter py-xl max-w-container-max mx-auto">
+<div class="flex flex-col gap-sm">
+<span class="font-headline-md text-headline-md text-primary font-bold">VetCare Pro</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Precision care for your faithful companions.</p>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-primary uppercase mb-sm">Links</h3>
+<ul class="space-y-xs">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Emergency Care</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-primary uppercase mb-sm">Newsletter</h3>
+<div class="flex">
+<input class="bg-surface border border-outline-variant rounded-l-lg px-sm h-10 w-full focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Your email" type="email"/>
+<button class="bg-primary text-white px-md rounded-r-lg hover:opacity-90">Join</button>
+</div>
+</div>
+<div class="flex flex-col justify-end">
+<p class="font-body-md text-body-md text-on-surface-variant">2024 VetCare Pro Management Systems. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<!-- Micro-interactions Script -->
+<script>
+        // Simple Form Focus Effect & Stepper Logic Simulation
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('scale-[1.01]');
+                input.parentElement.classList.add('transition-transform');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+
+        // Toggle secure badge based on payment form interaction
+        const paymentForm = document.querySelector('form:nth-of-type(2)');
+        paymentForm.addEventListener('input', () => {
+            const lockIcon = document.querySelector('[data-icon="lock"]');
+            lockIcon.classList.add('animate-pulse');
+            setTimeout(() => lockIcon.classList.remove('animate-pulse'), 1000);
+        });
+    </script>
+</body></html>

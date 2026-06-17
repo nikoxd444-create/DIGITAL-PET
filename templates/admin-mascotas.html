@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DIGITAL PET Admin – Mascotas</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+
+<style>
+:root{--yellow:#FFCC00;--yellow-dark:#E6B800;--yellow-light:#FFF4B8;--orange:#FF8C42;--green:#4CAF79;--red:#FF5252;--blue:#4A90E2;--dark:#1A1A2E;--gray:#F7F7F7;}
+*{font-family:'Nunito',sans-serif;}
+.fredoka{font-family:'Fredoka One',cursive;}
+
+.sidebar-link{transition:all .2s;border-left:3px solid transparent;}
+.sidebar-link:hover,.sidebar-link.active{background:rgba(255,204,0,.15);border-left:3px solid var(--yellow);}
+
+.fade-in{opacity:0;transform:translateY(16px);animation:fadeIn .45s ease forwards;}
+@keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
+
+.chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+
+input,select{outline:none;}
+input:focus,select:focus{outline:2px solid var(--yellow);}
+</style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 min-h-screen bg-white shadow-lg flex flex-col fixed top-0 left-0 z-20">
+
+<div class="flex items-center gap-3 px-6 py-5 border-b border-yellow-100">
+<div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--yellow)">
+<span class="text-xl">🐾</span>
+</div>
+
+<div>
+<p class="fredoka text-lg" style="color:var(--dark)">DIGITAL PET</p>
+<p class="text-xs text-gray-400">Panel Admin</p>
+</div>
+</div>
+
+<nav class="flex-1 px-3 py-4 space-y-1">
+
+<a href="admin-dashboard.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm text-gray-500">📊 Dashboard</a>
+<a href="admin-reportes.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm text-gray-500">📈 Reportes</a>
+<a href="admin-auditoria.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm text-gray-500">🔍 Auditoría</a>
+
+<p class="text-xs font-800 text-gray-400 px-3 mt-4 mb-2 uppercase tracking-widest">Gestión</p>
+
+<a href="admin-usuarios.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm text-gray-500">👤 Usuarios</a>
+<a href="admin-roles.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm text-gray-500">🛡️ Roles</a>
+<a href="admin-clientes.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 text-sm text-gray-500">👥 Clientes</a>
+<a href="admin-mascotas.html" class="sidebar-link active flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700">🐶 Mascotas</a>
+
+</nav>
+</aside>
+
+<!-- MAIN -->
+<main class="ml-64 flex-1 p-8">
+
+<!-- HEADER -->
+<div class="flex items-center justify-between mb-7 fade-in">
+<div>
+<h1 class="fredoka text-3xl" style="color:var(--dark)">Gestión de Mascotas 🐶</h1>
+<p class="text-gray-400 text-sm mt-1">Administra el registro de mascotas</p>
+</div>
+
+<button class="px-5 py-2.5 rounded-xl text-sm font-700 text-white" style="background:var(--yellow-dark)">
++ Nueva Mascota
+</button>
+</div>
+
+<!-- TABLE -->
+<div class="bg-white rounded-2xl shadow-sm overflow-hidden fade-in">
+
+<table class="w-full">
+
+<thead>
+<tr style="background:var(--yellow-light)">
+<th class="text-left px-5 py-3 text-xs font-800">Mascota</th>
+<th class="text-left px-5 py-3 text-xs font-800">Especie</th>
+<th class="text-left px-5 py-3 text-xs font-800">Raza</th>
+<th class="text-left px-5 py-3 text-xs font-800">Edad</th>
+<th class="text-left px-5 py-3 text-xs font-800">Dueño</th>
+<th class="text-left px-5 py-3 text-xs font-800">Estado</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr class="border-t border-gray-100">
+<td class="px-5 py-4">Max</td>
+<td class="px-5 py-4 text-gray-500">Perro</td>
+<td class="px-5 py-4 text-gray-500">Border Collie</td>
+<td class="px-5 py-4 text-gray-500">3 años</td>
+<td class="px-5 py-4 text-gray-500">Carlos Ramírez</td>
+<td class="px-5 py-4"><span class="chip" style="background:#E8F5E9;color:#2E7D32">Activo</span></td>
+</tr>
+
+<tr class="border-t border-gray-100">
+<td class="px-5 py-4">Luna</td>
+<td class="px-5 py-4 text-gray-500">Gato</td>
+<td class="px-5 py-4 text-gray-500">Siamés</td>
+<td class="px-5 py-4 text-gray-500">2 años</td>
+<td class="px-5 py-4 text-gray-500">Ana García</td>
+<td class="px-5 py-4"><span class="chip" style="background:#E8F5E9;color:#2E7D32">Activo</span></td>
+</tr>
+
+<tr class="border-t border-gray-100">
+<td class="px-5 py-4">Rocky</td>
+<td class="px-5 py-4 text-gray-500">Perro</td>
+<td class="px-5 py-4 text-gray-500">Labrador</td>
+<td class="px-5 py-4 text-gray-500">5 años</td>
+<td class="px-5 py-4 text-gray-500">Pedro Sánchez</td>
+<td class="px-5 py-4"><span class="chip" style="background:#FFF3E0;color:#E65100">Inactivo</span></td>
+</tr>
+
+<tr class="border-t border-gray-100">
+<td class="px-5 py-4">Coco</td>
+<td class="px-5 py-4 text-gray-500">Hámster</td>
+<td class="px-5 py-4 text-gray-500">Dorado</td>
+<td class="px-5 py-4 text-gray-500">1 año</td>
+<td class="px-5 py-4 text-gray-500">Luis Torres</td>
+<td class="px-5 py-4"><span class="chip" style="background:#E8F5E9;color:#2E7D32">Activo</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</main>
+
+</body>
+</html>

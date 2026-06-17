@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Pet | Cuidado Veterinario de Vanguardia</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#c3c6d7",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-secondary-container": "#00714d",
+                    "outline": "#737686",
+                    "secondary-fixed": "#6ffbbe",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-tertiary-fixed": "#2a1700",
+                    "surface-tint": "#0053db",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-container-low": "#eff4ff",
+                    "secondary-container": "#6cf8bb",
+                    "on-secondary-fixed-variant": "#005236",
+                    "primary-fixed": "#dbe1ff",
+                    "surface": "#f8f9ff",
+                    "tertiary": "#784b00",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#4edea3",
+                    "surface-container": "#e5eeff",
+                    "inverse-primary": "#b4c5ff",
+                    "on-tertiary-container": "#ffeedd",
+                    "primary": "#004ac6",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#dce9ff",
+                    "inverse-surface": "#213145",
+                    "error-container": "#ffdad6",
+                    "secondary": "#006c49",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#00174b",
+                    "on-primary-container": "#eeefff",
+                    "primary-container": "#2563eb",
+                    "on-surface-variant": "#434655",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "surface-dim": "#cbdbf5",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#996100",
+                    "on-surface": "#0b1c30",
+                    "surface-bright": "#f8f9ff",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-fixed": "#002113",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-background": "#0b1c30",
+                    "inverse-on-surface": "#eaf1ff",
+                    "background": "#f8f9ff",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "gutter": "24px",
+                    "xs": "8px",
+                    "sm": "16px",
+                    "md": "24px",
+                    "lg": "48px",
+                    "xl": "80px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .nav-active {
+            border-bottom: 2px solid #004ac6;
+            padding-bottom: 4px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+{% set nav = nav or {} %}
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/90 dark:bg-surface-dim/90 backdrop-blur-md shadow-sm">
+<div class="flex justify-between items-center h-20 px-gutter max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary text-3xl">pets</span>
+                Digital Pet
+            </div>
+<nav class="hidden md:flex items-center gap-md">
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 transition-all duration-200 active:scale-95" href="#home">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors transition-all duration-200 active:scale-95" href="#about">Who We Are</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors transition-all duration-200 active:scale-95" href="#services">Services</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors transition-all duration-200 active:scale-95" href="#location">Location</a>
+{% if nav.authenticated %}
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors transition-all duration-200 active:scale-95" href="{{ nav.dashboard_url }}">Dashboard</a>
+{% else %}
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors transition-all duration-200 active:scale-95" href="/login">Login</a>
+{% endif %}
+</nav>
+<a href="{{ nav.dashboard_url }}" class="bg-primary-container text-on-primary-container px-sm py-xs rounded-full font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95">
+                {% if nav.authenticated %}
+                    {% if nav.is_admin %}Administrar Inventario{% elif nav.is_veterinario %}Agenda Veterinaria{% elif nav.is_cliente %}Mi Dashboard{% else %}Dashboard{% endif %}
+                {% else %}
+                    Ingresar
+                {% endif %}
+            </a>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[80vh] flex items-center overflow-hidden" id="home">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-2 gap-lg items-center py-xl">
+<div class="space-y-md z-10">
+<span class="bg-secondary-container text-on-secondary-container px-sm py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider">Veterinaria Premium</span>
+<h1 class="font-headline-xl text-headline-xl text-on-surface">
+                        Cuidado experto para quien más quieres
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                        En Digital Pet combinamos tecnología de vanguardia con un trato cálido y humano para garantizar la mejor salud de tus compañeros.
+                    </p>
+<div class="flex flex-wrap gap-sm pt-sm">
+<button class="bg-primary text-on-primary px-lg py-sm rounded-xl font-label-md text-label-md shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+                            Agendar Cita
+                        </button>
+<button class="border border-primary text-primary px-lg py-sm rounded-xl font-label-md text-label-md hover:bg-primary/5 transition-all active:scale-95">
+                            Ver Servicios
+                        </button>
+</div>
+</div>
+<div class="relative group">
+<div class="absolute -inset-4 bg-gradient-to-tr from-primary-container/20 to-secondary-container/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all"></div>
+<div class="relative rounded-3xl overflow-hidden shadow-2xl border border-outline-variant/30">
+<img alt="Veterinarian hugging a golden retriever" class="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7JrS79gJGsQVJQ2BFhQx4kUO7JKGSMLeYy1FpEQLN5tAmB_VEixrJOxuDj4tfSflPwEZZAnYy7aCR0Qola8UfMgIL8CpoQdMo1T5hwppml54hNWjeMg0F37Z7i_Puz5EgXd-PxCeEcd3h4nK-uFGOcyf_HuRZbRewAKSWJHfuOMlIyU-XVIc12hhQ01andToSwkf8FMVqJvxSiS_ZUhRJ63PXaTgDPhARLCrN5SmW7szxs-xaychzVAks_QN8Ln8gJM4YtOwONA8"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Quiénes Somos Section -->
+<section class="bg-surface-container-low py-xl" id="about">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-xl max-w-2xl mx-auto">
+<h2 class="font-headline-lg text-headline-lg mb-sm">Más que una clínica, somos familia</h2>
+<div class="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="glass-card p-md rounded-2xl border border-outline-variant/50 hover:shadow-md transition-all">
+<div class="w-12 h-12 bg-primary-container rounded-xl flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-on-primary-container">rocket_launch</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Misión</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Brindar salud integral a través de la innovación tecnológica, asegurando diagnósticos precisos y tratamientos efectivos para cada paciente.
+                        </p>
+</div>
+<div class="glass-card p-md rounded-2xl border border-outline-variant/50 hover:shadow-md transition-all">
+<div class="w-12 h-12 bg-secondary-container rounded-xl flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-on-secondary-container">visibility</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Visión</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Ser el referente regional en medicina veterinaria preventiva, destacando por nuestra excelencia médica y calidez en el servicio.
+                        </p>
+</div>
+<div class="glass-card p-md rounded-2xl border border-outline-variant/50 hover:shadow-md transition-all">
+<div class="w-12 h-12 bg-tertiary-fixed rounded-xl flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant">favorite</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Valores</h3>
+<ul class="font-body-md text-body-md text-on-surface-variant space-y-1">
+<li class="flex items-center gap-xs"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Empatía profunda</li>
+<li class="flex items-center gap-xs"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Excelencia médica</li>
+<li class="flex items-center gap-xs"><span class="w-1.5 h-1.5 bg-primary rounded-full"></span> Compromiso ético</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Servicios Grid -->
+<section class="py-xl bg-surface" id="services">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="flex flex-col md:flex-row justify-between items-end mb-xl gap-md">
+<div class="max-w-xl">
+<span class="text-primary font-label-md text-label-md uppercase tracking-widest mb-xs block">Nuestra Experiencia</span>
+<h2 class="font-headline-lg text-headline-lg">Servicios especializados para el bienestar de tu mascota</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant md:w-1/3">
+                        Contamos con instalaciones de última generación y un equipo multidisciplinario listo para cualquier necesidad.
+                    </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Consultas -->
+<div class="group bg-white p-sm rounded-2xl border border-outline-variant hover:scale-105 hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+<div class="relative overflow-hidden rounded-xl h-40 mb-sm">
+<img class="w-full h-full object-cover" data-alt="A clean, professional veterinary examination room with modern medical equipment, stainless steel tables, and bright, soft overhead lighting. The atmosphere is clinical yet welcoming, reflecting high-end medical care for animals. The color palette features whites and soft blues consistent with a modern pet clinic brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyCi62wkqakqHH_A3ovF2V5WCz93aH3N9BWnI65QSBrAy-Gkv6Z2NMQmgH6r3E7_wlgEBETM7WtuBVpjl0cTIRcuj0QzL4EnsepeMm0LTOVJk4WXwg_avGfwyTm1W44wnTcggq1wd1LhD0FmyvcJ_PA1epP9YvnwzqDpwc1Bx3Xha1vSQpQNlpwxlUwM9e5eb-2C2feLNaXOyouthoiYNIm0_g0NC0UUt53vVxC_qsOYVlFvr1KLpgv2TotbHsUdfxCzTb4fEAusM"/>
+</div>
+<div class="flex items-center gap-xs mb-xs">
+<span class="material-symbols-outlined text-primary">stethoscope</span>
+<h4 class="font-headline-md text-headline-md">Consultas</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Especialistas dedicados al bienestar integral de tu fiel compañero.</p>
+</div>
+<!-- Vacunación -->
+<div class="group bg-white p-sm rounded-2xl border border-outline-variant hover:scale-105 hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+<div class="relative overflow-hidden rounded-xl h-40 mb-sm">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of a small dog receiving gentle preventative care from a professional veterinarian wearing blue scrubs. The scene is illuminated by natural light, creating a calm and nurturing mood. The focus is on the empathetic interaction between human and animal, embodying the core values of excellence and care in pet medicine." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvSwARibl7Gm8BwT6WeRMZrYxg7NXRPTuwwqyU7tItwDpySR3nMfr9Q9PauNwSi_kB6lp6JKZjbUmWYjDeMF5Dh6AwxIVrO5fqYufuZKTC58ALaefCg2Pz0PYKTkRyIMUAhP2IAXisq73gGJVgkGAX2NPhNvIu9sBVgBBjdAcb2TSy4QClYJsvrs-lolsDhZY4HTgCTxNpYV2mO9KYgYwIwgP-_xDDbbCWHSqcjqgSNSO8ms-UMxUDbc1bvIhZm7Gs5w8qe4DvJBc"/>
+</div>
+<div class="flex items-center gap-xs mb-xs">
+<span class="material-symbols-outlined text-primary">vaccines</span>
+<h4 class="font-headline-md text-headline-md">Prevención</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Planes de vacunación y salud personalizados para cada etapa.</p>
+</div>
+<!-- Peluquería -->
+<div class="group bg-white p-sm rounded-2xl border border-outline-variant hover:scale-105 hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+<div class="relative overflow-hidden rounded-xl h-40 mb-sm">
+<img class="w-full h-full object-cover" data-alt="A happy, fluffy white dog being groomed in a modern pet spa setting. Soft water droplets and gentle grooming tools are visible against a bright, minimalist background. The lighting is airy and high-key, conveying a sense of hygiene, comfort, and professional aesthetic care. The image captures the 'Peluquería y Estética' service perfectly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvsBtzQqiYZBmRhsn3SKbKegqS3SL0mNKBYotaaXCt0FQ6bEQp-Q35GCotiR285fb7CXQnhiuH-OM_9_oT7bsKf8KZAXI1Xqq07Js4LB1CrUe2R8cDEpUYT6Zd6yK61H7dxdP9PyRWX0CHgoqC3eONH35MVtus1glh5UBknISm-qbaDwK1syZkIRnPN0Z9xGHXtRB7MURsXJTsYnBdgNd3ZNgv06p9DsiAbD20o8WlqkiXPzREm1ObvsrfKJGvP-Gu4sXkbXAtlpA"/>
+</div>
+<div class="flex items-center gap-xs mb-xs">
+<span class="material-symbols-outlined text-primary">content_cut</span>
+<h4 class="font-headline-md text-headline-md">Peluquería</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Cuidado estético con amor para que luzcan siempre increíbles.</p>
+</div>
+<!-- Tienda -->
+<div class="group bg-white p-sm rounded-2xl border border-outline-variant hover:scale-105 hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+<div class="relative overflow-hidden rounded-xl h-40 mb-sm">
+<img class="w-full h-full object-cover" data-alt="High-end pet supplies and organic food displayed on minimalist wooden shelves in a modern boutique store. The layout is organized and clean, with premium packaging visible. The lighting is warm and inviting, highlighting quality products for pet health and nutrition, representing the clinic's virtual and physical store offerings." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrPEgOQL8t08a5o6aVk9IunAzj1yWpb5X3xOFX1Q_jmNGdsRRIQr73WxtO_cgHv3cFnQHuIqf5wyh_uxtmUJOHdCZvG_XUJqRY5R3-c8q-HMAmqLAOQeZmPRajtQOxUIb7EeYI2X4JzOibZ3WfQNZiuAMVfFJd0ZBbxZ53N4696w5w8uGaRUz4WBodHA1GWj9hRCAaoWlloCE20ZckGzhzK3UGg-we847ODD-XPh5LYOr2KsOdTTkY9jWLJTQ4AEu82rmOFIU_zPs"/>
+</div>
+<div class="flex items-center gap-xs mb-xs">
+<span class="material-symbols-outlined text-primary">shopping_bag</span>
+<h4 class="font-headline-md text-headline-md">Tienda</h4>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Todo lo que necesitan para su día a día, a un solo clic de distancia.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Ubicación & Contacto -->
+<section class="py-xl bg-surface-container-low" id="location">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="bg-white rounded-3xl overflow-hidden shadow-xl flex flex-col md:flex-row">
+<div class="w-full md:w-1/2 h-[400px] md:h-auto min-h-[400px] bg-slate-200 relative">
+<div class="absolute inset-0 flex items-center justify-center bg-outline-variant/20">
+<!-- Map Placeholder with Location Data -->
+<div class="w-full h-full bg-surface-variant flex flex-col items-center justify-center text-on-surface-variant" data-location="Mexico City" style="">
+<span class="material-symbols-outlined text-4xl mb-xs">map</span>
+<p class="font-label-md text-label-md">Cargando mapa interactivo...</p>
+</div>
+</div>
+</div>
+<div class="w-full md:w-1/2 p-lg space-y-md">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Encuéntranos</h2>
+<div class="space-y-sm">
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div>
+<p class="font-label-md text-label-md font-bold">Dirección</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Calle de la Salud 123, Colonia Médica, Ciudad de México</p>
+</div>
+</div>
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<div>
+<p class="font-label-md text-label-md font-bold">Horarios de Atención</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Lun-Vie: 9am - 8pm</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Sáb: 10am - 4pm</p>
+</div>
+</div>
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary">call</span>
+<div>
+<p class="font-label-md text-label-md font-bold">Contacto Directo</p>
+<p class="font-body-md text-body-md text-on-surface-variant">+52 (55) 1234 5678</p>
+<p class="font-body-md text-body-md text-on-surface-variant">hola@digitalpet.com</p>
+</div>
+</div>
+</div>
+<div class="pt-sm">
+<p class="font-label-md text-label-md font-bold mb-xs">Síguenos en redes</p>
+<div class="flex gap-sm">
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-200" href="#">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-200" href="#">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.324v-21.35c0-.732-.593-1.325-1.325-1.325z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant dark:border-outline">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md px-gutter max-w-container-max mx-auto">
+<div class="space-y-sm">
+<div class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">
+                    Digital Pet
+                </div>
+<p class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant max-w-xs">
+                    Comprometidos con la excelencia médica y el bienestar de los integrantes más peludos de tu familia.
+                </p>
+<p class="font-label-sm text-label-sm text-on-surface-variant dark:text-outline-variant">
+                    © 2024 Digital Pet Veterinary Clinic. All rights reserved.
+                </p>
+</div>
+<div class="space-y-sm">
+<h4 class="font-label-md text-label-md font-bold text-on-surface dark:text-inverse-on-surface uppercase tracking-wider">Enlaces</h4>
+<nav class="flex flex-col gap-xs">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface hover:underline transition-all" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface hover:underline transition-all" href="#">Contact Support</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface hover:underline transition-all" href="#">Careers</a>
+</nav>
+</div>
+<div class="space-y-sm">
+<h4 class="font-label-md text-label-md font-bold text-on-surface dark:text-inverse-on-surface uppercase tracking-wider">Boletín</h4>
+<p class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant">
+                    Suscríbete para recibir consejos de salud y promociones exclusivas.
+                </p>
+<div class="flex gap-xs mt-sm">
+<input class="bg-surface border border-outline-variant rounded-lg px-sm py-xs flex-grow focus:ring-2 focus:ring-primary focus:border-primary outline-none" placeholder="Tu email" type="email"/>
+<button class="bg-primary text-on-primary px-sm py-xs rounded-lg font-label-md text-label-md active:scale-95 transition-all">Unirse</button>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Simple scroll spy for active navigation state
+        window.addEventListener('scroll', () => {
+            const sections = ['home', 'about', 'services', 'location'];
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const sectionTop = element.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section;
+                    }
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary', 'dark:text-primary-fixed-dim', 'border-b-2', 'border-primary', 'dark:border-primary-fixed-dim', 'pb-1');
+                link.classList.add('text-on-surface-variant', 'dark:text-outline-variant');
+                
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('text-primary', 'dark:text-primary-fixed-dim', 'border-b-2', 'border-primary', 'dark:border-primary-fixed-dim', 'pb-1');
+                    link.classList.remove('text-on-surface-variant', 'dark:text-outline-variant');
+                }
+            });
+        });
+
+        // Smooth scroll implementation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body></html>

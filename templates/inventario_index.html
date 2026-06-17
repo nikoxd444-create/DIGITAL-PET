@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGITAL PET | Inventario </title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background: linear-gradient(135deg,#0f0b1e,#111c24,#1a102f); /* Cambiado a morado oscuro */
+            overflow-x:hidden;
+            color:white;
+        }
+
+        /* ====== PARTICULAS ====== */
+        .particles{
+            position:fixed;
+            width:100%;
+            height:100%;
+            z-index:-1;
+            overflow:hidden;
+        }
+
+        .particles span{
+            position:absolute;
+            width:12px;
+            height:12px;
+            background:#a855f7; /* Cambiado a morado neón */
+            border-radius:50%;
+            animation:animate 15s linear infinite;
+            bottom:-150px;
+            opacity:0.5;
+        }
+
+        @keyframes animate{
+            0%{
+                transform:translateY(0) scale(0);
+            }
+            100%{
+                transform:translateY(-120vh) scale(1);
+            }
+        }
+
+        /* ===== NAVBAR ===== */
+
+        nav{
+            width:100%;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 8%;
+            background:rgba(255,255,255,0.03); /* Ajustado para el tono oscuro */
+            backdrop-filter:blur(10px);
+            position:fixed;
+            top:0;
+            z-index:1000;
+            border-bottom:1px solid rgba(255,255,255,0.05);
+        }
+
+        nav h1{
+            color:#a855f7; /* Cambiado a morado */
+            font-size:28px;
+        }
+
+        .btn-login{
+            background:#a855f7; /* Cambiado a morado */
+            color:#fff;
+            padding:10px 20px;
+            border:none;
+            border-radius:30px;
+            cursor:pointer;
+            transition:0.3s;
+            font-weight:bold;
+        }
+
+        .btn-login:hover{
+            transform:scale(1.05);
+            background:#9333ea; /* Tono morado hover */
+        }
+
+        /* ===== HERO ===== */
+
+        .hero{
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:120px 8%;
+            gap:40px;
+        }
+
+        .hero-text{
+            max-width:600px;
+            animation:fadeInLeft 1.2s ease;
+        }
+
+        .hero-text h2{
+            font-size:60px;
+            line-height:1.1;
+            margin-bottom:20px;
+        }
+
+        .hero-text span{
+            color:#a855f7; /* Cambiado a morado */
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .hero-text p{
+            color:#d1d5db;
+            margin-bottom:30px;
+            line-height:1.8;
+        }
+
+        .hero-buttons{
+            display:flex;
+            gap:20px;
+        }
+
+        .hero-buttons button{
+            padding:14px 28px;
+            border:none;
+            border-radius:40px;
+            font-size:16px;
+            cursor:pointer;
+            transition:0.4s;
+        }
+
+        .btn-primary{
+            background:#a855f7; /* Cambiado a morado */
+            color:white;
+        }
+
+        .btn-secondary{
+            background:transparent;
+            border:2px solid #a855f7 !important; /* Cambiado a morado */
+            color:#a855f7; /* Cambiado a morado */
+        }
+
+        .hero-buttons button:hover{
+            transform:translateY(-5px);
+        }
+
+        .hero-image{
+            animation:float 4s ease-in-out infinite;
+        }
+
+        .hero-image img{
+            width:450px;
+            filter:drop-shadow(0 0 25px rgba(168,85,247,0.5)); /* Sombra de brillo morado */
+        }
+
+        @keyframes float{
+            0%,100%{
+                transform:translateY(0);
+            }
+            50%{
+                transform:translateY(-20px);
+            }
+        }
+
+        @keyframes fadeInLeft{
+            from{
+                opacity:0;
+                transform:translateX(-80px);
+            }
+            to{
+                opacity:1;
+                transform:translateX(0);
+            }
+        }
+
+        /* ===== TARJETAS ===== */
+
+        .cards{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:25px;
+            padding:40px 8% 100px;
+        }
+
+        .card{
+            background:rgba(255,255,255,0.04); /* Ajustado para el tono oscuro */
+            padding:30px;
+            border-radius:20px;
+            backdrop-filter:blur(10px);
+            transition:0.4s;
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .card:hover{
+            transform:translateY(-10px);
+            box-shadow:0 0 25px rgba(168,85,247,0.4); /* Brillo hover morado */
+        }
+
+        .card i{
+            font-size:45px;
+            color:#a855f7; /* Cambiado a morado */
+            margin-bottom:20px;
+        }
+
+        .card h3{
+            margin-bottom:15px;
+        }
+
+        .card p{
+            color:#d1d5db;
+        }
+
+        /* ===== FOOTER ===== */
+
+        footer{
+            background:#090514; /* Cambiado a fondo morado extra oscuro */
+            padding:30px 8%;
+            text-align:center;
+            border-top:1px solid rgba(255,255,255,0.05);
+        }
+
+        footer p{
+            color:#94a3b8;
+        }
+
+        footer .social{
+            margin-top:15px;
+        }
+
+        footer .social i{
+            margin:0 10px;
+            color:#a855f7; /* Cambiado a morado */
+            font-size:20px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        footer .social i:hover{
+            transform:scale(1.2);
+            color:#c084fc;
+        }
+
+        /* ===== ALERTA ===== */
+
+        .modal-alerta{
+            position:fixed;
+            top:20px;
+            right:20px;
+            background:#a855f7; /* Cambiado a morado */
+            color:white;
+            padding:18px 25px;
+            border-radius:15px;
+            box-shadow:0 0 20px rgba(0,0,0,0.3);
+            font-weight:bold;
+            z-index:9999;
+            display:none;
+            animation:aparecer 0.5s ease;
+        }
+
+        @keyframes aparecer{
+            from{
+                opacity:0;
+                transform:translateX(100px);
+            }
+            to{
+                opacity:1;
+                transform:translateX(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+
+        @media(max-width:950px){
+
+            .hero{
+                flex-direction:column;
+                text-align:center;
+            }
+
+            .hero-text h2{
+                font-size:42px;
+            }
+
+            .hero-image img{
+                width:320px;
+            }
+
+            .hero-buttons{
+                justify-content:center;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="particles"></div>
+
+    <div class="modal-alerta" id="alertaLogin">
+        ⚠️ Debes iniciar sesión para entrar al sistema
+    </div>
+
+    <nav>
+
+        <h1>
+            <i class="fa-solid fa-paw"></i> DIGITAL PET
+        </h1>
+
+        <button class="btn-login" onclick="mostrarMensaje()">
+            <i class="fa-solid fa-user"></i> Iniciar Sesión
+        </button>
+
+    </nav>
+
+    <section class="hero">
+
+        <div class="hero-text">
+
+            <h2>
+                Sistema Inteligente de
+                <span>Inventario Veterinario</span>
+            </h2>
+
+            <p>
+                Bienvenido a DIGITAL PET, una plataforma moderna e innovadora
+                para administrar medicamentos, productos, mascotas y reportes
+                veterinarios de manera eficiente y segura.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button class="btn-primary" onclick="mostrarMensaje()">
+                    Entrar al Sistema
+                </button>
+
+                <button class="btn-secondary">
+                    Ver Información
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="hero-image">
+            <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="">
+        </div>
+
+    </section>
+
+    <section class="cards">
+
+        <div class="card">
+            <i class="fa-solid fa-boxes-stacked"></i>
+
+            <h3>Control de Inventario</h3>
+            <p>
+                Administra productos, medicamentos y alimentos de manera organizada.
+            </p>
+        </div>
+        <div class="card">
+            <i class="fa-solid fa-user-doctor"></i>
+            <h3>Gestión Veterinaria</h3>
+            <p>
+                Controla citas, tratamientos y reportes médicos fácilmente.
+            </p>
+        </div>
+        <div class="card">
+            <i class="fa-solid fa-shield-dog"></i>
+            <h3>Seguridad Total</h3>
+            <p>
+                Sistema protegido con acceso de usuarios y validación segura.
+            </p>
+        </div>
+    </section>
+    <footer>
+        <p>
+            © 2026 DIGITAL PET - Sistema Veterinario Inteligente
+        </p>
+        <div class="social">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-instagram"></i>
+            <i class="fa-brands fa-whatsapp"></i>
+            <i class="fa-brands fa-github"></i>
+        </div>
+    </footer>
+    <script>
+        function mostrarMensaje(){
+            let alerta = document.getElementById("alertaLogin");
+            alerta.style.display = "block";
+            setTimeout(() => {
+                alerta.style.display = "none";
+                window.location.href = "/login";
+            }, 2000);
+        }
+        const particles = document.querySelector('.particles');
+        for(let i = 0; i < 40; i++){
+            let span = document.createElement('span');
+            let size = Math.random() * 10;
+            span.style.width = 10 + size + 'px';
+            span.style.height = 10 + size + 'px';
+            span.style.left = Math.random() * window.innerWidth + 'px';
+            span.style.animationDuration = 5 + Math.random() * 10 + 's';
+            particles.appendChild(span);
+        }
+    </script>
+
+</body>
+</html>

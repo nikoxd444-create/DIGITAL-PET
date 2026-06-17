@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VetCare Client - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .bento-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bento-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(15, 23, 42, 0.1);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf8ff;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#4edea3",
+                      "on-primary-container": "#003751",
+                      "on-surface": "#131b2e",
+                      "on-primary": "#ffffff",
+                      "background": "#faf8ff",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#2f2ebe",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed-dim": "#c0c1ff",
+                      "outline": "#6e7881",
+                      "inverse-primary": "#89ceff",
+                      "primary-container": "#0ea5e9",
+                      "surface-dim": "#d2d9f4",
+                      "primary-fixed-dim": "#89ceff",
+                      "tertiary-fixed": "#e1e0ff",
+                      "secondary-fixed": "#6ffbbe",
+                      "surface-tint": "#006591",
+                      "surface": "#faf8ff",
+                      "on-secondary-fixed-variant": "#005236",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#faf8ff",
+                      "on-primary-fixed-variant": "#004c6e",
+                      "surface-container": "#eaedff",
+                      "on-tertiary-fixed": "#07006c",
+                      "on-error-container": "#93000a",
+                      "on-secondary": "#ffffff",
+                      "inverse-on-surface": "#eef0ff",
+                      "outline-variant": "#bec8d2",
+                      "surface-container-highest": "#dae2fd",
+                      "on-surface-variant": "#3e4850",
+                      "on-primary-fixed": "#001e2f",
+                      "surface-container-lowest": "#ffffff",
+                      "on-background": "#131b2e",
+                      "on-tertiary-container": "#1407ad",
+                      "tertiary": "#494bd6",
+                      "secondary": "#006c49",
+                      "primary-fixed": "#c9e6ff",
+                      "inverse-surface": "#283044",
+                      "surface-container-high": "#e2e7ff",
+                      "on-secondary-fixed": "#002113",
+                      "surface-variant": "#dae2fd",
+                      "surface-container-low": "#f2f3ff",
+                      "primary": "#006591",
+                      "on-secondary-container": "#00714d",
+                      "tertiary-container": "#8d90ff",
+                      "secondary-container": "#6cf8bb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "2xl": "48px",
+                      "md": "16px",
+                      "base": "4px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full h-16 px-xl fixed top-0 left-0 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant transition-all duration-200">
+<div class="flex items-center gap-md">
+<span class="text-headline-md font-headline-md font-bold text-on-surface">VetCare Client</span>
+</div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="text-primary font-bold border-b-2 border-primary py-xs font-label-md text-label-md" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Mascotas</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Citas</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md" href="#">Facturas</a>
+</nav>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-xl pr-md py-xs text-body-md focus:ring-2 focus:ring-primary w-48 lg:w-64" placeholder="Buscar..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high p-xs rounded-full">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high p-xs rounded-full">help_outline</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ZgNgwvGEQL31KgpGqF7oFlcTYaj_lHdG157jwmxOIiMvVNo-Gx8g2_5FFGZ27uSFGTLFPna8rW6heh_YDyMqz68gEMgi0g9TKXWACXoev_G50eSiZBhsFZzrnuRr-CUvbqseMDZLvxWiL_aHygP9_I986sq86eEa-ZNi8sYeqMmuO9UZX4K5lVrMqtjVbVkwdExPYG_gVdCC-_JzlySSLx1K7QBE3_H1ouSkPa6byxiGO8Bdd8b33WpgkQPQ68AidttbkgEzKJ0"/>
+</div>
+</div>
+</header>
+<main class="mt-16 flex-grow container mx-auto px-lg py-xl max-w-container-max">
+<!-- Hero Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-xl items-center mb-2xl">
+<div class="lg:col-span-7 space-y-md">
+<div class="inline-flex items-center gap-xs px-md py-xs bg-secondary-container/30 text-on-secondary-container rounded-full font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">pets</span>
+                    Portal del Propietario
+                </div>
+<h1 class="text-display-lg font-display-lg text-on-surface">¡Hola de nuevo, <span class="text-primary">Carlos</span>!</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl">
+                    Bienvenido a tu panel personal de VetCare. Actualmente tienes <span class="font-bold text-on-surface">3 mascotas registradas</span> bajo tu cuidado. Todo lo que necesitas para su salud está a un clic de distancia.
+                </p>
+<div class="flex flex-wrap gap-md pt-md">
+<button class="bg-primary text-on-primary px-xl py-md rounded-lg font-label-md text-label-md hover:shadow-lg transition-all flex items-center gap-sm">
+<span class="material-symbols-outlined">add_circle</span>
+                        Solicitar Cita
+                    </button>
+<button class="bg-white border border-outline-variant text-on-surface-variant px-xl py-md rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-all">
+                        Ver mis Mascotas
+                    </button>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="aspect-square rounded-2xl overflow-hidden shadow-2xl relative z-10">
+<img alt="Happy owner with pet" class="w-full h-full object-cover" data-alt="A heartwarming close-up of a smiling man named Carlos hugging a golden retriever in a bright, sun-drenched living room. The lighting is soft and warm, highlighting the friendly connection between pet and owner. The visual style is clean and professional with a soft-medical aesthetic, using a palette of gentle blues and whites that evoke trust and empathy in a veterinary care context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9kf1JnrsnbwMb3vHa9pAo9gjWU3yY3-9rZ4DcBWpI0miJEHLvQ1P6zlNmG4eYGU4AGFadL0TrPIJEfqB486Im-dre4aW3XDoQpLt0nB_wdlSTYA837h0aXGi6xfjPhFLaMEgXQlqi65jzx66kmuJE02zx1i2Bgnemgrtsz1UXqmW3fDmBy9_9r8Pu69FDT8fEMC_hEDePiBPzPlUatk03sPmGZtMiTqltQ68oTPkrEfkY1nm-3AshvzDYWU8v_3kCHmdPE0lcUiA"/>
+</div>
+<!-- Decorative elements -->
+<div class="absolute -bottom-xl -left-xl w-48 h-48 bg-primary-container/20 rounded-full blur-3xl -z-10"></div>
+<div class="absolute -top-md -right-md w-32 h-32 bg-secondary-container/20 rounded-full blur-2xl -z-10"></div>
+</div>
+</section>
+<!-- Quick Actions Bento Grid -->
+<section class="mb-2xl">
+<h2 class="text-headline-md font-headline-md text-on-surface mb-lg">Acciones Rápidas</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+<!-- Mascotas -->
+<a class="group bento-hover bg-white p-lg rounded-2xl border border-outline-variant flex flex-col items-center text-center gap-md" href="#">
+<div class="w-16 h-16 rounded-2xl bg-primary-container/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px]">pets</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px]">Mis Mascotas</h3>
+<p class="text-label-md font-label-md text-on-surface-variant mt-xs">Gestiona tus peludos amigos</p>
+</div>
+</a>
+<!-- Citas -->
+<a class="group bento-hover bg-white p-lg rounded-2xl border border-outline-variant flex flex-col items-center text-center gap-md" href="#">
+<div class="w-16 h-16 rounded-2xl bg-secondary-container/10 flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px]">calendar_today</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px]">Mis Citas</h3>
+<p class="text-label-md font-label-md text-on-surface-variant mt-xs">Próximas visitas y agendas</p>
+</div>
+</a>
+<!-- Historia -->
+<a class="group bento-hover bg-white p-lg rounded-2xl border border-outline-variant flex flex-col items-center text-center gap-md" href="#">
+<div class="w-16 h-16 rounded-2xl bg-tertiary-container/10 flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px]">medical_services</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px]">Historia Clínica</h3>
+<p class="text-label-md font-label-md text-on-surface-variant mt-xs">Resultados y vacunas</p>
+</div>
+</a>
+<!-- Facturas -->
+<a class="group bento-hover bg-white p-lg rounded-2xl border border-outline-variant flex flex-col items-center text-center gap-md" href="#">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-highest flex items-center justify-center text-outline group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px]">receipt_long</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px]">Facturas</h3>
+<p class="text-label-md font-label-md text-on-surface-variant mt-xs">Pagos y comprobantes</p>
+</div>
+</a>
+</div>
+</section>
+<!-- Featured Section -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-xl">
+<!-- Next Appointment -->
+<div class="bg-primary rounded-2xl p-xl shadow-xl text-on-primary flex flex-col justify-between overflow-hidden relative">
+<div class="relative z-10">
+<span class="bg-white/20 px-md py-xs rounded-full font-label-sm text-label-sm backdrop-blur-sm">PRÓXIMA CITA</span>
+<h3 class="text-headline-lg font-headline-lg mt-md">Chequeo General</h3>
+<p class="text-primary-fixed font-body-md mt-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">5g</span>
+                        Para: <span class="font-bold text-white">Bruno</span>
+</p>
+<div class="grid grid-cols-2 gap-md mt-xl">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined">event</span>
+<span class="font-label-md text-label-md">15 Oct, 2023</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-label-md text-label-md">10:30 AM</span>
+</div>
+</div>
+</div>
+<div class="mt-xl relative z-10">
+<button class="bg-white text-primary px-lg py-md rounded-lg font-label-md text-label-md font-bold hover:bg-primary-fixed-dim transition-colors">
+                        Añadir al Calendario
+                    </button>
+</div>
+<!-- Abstract pattern icon background -->
+<span class="material-symbols-outlined absolute -right-xl -bottom-xl text-[240px] opacity-10 pointer-events-none">calendar_month</span>
+</div>
+<!-- Health Reminder -->
+<div class="bg-white rounded-2xl p-xl border border-outline-variant shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<span class="bg-error-container text-on-error-container px-md py-xs rounded-full font-label-sm text-label-sm">RECORDATORIO</span>
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">health_and_safety</span>
+</div>
+<h3 class="text-headline-lg font-headline-lg text-on-surface mt-md">Vacuna Rabia</h3>
+<p class="text-on-surface-variant font-body-md mt-sm">
+                        Tu mascota <span class="font-bold text-on-surface">Luna</span> necesita su refuerzo anual.
+                    </p>
+<div class="mt-xl flex items-center gap-md p-md bg-error-container/10 border border-error/10 rounded-xl">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<img alt="Luna" class="w-10 h-10 rounded-full object-cover" data-alt="Close-up of a cute, small beagle puppy looking curiously at the camera. The background is a soft, blurred clinical setting with calm teal and white tones. Professional lighting and high-definition detail on the fur and expressive eyes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAWoeTO9looLZ2DQ0uBQ9pGN6h8vh44iKU8O5JBo_w1cpDKV5v6CEufBM1Dz_L1LrHtq4PBy6urSkpdMUfKnv6_y0mMJPr5USEWJ8tikLdvwnw2dMXrJxX7aUpyPwdVl35NR1hWIVCRUmA4VCkzfWMHgh4VQi96ToZ-TDSpiEUYVuKxP2BgXd3Mw64chlVLB33Cwhs4KcjKePXhwfpktzqSJmau_LHaeEEpkCmjtR6wSgrhAf8ZXiCIne3iFBbN-tZNRKoouHZfF8"/>
+</div>
+<div>
+<p class="text-label-md font-label-md text-on-surface">Vence en 5 días</p>
+<p class="text-label-sm font-label-sm text-error">Urgencia media</p>
+</div>
+</div>
+</div>
+<div class="mt-xl flex gap-md">
+<button class="flex-1 bg-secondary text-on-secondary px-lg py-md rounded-lg font-label-md text-label-md hover:shadow-lg transition-all">
+                        Agendar Ahora
+                    </button>
+<button class="material-symbols-outlined border border-outline-variant text-on-surface-variant p-md rounded-lg hover:bg-surface-container-low transition-all">
+                        close
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface border-t border-outline-variant py-2xl px-lg mt-2xl">
+<div class="container mx-auto max-w-container-max">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-xl">
+<div class="md:col-span-1">
+<span class="text-headline-md font-headline-md font-bold text-primary">VetCare</span>
+<p class="text-body-md font-body-md text-on-surface-variant mt-md">
+                        Cuidando a quienes más quieres con la precisión clínica y calidez humana que merecen.
+                    </p>
+</div>
+<div>
+<h4 class="text-label-md font-label-md text-on-surface font-bold mb-md">Navegación</h4>
+<ul class="space-y-sm text-label-md font-label-md text-on-surface-variant">
+<li><a class="hover:text-primary" href="#">Inicio</a></li>
+<li><a class="hover:text-primary" href="#">Mis Mascotas</a></li>
+<li><a class="hover:text-primary" href="#">Servicios</a></li>
+<li><a class="hover:text-primary" href="#">Contáctanos</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-label-md font-label-md text-on-surface font-bold mb-md">Contacto</h4>
+<ul class="space-y-sm text-label-md font-label-md text-on-surface-variant">
+<li class="flex items-center gap-xs"><span class="material-symbols-outlined text-[18px]">call</span> +34 900 123 456</li>
+<li class="flex items-center gap-xs"><span class="material-symbols-outlined text-[18px]">mail</span> info@vetcare.com</li>
+<li class="flex items-center gap-xs"><span class="material-symbols-outlined text-[18px]">location_on</span> Calle Salud 123, Madrid</li>
+</ul>
+</div>
+<div>
+<h4 class="text-label-md font-label-md text-on-surface font-bold mb-md">Síguenos</h4>
+<div class="flex gap-md">
+<a class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+<div class="mt-2xl pt-lg border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-md text-label-sm font-label-sm text-outline">
+<p>© 2023 VetCare Clinic System. Todos los derechos reservados.</p>
+<div class="flex gap-xl">
+<a class="hover:text-primary" href="#">Privacidad</a>
+<a class="hover:text-primary" href="#">Términos de Servicio</a>
+<a class="hover:text-primary" href="#">Cookies</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- FAB for quick action (only on primary dashboard context) -->
+<button class="fixed bottom-lg right-lg w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-50">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+<script>
+        // Subtle scroll effect for Header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-sm');
+                header.classList.remove('h-16');
+                header.classList.add('h-14');
+            } else {
+                header.classList.remove('shadow-sm');
+                header.classList.remove('h-14');
+                header.classList.add('h-16');
+            }
+        });
+    </script>
+</body></html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Registro de Consultas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--naranja:#E07B39;--naranja-hover:#c4622a;--amarillo:#F5C842;--blanco:#ffffff;--negro:#1a1a1a;--gris:#555555;--gris-claro:#f0f0f0;--verde:#4CAF7D;--verde-bg:rgba(76,175,125,0.12);--naranja-bg:rgba(224,123,57,0.10);--rojo:#e53935;--rojo-bg:rgba(229,57,53,0.10);--sombra:0 4px 24px rgba(0,0,0,0.08);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:#f7f7f5;color:var(--negro);display:flex;min-height:100vh;}
+    .sidebar{width:230px;background:var(--negro);display:flex;flex-direction:column;padding:28px 14px;position:fixed;top:0;left:0;height:100vh;z-index:20;}
+    .sidebar-brand{font-size:20px;font-weight:900;color:var(--blanco);padding:0 10px;margin-bottom:32px;}
+    .sidebar-brand em{color:var(--amarillo);font-style:normal;}
+    .nav-section{font-size:10px;font-weight:800;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.1em;padding:0 10px;margin:18px 0 6px;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .2s;text-decoration:none;margin-bottom:2px;}
+    .nav-item:hover{color:var(--blanco);background:rgba(255,255,255,0.07);}
+    .nav-item.active{background:var(--amarillo);color:var(--negro);}
+    .sidebar-footer{margin-top:auto;padding:14px 10px;border-top:1px solid rgba(255,255,255,0.08);}
+    .vet-profile{display:flex;align-items:center;gap:10px;}
+    .vet-avatar{width:38px;height:38px;border-radius:50%;background:var(--naranja);color:var(--blanco);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;}
+    .vet-info h5{font-size:13px;font-weight:800;color:var(--blanco);}
+    .vet-info span{font-size:11px;color:rgba(255,255,255,0.4);}
+    .main{margin-left:230px;flex:1;display:flex;flex-direction:column;}
+    .topbar{background:var(--blanco);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:sticky;top:0;z-index:10;}
+    .topbar h2{font-size:18px;font-weight:900;}
+    .topbar-right{display:flex;gap:10px;}
+    .btn-primary{padding:9px 20px;background:var(--naranja);color:var(--blanco);border:none;border-radius:12px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .2s;}
+    .btn-primary:hover{background:var(--naranja-hover);}
+    .content{padding:28px;flex:1;display:flex;gap:22px;}
+
+    /* FORMULARIO */
+    .form-panel{flex:1;}
+    .form-card{background:var(--blanco);border-radius:20px;box-shadow:var(--sombra);padding:28px;margin-bottom:20px;}
+    .form-card h3{font-size:16px;font-weight:900;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .field{display:flex;flex-direction:column;gap:5px;}
+    .field.full{grid-column:1/-1;}
+    label{font-size:12px;font-weight:800;color:var(--negro);text-transform:uppercase;letter-spacing:.04em;}
+    input,select,textarea{padding:11px 14px;border:2px solid var(--gris-claro);border-radius:12px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--negro);outline:none;background:var(--blanco);transition:border-color .2s;}
+    input:focus,select:focus,textarea:focus{border-color:var(--naranja);box-shadow:0 0 0 3px rgba(224,123,57,0.1);}
+    textarea{resize:vertical;min-height:80px;}
+    .vital-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+    .vital-card{background:#fafafa;border-radius:14px;padding:14px 16px;text-align:center;border:2px solid var(--gris-claro);transition:border-color .2s;}
+    .vital-card:focus-within{border-color:var(--naranja);}
+    .vital-card .v-icon{font-size:24px;margin-bottom:6px;}
+    .vital-card label{font-size:10px;color:var(--gris);margin-bottom:4px;display:block;}
+    .vital-card input{border:none;background:transparent;text-align:center;font-size:20px;font-weight:900;color:var(--negro);padding:0;outline:none;width:100%;}
+    .vital-card .v-unit{font-size:11px;color:var(--gris);font-weight:700;margin-top:2px;}
+    .tratamiento-row{display:flex;gap:10px;margin-bottom:10px;}
+    .tratamiento-row input{flex:1;}
+    .btn-add-row{padding:11px 14px;background:var(--amarillo);color:var(--negro);border:none;border-radius:12px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;white-space:nowrap;font-size:13px;}
+    .diag-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+    .diag-tag{background:var(--naranja-bg);color:var(--naranja);border:none;padding:6px 14px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:6px;}
+    .diag-tag .remove{font-size:10px;opacity:.7;}
+    .proxima-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px;}
+    .btn-ghost{padding:10px 20px;background:var(--gris-claro);color:var(--gris);border:none;border-radius:12px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;}
+    .btn-save{padding:10px 24px;background:var(--naranja);color:var(--blanco);border:none;border-radius:12px;font-size:14px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .2s;}
+    .btn-save:hover{background:var(--naranja-hover);}
+    .success-banner{background:var(--verde-bg);color:var(--verde);border-radius:14px;padding:14px 20px;font-weight:800;font-size:14px;margin-bottom:16px;display:none;animation:fadeUp .3s ease;}
+    .success-banner.show{display:flex;align-items:center;gap:10px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+
+    /* LISTA recientes */
+    .recent-panel{width:300px;flex-shrink:0;}
+    .recent-panel h3{font-size:15px;font-weight:900;margin-bottom:14px;}
+    .rec-item{background:var(--blanco);border-radius:16px;box-shadow:var(--sombra);padding:16px;margin-bottom:12px;cursor:pointer;transition:transform .2s;}
+    .rec-item:hover{transform:translateY(-2px);}
+    .rec-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+    .rec-icon{width:36px;height:36px;border-radius:10px;background:var(--amarillo);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+    .rec-head strong{font-size:14px;font-weight:800;}
+    .rec-head span{font-size:11px;color:var(--gris);}
+    .rec-date{font-size:11px;color:var(--gris);margin-left:auto;}
+    .rec-diag{font-size:12px;color:var(--gris);margin-bottom:6px;}
+    .rec-badge{display:inline-block;padding:3px 10px;border-radius:8px;font-size:11px;font-weight:800;}
+    .rb-verde{background:var(--verde-bg);color:var(--verde);}
+    .rb-naranja{background:var(--naranja-bg);color:var(--naranja);}
+    .rb-rojo{background:var(--rojo-bg);color:var(--rojo);}
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">🐾 Happy <em>Pet</em></div>
+    <div class="nav-section">Principal</div>
+    <a class="nav-item" href="../dashboard/index.html"><span>📊</span> Dashboard</a>
+    <a class="nav-item" href="../agenda/index.html"><span>📅</span> Agenda</a>
+    <a class="nav-item" href="../historial/index.html"><span>📋</span> Historial</a>
+    <a class="nav-item active" href="index.html"><span>🩺</span> Consultas</a>
+    <a class="nav-item" href="../vacunas/index.html"><span>💉</span> Vacunas</a>
+    <a class="nav-item" href="../archivos/index.html"><span>📁</span> Archivos</a>
+    <div class="sidebar-footer">
+      <div class="vet-profile">
+        <div class="vet-avatar">CL</div>
+        <div class="vet-info"><h5>Dr. Carlos López</h5><span>Veterinario</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <h2>🩺 Registro de Consulta</h2>
+      <div class="topbar-right">
+        <button class="btn-primary">📄 Historial</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="form-panel">
+
+        <div class="success-banner" id="successBanner">✅ Consulta registrada exitosamente para Luna.</div>
+
+        <!-- Datos básicos -->
+        <div class="form-card">
+          <h3>🐾 Datos del Paciente</h3>
+          <div class="form-grid">
+            <div class="field"><label>Mascota</label><input type="text" placeholder="Nombre de la mascota" value="Luna"/></div>
+            <div class="field"><label>Dueño</label><input type="text" placeholder="Nombre del dueño" value="María González"/></div>
+            <div class="field"><label>Especie</label><select><option>🐶 Perro</option><option>🐱 Gato</option><option>🐦 Ave</option></select></div>
+            <div class="field"><label>Raza</label><input type="text" placeholder="Ej: Labrador" value="Labrador Retriever"/></div>
+            <div class="field"><label>Fecha consulta</label><input type="date" value="2026-06-07"/></div>
+            <div class="field"><label>Tipo de consulta</label>
+              <select>
+                <option>Consulta rutinaria</option>
+                <option>Urgencia</option>
+                <option>Control post-operatorio</option>
+                <option>Vacunación</option>
+                <option>Desparasitación</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Signos vitales -->
+        <div class="form-card">
+          <h3>💓 Signos Vitales</h3>
+          <div class="vital-grid">
+            <div class="vital-card">
+              <div class="v-icon">⚖️</div>
+              <label>Peso</label>
+              <input type="number" value="24.2" step="0.1"/>
+              <div class="v-unit">kg</div>
+            </div>
+            <div class="vital-card">
+              <div class="v-icon">🌡️</div>
+              <label>Temperatura</label>
+              <input type="number" value="38.4" step="0.1"/>
+              <div class="v-unit">°C</div>
+            </div>
+            <div class="vital-card">
+              <div class="v-icon">❤️</div>
+              <label>Frec. Cardíaca</label>
+              <input type="number" value="82"/>
+              <div class="v-unit">lpm</div>
+            </div>
+            <div class="vital-card">
+              <div class="v-icon">💨</div>
+              <label>Frec. Respiratoria</label>
+              <input type="number" value="18"/>
+              <div class="v-unit">rpm</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Diagnóstico -->
+        <div class="form-card">
+          <h3>🔬 Diagnóstico y Tratamiento</h3>
+          <div class="form-grid">
+            <div class="field full">
+              <label>Motivo de consulta</label>
+              <textarea placeholder="Describe el motivo de la consulta...">Revisión general y vacunación anual.</textarea>
+            </div>
+            <div class="field full">
+              <label>Diagnóstico</label>
+              <textarea placeholder="Diagnóstico clínico...">Paciente en buen estado de salud general. Sin hallazgos patológicos.</textarea>
+            </div>
+          </div>
+          <label style="margin-top:14px;display:block;margin-bottom:8px;">Diagnósticos rápidos</label>
+          <div class="diag-tags" id="diagTags">
+            <button class="diag-tag">Gastroenteritis <span class="remove">✕</span></button>
+            <button class="diag-tag">Dermatitis <span class="remove">✕</span></button>
+          </div>
+          <div style="margin-top:12px;">
+            <label>Tratamientos</label>
+            <div id="tratamientos">
+              <div class="tratamiento-row">
+                <input type="text" placeholder="Medicamento" value="Antirrábica"/>
+                <input type="text" placeholder="Dosis" style="width:100px;" value="1 dosis"/>
+                <input type="text" placeholder="Duración" style="width:120px;" value="Única"/>
+              </div>
+            </div>
+            <button class="btn-add-row" onclick="addTrat()">+ Agregar tratamiento</button>
+          </div>
+          <div style="margin-top:16px;">
+            <label>Observaciones adicionales</label>
+            <textarea style="margin-top:6px;" placeholder="Notas para el expediente...">Sin reacciones adversas. Próximo control en 12 meses.</textarea>
+          </div>
+        </div>
+
+        <!-- Próxima visita -->
+        <div class="form-card">
+          <h3>📅 Próxima Visita</h3>
+          <div class="proxima-row">
+            <div class="field"><label>Fecha sugerida</label><input type="date" value="2027-06-07"/></div>
+            <div class="field"><label>Motivo</label><input type="text" value="Vacunación anual"/></div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-ghost">Cancelar</button>
+          <button class="btn-ghost">💾 Borrador</button>
+          <button class="btn-save" onclick="guardar()">✅ Guardar Consulta</button>
+        </div>
+      </div>
+
+      <!-- Consultas recientes -->
+      <div class="recent-panel">
+        <h3>🕐 Consultas Recientes</h3>
+        <div class="rec-item">
+          <div class="rec-head">
+            <div class="rec-icon">🐶</div>
+            <div><strong>Luna</strong><br/><span>María González</span></div>
+            <span class="rec-date">Hoy</span>
+          </div>
+          <div class="rec-diag">Vacunación anual · Antirrábica</div>
+          <span class="rec-badge rb-verde">Completada</span>
+        </div>
+        <div class="rec-item">
+          <div class="rec-head">
+            <div class="rec-icon">🐱</div>
+            <div><strong>Michi</strong><br/><span>Carlos Pérez</span></div>
+            <span class="rec-date">Ayer</span>
+          </div>
+          <div class="rec-diag">Revisión general · Sin hallazgos</div>
+          <span class="rec-badge rb-verde">Completada</span>
+        </div>
+        <div class="rec-item">
+          <div class="rec-head">
+            <div class="rec-icon">🐶</div>
+            <div><strong>Thor</strong><br/><span>Paola Jiménez</span></div>
+            <span class="rec-date">3 jun</span>
+          </div>
+          <div class="rec-diag">Desparasitación · Ivermectina</div>
+          <span class="rec-badge rb-naranja">Seguimiento</span>
+        </div>
+        <div class="rec-item">
+          <div class="rec-head">
+            <div class="rec-icon">🐹</div>
+            <div><strong>Hammy</strong><br/><span>Luis Martínez</span></div>
+            <span class="rec-date">1 jun</span>
+          </div>
+          <div class="rec-diag">Urgencia · Vómito · Gastroenteritis</div>
+          <span class="rec-badge rb-rojo">Urgencia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function addTrat(){
+      const d = document.getElementById('tratamientos');
+      const row = document.createElement('div');
+      row.className = 'tratamiento-row';
+      row.innerHTML = '<input type="text" placeholder="Medicamento"/><input type="text" placeholder="Dosis" style="width:100px;"/><input type="text" placeholder="Duración" style="width:120px;"/>';
+      d.appendChild(row);
+    }
+    function guardar(){
+      const b = document.getElementById('successBanner');
+      b.classList.add('show');
+      setTimeout(()=>b.classList.remove('show'),4000);
+    }
+  </script>
+</body>
+</html>

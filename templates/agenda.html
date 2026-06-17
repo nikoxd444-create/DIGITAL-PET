@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Pet – Agenda Veterinaria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --naranja: #E07B39; --naranja-hover: #c4622a; --amarillo: #F5C842;
+      --blanco: #ffffff; --negro: #1a1a1a; --gris: #555555; --gris-claro: #f0f0f0;
+      --verde: #4CAF7D; --verde-bg: rgba(76,175,125,0.12);
+      --naranja-bg: rgba(224,123,57,0.10); --rojo: #e53935; --rojo-bg: rgba(229,57,53,0.10);
+      --sombra: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #f7f7f5; color: var(--negro); display: flex; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar { width: 230px; background: var(--negro); display: flex; flex-direction: column; padding: 28px 14px; position: fixed; top: 0; left: 0; height: 100vh; z-index: 20; }
+    .sidebar-brand { font-size: 20px; font-weight: 900; color: var(--blanco); padding: 0 10px; margin-bottom: 32px; }
+    .sidebar-brand em { color: var(--amarillo); font-style: normal; }
+    .nav-section { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.1em; padding: 0 10px; margin: 18px 0 6px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.2s; text-decoration: none; margin-bottom: 2px; }
+    .nav-item:hover { color: var(--blanco); background: rgba(255,255,255,0.07); }
+    .nav-item.active { background: var(--amarillo); color: var(--negro); }
+    .nav-item .icon { font-size: 17px; }
+    .nav-badge { margin-left: auto; background: var(--naranja); color: var(--blanco); border-radius: 999px; font-size: 10px; font-weight: 900; padding: 1px 7px; }
+    .sidebar-footer { margin-top: auto; padding: 14px 10px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .vet-profile { display: flex; align-items: center; gap: 10px; }
+    .vet-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--naranja); color: var(--blanco); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 15px; }
+    .vet-info h5 { font-size: 13px; font-weight: 800; color: var(--blanco); }
+    .vet-info span { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+    /* MAIN */
+    .main { margin-left: 230px; flex: 1; display: flex; flex-direction: column; }
+    .topbar { background: var(--blanco); padding: 0 28px; height: 62px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 10; }
+    .topbar h2 { font-size: 18px; font-weight: 900; }
+    .topbar-right { display: flex; gap: 10px; align-items: center; }
+    .btn-primary { padding: 9px 20px; background: var(--naranja); color: var(--blanco); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; transition: background 0.2s; }
+    .btn-primary:hover { background: var(--naranja-hover); }
+    .btn-ghost { padding: 9px 16px; background: var(--gris-claro); color: var(--gris); border: none; border-radius: 12px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; }
+    .content { padding: 28px; flex: 1; }
+
+    /* SEMANA nav */
+    .week-nav { background: var(--blanco); border-radius: 20px; box-shadow: var(--sombra); padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+    .week-title { font-size: 17px; font-weight: 900; }
+    .week-title span { color: var(--naranja); }
+    .week-controls { display: flex; gap: 8px; }
+    .btn-week { padding: 8px 16px; background: var(--gris-claro); color: var(--negro); border: none; border-radius: 10px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; transition: all 0.2s; }
+    .btn-week:hover { background: var(--amarillo); }
+    .btn-week.active { background: var(--amarillo); }
+
+    /* CALENDARIO SEMANAL */
+    .calendar-wrap { background: var(--blanco); border-radius: 20px; box-shadow: var(--sombra); overflow: hidden; margin-bottom: 22px; }
+    .cal-header { display: grid; grid-template-columns: 70px repeat(6,1fr); background: var(--amarillo); }
+    .cal-header .ch-empty { padding: 14px; border-right: 1px solid rgba(0,0,0,0.06); }
+    .day-col { padding: 12px 8px; text-align: center; border-right: 1px solid rgba(0,0,0,0.06); }
+    .day-col:last-child { border-right: none; }
+    .day-name { font-size: 11px; font-weight: 800; text-transform: uppercase; color: rgba(26,26,26,0.5); }
+    .day-num { font-size: 22px; font-weight: 900; color: var(--negro); line-height: 1.1; }
+    .day-col.today .day-num { color: var(--naranja); }
+    .day-col.today { background: rgba(224,123,57,0.08); }
+
+    /* SLOTS */
+    .cal-body { display: grid; grid-template-columns: 70px repeat(6,1fr); }
+    .time-slot { padding: 10px 8px; border-top: 1px solid var(--gris-claro); border-right: 1px solid var(--gris-claro); font-size: 11px; font-weight: 800; color: var(--gris); text-align: center; }
+    .slot-cell { border-top: 1px solid var(--gris-claro); border-right: 1px solid var(--gris-claro); min-height: 52px; padding: 4px; position: relative; }
+    .slot-cell:last-child { border-right: none; }
+    .cita-block {
+      border-radius: 10px; padding: 6px 8px; font-size: 11px; font-weight: 800;
+      cursor: pointer; transition: opacity 0.2s; line-height: 1.3;
+    }
+    .cita-block:hover { opacity: 0.8; }
+    .cb-verde { background: var(--verde-bg); color: #2e7d52; border-left: 3px solid var(--verde); }
+    .cb-naranja { background: var(--naranja-bg); color: var(--naranja-hover); border-left: 3px solid var(--naranja); }
+    .cb-amarillo { background: rgba(245,200,66,0.2); color: #8a7200; border-left: 3px solid var(--amarillo); }
+    .cb-rojo { background: var(--rojo-bg); color: var(--rojo); border-left: 3px solid var(--rojo); }
+
+    /* DETALLE panel */
+    .detail-panel { background: var(--blanco); border-radius: 20px; box-shadow: var(--sombra); padding: 24px; }
+    .detail-panel h3 { font-size: 16px; font-weight: 900; margin-bottom: 16px; }
+    .cita-detail-list { display: flex; flex-direction: column; gap: 12px; }
+    .cita-detail-item { display: flex; align-items: center; gap: 14px; padding: 14px; background: #fafafa; border-radius: 14px; transition: background 0.15s; cursor: pointer; }
+    .cita-detail-item:hover { background: #f0f0f0; }
+    .cdi-time { font-size: 14px; font-weight: 900; color: var(--naranja); width: 50px; flex-shrink: 0; }
+    .cdi-pet { width: 40px; height: 40px; border-radius: 10px; background: var(--amarillo); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .cdi-info { flex: 1; }
+    .cdi-info strong { font-size: 14px; font-weight: 800; display: block; }
+    .cdi-info span { font-size: 12px; color: var(--gris); }
+    .cdi-badge { padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; }
+    .status-confirmada { background: var(--verde-bg); color: var(--verde); }
+    .status-pendiente { background: var(--naranja-bg); color: var(--naranja); }
+    .status-cancelada { background: var(--rojo-bg); color: var(--rojo); }
+    .cdi-actions { display: flex; gap: 6px; }
+    .btn-xs { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; border: none; }
+    .btn-xs-primary { background: var(--naranja); color: var(--blanco); }
+    .btn-xs-ghost { background: var(--gris-claro); color: var(--gris); }
+
+    /* MODAL NUEVA CITA */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--blanco); border-radius: 20px; padding: 32px; width: 90%; max-width: 480px; transform: translateY(20px); transition: transform 0.25s; }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+    .modal-head h3 { font-size: 18px; font-weight: 900; }
+    .modal-close { background: var(--gris-claro); border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .field label { font-size: 12px; font-weight: 800; display: block; margin-bottom: 5px; }
+    .field input, .field select, .field textarea { width: 100%; padding: 10px 13px; border: 2px solid var(--gris-claro); border-radius: 11px; font-size: 14px; font-family: 'Nunito', sans-serif; color: var(--negro); outline: none; background: var(--blanco); }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--naranja); }
+    .field { margin-bottom: 14px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">🐾 Happy <em>Pet</em></div>
+    <div class="nav-section">Principal</div>
+    <a class="nav-item" href="../dashboard/index.html"><span class="icon">📊</span> Dashboard</a>
+    <a class="nav-item active" href="index.html"><span class="icon">📅</span> Agenda <span class="nav-badge">6</span></a>
+    <a class="nav-item" href="../historial/index.html"><span class="icon">📋</span> Historial Clínico</a>
+    <a class="nav-item" href="../consultas/index.html"><span class="icon">🩺</span> Consultas</a>
+    <a class="nav-item" href="../vacunas/index.html"><span class="icon">💉</span> Vacunas</a>
+    <a class="nav-item" href="../archivos/index.html"><span class="icon">📁</span> Archivos</a>
+    <div class="sidebar-footer">
+      <div class="vet-profile">
+        <div class="vet-avatar">CL</div>
+        <div class="vet-info"><h5>Dr. Carlos López</h5><span>Veterinario</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <h2>📅 Agenda Semanal</h2>
+      <div class="topbar-right">
+        <button class="btn-ghost">Hoy</button>
+        <button class="btn-primary" onclick="openModal()">+ Nueva Cita</button>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- Semana nav -->
+      <div class="week-nav">
+        <div class="week-title">Semana del <span>2 al 7 de Junio, 2026</span></div>
+        <div class="week-controls">
+          <button class="btn-week">← Anterior</button>
+          <button class="btn-week active">Esta semana</button>
+          <button class="btn-week">Siguiente →</button>
+        </div>
+      </div>
+
+      <!-- Calendario -->
+      <div class="calendar-wrap">
+        <div class="cal-header">
+          <div class="ch-empty"></div>
+          <div class="day-col"><div class="day-name">Lun</div><div class="day-num">2</div></div>
+          <div class="day-col"><div class="day-name">Mar</div><div class="day-num">3</div></div>
+          <div class="day-col"><div class="day-name">Mié</div><div class="day-num">4</div></div>
+          <div class="day-col"><div class="day-name">Jue</div><div class="day-num">5</div></div>
+          <div class="day-col"><div class="day-name">Vie</div><div class="day-num">6</div></div>
+          <div class="day-col today"><div class="day-name">Sáb</div><div class="day-num">7</div></div>
+        </div>
+        <div class="cal-body">
+          <!-- 09:00 -->
+          <div class="time-slot">09:00</div>
+          <div class="slot-cell"><div class="cita-block cb-verde">🐶 Luna<br/>Vacunación</div></div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"><div class="cita-block cb-naranja">🐱 Nala<br/>Revisión</div></div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"><div class="cita-block cb-verde">🐶 Rex<br/>Control</div></div>
+          <div class="slot-cell"></div>
+          <!-- 10:00 -->
+          <div class="time-slot">10:00</div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"><div class="cita-block cb-amarillo">🐦 Paco<br/>Plumas</div></div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"><div class="cita-block cb-verde">🐶 Thor<br/>Desparas.</div></div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"><div class="cita-block cb-naranja">🐱 Michi<br/>Revisión</div></div>
+          <!-- 11:00 -->
+          <div class="time-slot">11:00</div>
+          <div class="slot-cell"><div class="cita-block cb-rojo">🐶 Bruno<br/>Urgencia</div></div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"><div class="cita-block cb-amarillo">🐹 Hammy<br/>Dientes</div></div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"></div>
+          <!-- 14:00 -->
+          <div class="time-slot">14:00</div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"><div class="cita-block cb-verde">🐱 Oreo<br/>Esteriliz.</div></div>
+          <div class="slot-cell"><div class="cita-block cb-naranja">🐶 Max<br/>Vacuna</div></div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"></div>
+          <div class="slot-cell"><div class="cita-block cb-verde">🐶 Tobi<br/>Control</div></div>
+        </div>
+      </div>
+
+      <!-- Detalle del día -->
+      <div class="detail-panel">
+        <h3>📋 Citas del Sábado 7 de Junio</h3>
+        <div class="cita-detail-list">
+          <div class="cita-detail-item">
+            <span class="cdi-time">09:30</span>
+            <div class="cdi-pet">🐱</div>
+            <div class="cdi-info">
+              <strong>Michi – Gato Siamés</strong>
+              <span>Dueño: Carlos Pérez · Revisión general</span>
+            </div>
+            <span class="cdi-badge status-confirmada">Confirmada</span>
+            <div class="cdi-actions">
+              <button class="btn-xs btn-xs-primary">Atender</button>
+              <button class="btn-xs btn-xs-ghost">Ver</button>
+            </div>
+          </div>
+          <div class="cita-detail-item">
+            <span class="cdi-time">11:00</span>
+            <div class="cdi-pet">🐶</div>
+            <div class="cdi-info">
+              <strong>Tobi – Labrador</strong>
+              <span>Dueño: Luis Martínez · Control mensual</span>
+            </div>
+            <span class="cdi-badge status-pendiente">Pendiente</span>
+            <div class="cdi-actions">
+              <button class="btn-xs btn-xs-primary">Atender</button>
+              <button class="btn-xs btn-xs-ghost">Ver</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeOnBg(event)">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>📅 Nueva Cita</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Mascota</label><input type="text" placeholder="Nombre mascota"/></div>
+        <div class="field"><label>Especie</label><select><option>🐶 Perro</option><option>🐱 Gato</option><option>🐦 Ave</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Fecha</label><input type="date"/></div>
+        <div class="field"><label>Hora</label><input type="time"/></div>
+      </div>
+      <div class="field"><label>Dueño</label><input type="text" placeholder="Nombre del dueño"/></div>
+      <div class="field"><label>Motivo de consulta</label><textarea rows="2" placeholder="Describe el motivo..."></textarea></div>
+      <div class="modal-actions">
+        <button class="btn-xs btn-xs-ghost" onclick="closeModal()">Cancelar</button>
+        <button class="btn-xs btn-xs-primary" onclick="closeModal()">💾 Guardar Cita</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(){ document.getElementById('modalOverlay').classList.add('open'); }
+    function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+    function closeOnBg(e){ if(e.target===document.getElementById('modalOverlay')) closeModal(); }
+  </script>
+</body>
+</html>

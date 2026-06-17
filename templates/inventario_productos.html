@@ -1,0 +1,1465 @@
+{% extends "layout.html" %}
+{% block title %}DIGITALPET · Gestión de Productos{% endblock %}
+{% block section %}Inventario{% endblock %}
+{% block styles %}
+<style>
+.stat-card{background:white;border:1px solid var(--c-border);border-radius:16px;padding:20px 24px;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.06);transition:transform .2s,box-shadow .2s;}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(107,33,168,0.12);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--c-purple),var(--c-indigo));}
+.tbl-wrap{background:white;border:1px solid var(--c-border);border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(15,23,42,0.06);}
+table{width:100%;border-collapse:collapse;}
+thead{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);}
+thead th{padding:14px 16px;text-align:left;font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;}
+tbody tr{border-bottom:1px solid var(--c-border);transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f8f5ff;}
+tbody td{padding:13px 16px;font-size:13.5px;color:var(--c-mid);}
+
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;}
+.badge-ok{background:#dcfce7;color:#166534;}
+.badge-warn{background:#fef9c3;color:#854d0e;}
+.badge-danger{background:#fee2e2;color:#991b1b;}
+.badge-inactive{background:#f1f5f9;color:#64748b;}
+.badge-info{background:#e0f2fe;color:#0369a1;}
+
+.alert-banner{border-radius:12px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;animation:slideDown .35s cubic-bezier(.34,1.56,.64,1);}
+.alert-danger{background:#fff1f2;border:1px solid #fecdd3;}
+.alert-warn  {background:#fffbeb;border:1px solid #fde68a;}
+.alert-info  {background:#f0f9ff;border:1px solid #bae6fd;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px) scaleY(.96)}to{opacity:1;transform:translateY(0) scaleY(1)}}
+
+.row-notif{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;
+  animation:pulse-notif 2s infinite;
+}
+.row-notif-stock{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;}
+.row-notif-vence{background:#fffbeb;color:#d97706;border:1px solid #fde68a;}
+@keyframes pulse-notif{0%,100%{opacity:1}50%{opacity:.6}}
+
+.modal-overlay{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(15,23,42,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{
+  background:white;border-radius:20px;width:720px;max-width:96vw;max-height:94vh;
+  overflow-y:auto;box-shadow:0 32px 80px rgba(107,33,168,0.22);
+  transform:scale(.92) translateY(20px);transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .25s;
+  opacity:0;
+}
+.modal-overlay.open .modal-box{transform:scale(1) translateY(0);opacity:1;}
+.modal-header{padding:24px 28px 20px;border-bottom:1px solid var(--c-border);}
+.modal-body{padding:24px 28px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.modal-footer{padding:16px 28px 24px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--c-border);}
+.field-wrap{display:flex;flex-direction:column;gap:5px;}
+.field-wrap.full{grid-column:1/-1;}
+label{font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;}
+input,select,textarea{
+  width:100%;padding:9px 13px;border:1px solid var(--c-border);border-radius:10px;
+  font-size:14px;font-family:'DM Sans',sans-serif;color:var(--c-dark);
+  background:#fafafa;transition:border-color .2s,box-shadow .2s;outline:none;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,0.12);background:white;
+}
+input.input-error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,0.12);}
+textarea{resize:vertical;min-height:80px;}
+
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-primary{background:linear-gradient(135deg,#7c3aed,#4338ca);color:white;box-shadow:0 4px 14px rgba(124,58,237,0.35);}
+.btn-primary:hover:not(:disabled){box-shadow:0 6px 20px rgba(124,58,237,0.5);transform:translateY(-1px);}
+.btn-primary:disabled{opacity:.65;cursor:not-allowed;transform:none;}
+.btn-secondary{background:#f1f5f9;color:var(--c-mid);}
+.btn-secondary:hover{background:#e2e8f0;}
+.btn-danger{background:#fee2e2;color:#991b1b;}
+.btn-danger:hover{background:#fecaca;}
+.btn-sm{padding:5px 13px;font-size:12px;border-radius:7px;}
+.btn-icon{padding:7px;border-radius:8px;}
+
+.search-wrap{position:relative;}
+.search-wrap input{padding-left:38px;}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:16px;pointer-events:none;}
+
+.stock-bar{height:4px;border-radius:99px;background:#e2e8f0;overflow:hidden;margin-top:4px;width:80px;}
+.stock-bar-fill{height:100%;border-radius:99px;transition:width .4s;}
+
+.modal-section{grid-column:1/-1;padding:10px 0 4px;border-bottom:1px solid var(--c-border);margin-bottom:4px;}
+.modal-section span{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;}
+
+.prod-thumb{
+  width:44px;height:44px;border-radius:10px;object-fit:cover;
+  border:1.5px solid var(--c-border);flex-shrink:0;
+  background:#f1f5f9;
+}
+.prod-thumb-placeholder{
+  width:44px;height:44px;border-radius:10px;
+  background:linear-gradient(135deg,#7c3aed22,#4338ca22);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;border:1.5px solid var(--c-border);
+}
+
+.img-upload-zone{
+  grid-column:1/-1;
+  border:2px dashed #cbd5e1;border-radius:14px;
+  padding:20px;display:flex;align-items:center;gap:20px;
+  background:#f8fafc;transition:border-color .2s,background .2s;cursor:pointer;
+}
+.img-upload-zone:hover{border-color:#7c3aed;background:#faf5ff;}
+.img-preview-box{
+  width:90px;height:90px;border-radius:12px;
+  object-fit:cover;border:2px solid var(--c-border);
+  background:#f1f5f9;display:flex;align-items:center;justify-content:center;
+  font-size:36px;flex-shrink:0;overflow:hidden;
+}
+.img-preview-box img{width:100%;height:100%;object-fit:cover;}
+
+.notif-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;
+}
+
+.view-toggle-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:10px;border:1px solid var(--c-border);
+  background:white;cursor:pointer;font-size:17px;transition:all .18s;
+  color:#64748b;
+}
+.view-toggle-btn:hover{border-color:#7c3aed;color:#7c3aed;background:#faf5ff;}
+.view-toggle-btn.active{
+  background:linear-gradient(135deg,#7c3aed,#4338ca);
+  border-color:#7c3aed;color:white;
+  box-shadow:0 4px 12px rgba(124,58,237,0.3);
+}
+
+#cardsContainer{
+  display:none;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
+  animation:fadeInUp .3s ease;
+}
+#cardsContainer.active{display:grid;}
+
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.prod-card{
+  background:white;border:1px solid var(--c-border);
+  border-radius:18px;overflow:hidden;
+  box-shadow:0 2px 12px rgba(15,23,42,0.06);
+  transition:transform .22s,box-shadow .22s;
+  display:flex;flex-direction:column;
+}
+.prod-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 36px rgba(107,33,168,0.14);
+}
+
+.prod-card-img{
+  width:100%;height:180px;object-fit:cover;
+  background:linear-gradient(135deg,#f0f0fe,#e0e7ff);
+  display:flex;align-items:center;justify-content:center;
+  font-size:56px;flex-shrink:0;position:relative;overflow:hidden;
+}
+.prod-card-img img{
+  width:100%;height:100%;object-fit:cover;
+}
+.prod-card-img-placeholder{
+  width:100%;height:180px;
+  background:linear-gradient(135deg,#f0f0fe 0%,#e0e7ff 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:56px;position:relative;
+}
+.prod-card-img-placeholder::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 60%,rgba(124,58,237,0.08));
+}
+
+.prod-card-badge-overlay{
+  position:absolute;top:10px;right:10px;
+  display:flex;flex-direction:column;gap:5px;align-items:flex-end;
+}
+
+.prod-card-body{
+  padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:10px;
+}
+
+.prod-card-title{
+  font-family:'Syne',sans-serif;font-size:15px;font-weight:800;
+  color:var(--c-dark);line-height:1.3;
+}
+.prod-card-desc{
+  font-size:12px;color:#64748b;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+.prod-card-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  padding:10px 0;border-top:1px solid var(--c-border);
+}
+.prod-card-field label{
+  font-size:10px;color:#94a3b8;text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:2px;display:block;font-weight:600;
+}
+.prod-card-field span{
+  font-size:13px;font-weight:600;color:var(--c-dark);
+}
+
+.prod-card-prov{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 0;border-top:1px solid var(--c-border);
+  font-size:12px;color:#64748b;
+}
+.prod-card-prov-icon{
+  width:28px;height:28px;border-radius:8px;
+  background:linear-gradient(135deg,#7c3aed22,#4338ca22);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;border:1px solid #e0e7ff;
+}
+
+.prod-card-notifs{
+  display:flex;flex-wrap:wrap;gap:5px;padding:8px 0;
+  border-top:1px solid var(--c-border);
+}
+
+.prod-card-actions{
+  display:flex;gap:8px;padding-top:12px;
+  border-top:1px solid var(--c-border);
+}
+.prod-card-actions .btn{flex:1;justify-content:center;}
+
+.prod-card-price{
+  font-family:'Syne',sans-serif;font-size:20px;font-weight:800;
+  color:var(--c-violet);
+}
+.prod-card-price-label{
+  font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.card-stock-bar{
+  height:5px;border-radius:99px;background:#e2e8f0;
+  overflow:hidden;margin-top:5px;width:100%;
+}
+.card-stock-bar-fill{height:100%;border-radius:99px;transition:width .4s;}
+</style>
+{% endblock %}
+{% block content %}
+<main style="flex:1;padding:32px 40px;">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+    <div>
+      <h1 style="font-size:26px;font-weight:800;color:var(--c-dark);letter-spacing:-.02em;">Gestión de Productos</h1>
+      <p style="color:#64748b;font-size:14px;margin-top:4px;">Catálogo de insumos veterinarios · Control de existencias y vencimientos</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;">
+      <button class="btn btn-secondary" onclick="window.location.href='/tienda/'" title="Abrir la tienda virtual">
+        <span style="font-size:16px;line-height:1;">🛒</span> Ver Tienda Virtual
+      </button>
+      <button class="btn btn-secondary" onclick="window.location.href='/compras'" title="Ir a la gestión de compras">
+        <span style="font-size:16px;line-height:1;">📦</span> Ir a Compras
+      </button>
+      <button class="btn btn-primary" onclick="openModal()">
+        <span style="font-size:18px;line-height:1;">＋</span> Nuevo Producto
+      </button>
+    </div>
+  </div>
+
+  <div id="alertsContainer"></div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
+    <div class="stat-card">
+      <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.07em;">Total Productos</div>
+      <div style="font-size:32px;font-weight:800;color:var(--c-dark);margin:6px 0;font-family:Syne,sans-serif;" id="statTotal">—</div>
+      <div style="font-size:12px;color:#94a3b8;">En catálogo activo</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.07em;">Stock Crítico</div>
+      <div style="font-size:32px;font-weight:800;color:#dc2626;margin:6px 0;font-family:Syne,sans-serif;" id="statCritical">—</div>
+      <div style="font-size:12px;color:#94a3b8;">Por reabastecerse</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.07em;">Próx. Vencer</div>
+      <div style="font-size:32px;font-weight:800;color:#d97706;margin:6px 0;font-family:Syne,sans-serif;" id="statExpiring">—</div>
+      <div style="font-size:12px;color:#94a3b8;">En menos de 30 días</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.07em;">Valor Inventario</div>
+      <div style="font-size:28px;font-weight:800;color:var(--c-violet);margin:6px 0;font-family:Syne,sans-serif;" id="statValue">—</div>
+      <div style="font-size:12px;color:#94a3b8;">Precio de compra</div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+    <div class="search-wrap" style="flex:1;min-width:220px;max-width:360px;">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Buscar por nombre, marca, categoría…" oninput="debounceSearch()"/>
+    </div>
+    <!-- FIX: filterCat ahora carga dinámicamente desde /api/productos?action=categorias (tabla `categorias` con ID_CATEGORIAS/CAT_NOMBRE) -->
+    <select id="filterCat" onchange="loadProducts(1)" style="padding:9px 13px;border:1px solid var(--c-border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:#fafafa;outline:none;color:var(--c-dark);">
+      <option value="">Todas las categorías</option>
+    </select>
+    <select id="filterStock" onchange="loadProducts(1)" style="padding:9px 13px;border:1px solid var(--c-border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;background:#fafafa;outline:none;color:var(--c-dark);">
+      <option value="">Todos los estados</option>
+      <option value="critical">Stock crítico</option>
+      <option value="ok">Stock normal</option>
+    </select>
+    <button class="btn btn-secondary" onclick="loadProducts(currentPage)" title="Recargar">↺ Actualizar</button>
+    <div style="display:flex;gap:4px;margin-left:4px;" title="Cambiar vista">
+      <button class="view-toggle-btn active" id="btnViewTable" onclick="setView('table')" title="Vista tabla">
+        ☰
+      </button>
+      <button class="view-toggle-btn" id="btnViewCards" onclick="setView('cards')" title="Vista tarjetas">
+        ⊞
+      </button>
+    </div>
+  </div>
+
+  <div class="tbl-wrap" id="tableWrap">
+    <table id="productsTable">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Producto</th>
+          <th>Categoría</th>
+          <th>Marca / Lote</th>
+          <th>Stock</th>
+          <th>Precio Venta</th>
+          <th>Vencimiento</th>
+          <th>Proveedor</th>
+          <th>Estado</th>
+          <th style="text-align:center;">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td colspan="10" style="text-align:center;padding:48px;color:#94a3b8;"><span class="spinner"></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="cardsContainer"></div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;">
+    <span style="font-size:13px;color:#94a3b8;" id="pageInfo">Cargando…</span>
+    <div style="display:flex;gap:6px;" id="pagination"></div>
+  </div>
+
+</main>
+
+<!-- Modal Producto -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="modalTitle" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--c-dark);">Nuevo Producto</h2>
+    </div>
+    <div class="modal-body">
+
+      <!-- Sección imagen -->
+      <div class="field-wrap full">
+        <div class="modal-section"><span>Imagen del producto</span></div>
+        <div class="img-upload-zone" id="uploadZone" onclick="document.getElementById('f_imagen_file').click()">
+          <div class="img-preview-box" id="imgPreviewBox">
+            <span id="imgPlaceholderIcon">📦</span>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:600;color:var(--c-dark);margin-bottom:6px;">Arrastra una imagen o haz clic para subir</div>
+            <div style="font-size:12px;color:#94a3b8;margin-bottom:10px;">PNG, JPG hasta 3 MB</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation();document.getElementById('f_imagen_file').click()">📁 Seleccionar archivo</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation();toggleUrlInput()">🔗 URL externa</button>
+              <button type="button" id="btnClearImg" class="btn btn-danger btn-sm" style="display:none;" onclick="event.stopPropagation();clearImage()">✕ Quitar</button>
+            </div>
+            <input type="text" id="f_imagen_url" placeholder="https://…" style="display:none;margin-top:8px;" oninput="handleImageUrl(this.value)" onclick="event.stopPropagation()"/>
+          </div>
+        </div>
+        <input type="file" id="f_imagen_file" accept="image/*" style="display:none;" onchange="handleImageFile(this)"/>
+        <!-- Campo oculto que envía el valor final al controller (f_imagen = URL o base64) -->
+        <input type="hidden" id="f_imagen" name="f_imagen"/>
+      </div>
+
+      <!-- Sección datos generales -->
+      <div class="modal-section full"><span>Datos generales</span></div>
+
+      <div class="field-wrap full">
+        <label for="f_nombre">Nombre del producto *</label>
+        <input type="text" id="f_nombre" name="f_nombre" placeholder="Ej: Amoxicilina 500mg"/>
+      </div>
+
+      <div class="field-wrap full">
+        <label for="f_descripcion">Descripción</label>
+        <textarea id="f_descripcion" name="f_descripcion" placeholder="Descripción opcional del producto…"></textarea>
+      </div>
+
+      <div class="field-wrap">
+        <label for="f_marca">Marca *</label>
+        <input type="text" id="f_marca" name="f_marca" placeholder="Ej: Bayer"/>
+      </div>
+
+      <div class="field-wrap">
+        <!-- FIX: campo renombrado f_lote (antes f_codigo) — controller acepta ambos pero f_lote es el canonical -->
+        <label for="f_lote">Lote / Código</label>
+        <input type="text" id="f_lote" name="f_lote" placeholder="Ej: LOT-2024-001"/>
+      </div>
+
+      <!-- Sección inventario -->
+      <div class="modal-section full"><span>Clasificación e inventario</span></div>
+
+      <div class="field-wrap">
+        <!-- FIX: select de categorías dinámico con ID_CATEGORIAS como value (no texto) -->
+        <label for="f_id_categoria">Categoría *</label>
+        <select id="f_id_categoria" name="f_id_categoria">
+          <option value="">— Seleccionar categoría —</option>
+        </select>
+      </div>
+
+      <div class="field-wrap">
+        <label for="f_unidad">Unidad de medida *</label>
+        <select id="f_unidad" name="f_unidad">
+          <option value="">— Seleccionar —</option>
+          <option value="Unidades">Unidades</option>
+          <option value="ml">ml</option>
+          <option value="mg">mg</option>
+          <option value="g">g</option>
+          <option value="kg">kg</option>
+          <option value="L">Litros</option>
+          <option value="dosis">Dosis</option>
+          <option value="caja">Caja</option>
+          <option value="sobre">Sobre</option>
+        </select>
+      </div>
+
+      <div class="field-wrap">
+        <!-- FIX: name="f_stock" — controller lee f_stock o f_stock_actual -->
+        <label for="f_stock">Stock actual *</label>
+        <input type="number" id="f_stock" name="f_stock" min="0" placeholder="0"/>
+      </div>
+
+      <div class="field-wrap">
+        <!-- FIX: name="f_stock_minimo" — controller lee f_stock_minimo -->
+        <label for="f_stock_minimo">Stock mínimo *</label>
+        <input type="number" id="f_stock_minimo" name="f_stock_minimo" min="0" placeholder="0"/>
+      </div>
+
+      <!-- Sección precios -->
+      <div class="modal-section full"><span>Precios</span></div>
+
+      <div class="field-wrap">
+        <!-- FIX: name="f_precio_compra" — controller lee f_precio_compra → PRO_PRECIO_COMPRA -->
+        <label for="f_precio_compra">Precio de compra</label>
+        <input type="number" id="f_precio_compra" name="f_precio_compra" min="0" step="0.01" placeholder="0.00"/>
+      </div>
+
+      <div class="field-wrap">
+        <!-- FIX: name="f_precio_venta" — controller lee f_precio_venta → PRO_PRECIO_VENTA -->
+        <label for="f_precio_venta">Precio de venta *</label>
+        <input type="number" id="f_precio_venta" name="f_precio_venta" min="0" step="0.01" placeholder="0.00"/>
+      </div>
+
+      <div class="field-wrap">
+        <label for="f_vencimiento">Fecha de vencimiento</label>
+        <input type="date" id="f_vencimiento" name="f_fecha_vencimiento"/>
+      </div>
+
+      <!-- Sección proveedor y estado -->
+      <div class="modal-section full"><span>Proveedor y estado</span></div>
+
+      <div class="field-wrap">
+        <!-- FIX: name="f_id_proveedor" — controller lee f_id_proveedor o f_proveedor → ID_PROVEEDOR -->
+        <label for="f_id_proveedor">Proveedor *</label>
+        <select id="f_id_proveedor" name="f_id_proveedor">
+          <option value="">— Seleccionar proveedor —</option>
+        </select>
+      </div>
+
+      <div class="field-wrap">
+        <!-- FIX: name="f_estado" — controller lee f_estado → ID_ESTADO -->
+        <label for="f_estado">Estado *</label>
+        <select id="f_estado" name="f_estado">
+          <option value="">— Seleccionar estado —</option>
+        </select>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnSave" onclick="saveProduct()">
+        <span>💾</span> Guardar Producto
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmación inactivar -->
+<div class="modal-overlay" id="confirmOverlay" onclick="if(event.target===this)closeConfirm()">
+  <div class="modal-box" style="width:420px;">
+    <div class="modal-header">
+      <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--c-dark);">Confirmar acción</h2>
+    </div>
+    <div style="padding:24px 28px;">
+      <p id="confirmMsg" style="font-size:14px;color:var(--c-mid);line-height:1.6;"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeConfirm()">Cancelar</button>
+      <button class="btn btn-danger" onclick="confirmAction()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div id="logoutModal" onclick="if(event.target===this)closeLogoutModal()"
+  style="position:fixed;inset:0;z-index:200;background:rgba(15,23,42,0.7);backdrop-filter:blur(8px);
+         display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;">
+  <div style="background:#1e293b;border:1px solid rgba(124,58,237,0.3);border-radius:20px;width:380px;max-width:95vw;
+              padding:32px;box-shadow:0 32px 80px rgba(0,0,0,0.5);transform:scale(.92);transition:transform .3s cubic-bezier(.34,1.56,.64,1);"
+       id="logoutModalBox">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:48px;margin-bottom:12px;">🚪</div>
+      <h2 style="font-family:Syne,sans-serif;color:white;font-size:20px;font-weight:700;">¿Cerrar sesión?</h2>
+      <p style="color:#64748b;font-size:14px;margin-top:8px;">Serás redirigido al inicio de sesión.</p>
+    </div>
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeLogoutModal()">Cancelar</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="confirmarLogout()">Sí, cerrar sesión</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+'use strict';
+
+const CTRL_BASE = '/controllers';
+function ctrlUrl(file, params) {
+  const base = `${CTRL_BASE}/${file.replace(/^\//, '')}`;
+  if (!params || !Object.keys(params).length) return base;
+  return `${base}?${new URLSearchParams(params)}`;
+}
+function unwrapList(data, keys) {
+  if (Array.isArray(data)) return data;
+  if (!data || typeof data !== 'object') return [];
+  for (const k of (keys || ['productos','proveedores','estados','compras','movimientos'])) {
+    if (Array.isArray(data[k])) return data[k];
+  }
+  return Object.values(data).find(Array.isArray) || [];
+}
+const ENDPOINTS = {
+  productos:   '/api/productos',
+  proveedores: '/api/proveedores',
+  estados:     '/api/estados',
+};
+
+let editingId       = null;
+let confirmCallback = null;
+let currentPage     = 1;
+let totalPages      = 1;
+let searchTimer     = null;
+let currentView     = 'table';
+let lastProducts    = [];
+
+function setView(view) {
+  currentView = view;
+  const tableWrap   = document.getElementById('tableWrap');
+  const cardsEl     = document.getElementById('cardsContainer');
+  const btnTable    = document.getElementById('btnViewTable');
+  const btnCards    = document.getElementById('btnViewCards');
+
+  if (view === 'table') {
+    tableWrap.style.display = '';
+    cardsEl.classList.remove('active');
+    btnTable.classList.add('active');
+    btnCards.classList.remove('active');
+  } else {
+    tableWrap.style.display = 'none';
+    cardsEl.classList.add('active');
+    btnTable.classList.remove('active');
+    btnCards.classList.add('active');
+  }
+
+  if (lastProducts.length || view === 'cards') {
+    if (view === 'table') renderTable(lastProducts);
+    else                  renderCards(lastProducts);
+  }
+}
+
+async function apiFetch(endpoint, options = {}) {
+  let url = endpoint.startsWith('http') || endpoint.startsWith('/api/')
+            ? endpoint
+            : `/api/${endpoint}`;
+
+  if (!options.credentials) options.credentials = 'include';
+
+  try {
+    const response = await fetch(url, options);
+    const rawText = (await response.text()).trim();
+
+    let json;
+    try {
+      json = JSON.parse(rawText);
+    } catch (parseError) {
+      console.error("Respuesta del servidor:", rawText);
+      throw new Error("El servidor no devolvió un JSON válido.");
+    }
+
+    if (!response.ok) {
+      throw new Error(json.message || `Error (${response.status})`);
+    }
+
+    return json;
+  } catch (error) {
+    console.error("Error en petición:", error.message);
+    throw error;
+  }
+}
+
+function normalizeProducto(p) {
+  if (!p || typeof p !== 'object') return p;
+
+  // FIX: Resuelve aliases del SQL_SEL del controller:
+  // PROD_STOCK      = PRO_STOCK_ACTUAL
+  // PROD_STOCK_MINIMO = PRO_STOCK_MINIMO
+  // NOMBRE_CATEGORIA = PRO_CATEGORIA (viene de JOIN categorias)
+  // ID_CATEGORIAS   = llave numérica real de la tabla categorias
+  const stock    = Number(p.PROD_STOCK    ?? p.PRO_STOCK_ACTUAL   ?? 0);
+  const stockMin = Number(p.PROD_STOCK_MINIMO ?? p.PRO_STOCK_MINIMO ?? 0);
+
+  const fv = p.PRO_FECHA_VENCIMIENTO ?? null;
+  let dias = p.dias_vencimiento;
+
+  if (dias == null && fv) {
+    const d = new Date(String(fv).slice(0, 10) + 'T00:00:00');
+    dias = Math.ceil((d - new Date()) / 86400000);
+  } else if (!fv) {
+    dias = null;
+  }
+
+  // FIX: PRO_CATEGORIA se mapea desde NOMBRE_CATEGORIA (alias del JOIN con `categorias`)
+  const categoria = p.NOMBRE_CATEGORIA ?? p.PRO_CATEGORIA ?? p.PROD_CATEGORIA ?? '';
+
+  return {
+    ...p,
+    PRO_NOMBRE:           p.PRO_NOMBRE         ?? p.PROD_NOMBRE        ?? 'Sin nombre',
+    PRO_DESCRIPCION:      p.PRO_DESCRIPCION     ?? p.PROD_DESCRIPCION   ?? '',
+    PRO_STOCK_ACTUAL:     stock,
+    PRO_STOCK_MINIMO:     stockMin,
+    PRO_PRECIO_VENTA:     Number(p.PRO_PRECIO_VENTA  ?? p.PROD_PRECIO_VENTA  ?? 0),
+    PRO_PRECIO_COMPRA:    Number(p.PRO_PRECIO_COMPRA ?? p.PROD_PRECIO_COMPRA ?? 0),
+    // FIX: usar NOMBRE_CATEGORIA del JOIN, no PRO_CATEGORIA (no existe esa columna en el SQL real)
+    PRO_CATEGORIA:        categoria,
+    PRO_IMAGEN:           p.PRO_IMAGEN ?? p.PROD_AVATAR ?? null,
+    PRO_FECHA_VENCIMIENTO: fv,
+    // FIX: ID_CATEGORIAS es la FK numérica real
+    ID_CATEGORIAS:        p.ID_CATEGORIAS ?? null,
+    proveedor:            p.PROV_NOMBRE ?? p.NOMBRE_PROVEEDOR ?? p.proveedor ?? '—',
+    estado:               p.NOMBRE_ESTADO ?? p.estado ?? '',
+    dias_vencimiento:     dias,
+  };
+}
+
+function computeProductStats(list) {
+  const items = list.map(normalizeProducto);
+  return {
+    total_productos:  items.length,
+    stock_critico:    items.filter(x => x.PRO_STOCK_ACTUAL <= x.PRO_STOCK_MINIMO).length,
+    proximos_vencer:  items.filter(x => x.dias_vencimiento != null && x.dias_vencimiento >= 0 && x.dias_vencimiento <= 30).length,
+    valor_inventario: items.reduce((s, x) => s + Number(x.PRO_PRECIO_COMPRA) * Number(x.PRO_STOCK_ACTUAL), 0),
+  };
+}
+
+// FIX: Carga categorías dinámicamente desde el endpoint real (tabla `categorias`, col ID_CATEGORIAS/CAT_NOMBRE)
+async function loadCategoriasFilter() {
+  const el = document.getElementById('filterCat');
+  try {
+    const data = await apiFetch(`${ENDPOINTS.productos}?action=categorias`);
+    const cats = unwrapList(data, ['categorias','data']);
+    el.innerHTML = '<option value="">Todas las categorías</option>' +
+      cats.map(c => `<option value="${c.ID_CATEGORIAS}">${esc(c.CAT_NOMBRE)}</option>`).join('');
+  } catch {
+    // fallback silencioso — el filtro queda con opción "Todas"
+  }
+}
+
+async function loadProducts(page = 1) {
+  currentPage = page;
+
+  const search = document.getElementById('searchInput').value.trim();
+  // FIX: filterCat ahora devuelve ID_CATEGORIAS (numérico), se envía como id_categoria al controller
+  const catId  = document.getElementById('filterCat').value;
+  const stock  = document.getElementById('filterStock').value;
+
+  const p = new URLSearchParams({ page, limit: 10 });
+  if (search) p.set('q',            search);
+  // FIX: parámetro correcto es id_categoria (el controller lo toma como p.ID_CATEGORIAS en el WHERE)
+  if (catId)  p.set('id_categoria', catId);
+
+  const tBody = document.getElementById('tableBody');
+  if (tBody) {
+    tBody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:48px;color:#94a3b8;"><span class="spinner"></span> Cargando productos...</td></tr>';
+  }
+
+  try {
+    const data = await apiFetch(`productos?${p}`);
+
+    let rawProds = [];
+    if (Array.isArray(data)) {
+      rawProds = data;
+    } else if (data && data.status === 'success' && Array.isArray(data.data)) {
+      rawProds = data.data;
+    } else if (data && Array.isArray(data.productos)) {
+      rawProds = data.productos;
+    } else if (data && data.data && Array.isArray(data.data.productos)) {
+      rawProds = data.data.productos;
+    }
+
+    let prods = rawProds.map(p => {
+      const normal = normalizeProducto(p);
+      return { ...p, ...normal };
+    });
+
+    // Filtro de stock se hace en frontend (no hay parámetro en controller para eso)
+    if (stock === 'critical') {
+      prods = prods.filter(p => parseInt(p.PRO_STOCK_ACTUAL ?? 0) <= parseInt(p.PRO_STOCK_MINIMO ?? 0));
+    } else if (stock === 'ok') {
+      prods = prods.filter(p => parseInt(p.PRO_STOCK_ACTUAL ?? 0) > parseInt(p.PRO_STOCK_MINIMO ?? 0));
+    }
+
+    lastProducts = prods;
+
+    if (currentView === 'table') renderTable(lastProducts);
+    else                         renderCards(lastProducts);
+
+    const meta = Array.isArray(data) ? {} : (data || {});
+    if (meta.pagination) {
+      renderPagination(meta.pagination);
+    } else {
+      const pagEl = document.getElementById('pagination');
+      const infoEl = document.getElementById('pageInfo');
+      if (pagEl) pagEl.innerHTML = '';
+      if (infoEl) infoEl.textContent = `${lastProducts.length} producto(s)`;
+    }
+
+    renderStats(meta.stats || computeProductStats(lastProducts));
+    renderAlerts(lastProducts);
+    setOnline(true);
+
+  } catch (error) {
+    console.error("Error en petición de productos:", error);
+    setOnline(false);
+    if (tBody) {
+      tBody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:40px;color:#ef4444;">
+        Error al procesar los productos del servidor.
+       </td></tr>`;
+    }
+  }
+}
+
+const CAT_ICONS = {
+  Medicamentos:'💊', Alimentos:'🥩', Accesorios:'🎾',
+  Vacunas:'💉', Higiene:'🧴', Laboratorio:'🔬',
+};
+
+function prodThumb(p) {
+  if (p.PRO_IMAGEN) {
+    return `<img src="${p.PRO_IMAGEN}" class="prod-thumb"
+              alt="${esc(p.PRO_NOMBRE)}"
+              onerror="this.outerHTML='<div class=prod-thumb-placeholder>${CAT_ICONS[p.PRO_CATEGORIA]??'📦'}</div>'"/>`;
+  }
+  const icon = CAT_ICONS[p.PRO_CATEGORIA] ?? '📦';
+  return `<div class="prod-thumb-placeholder">${icon}</div>`;
+}
+
+function renderTable(products) {
+  const tbody = document.getElementById('tableBody');
+  if (!products || !products.length) {
+    tbody.innerHTML = `
+      <tr><td colspan="10">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 32px;gap:16px;">
+          <div style="font-size:64px;line-height:1;">📦</div>
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#0f172a;">Sin productos en el catálogo</div>
+          <div style="font-size:14px;color:#64748b;text-align:center;max-width:380px;line-height:1.6;">
+            Agrega tu primer producto para comenzar a gestionar el inventario. 🐾
+          </div>
+          <button class="btn btn-primary" style="margin-top:8px;" onclick="openModal()">
+            <span style="font-size:18px;line-height:1;">＋</span> Agregar primer producto
+          </button>
+        </div>
+      </td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = products.map(p => {
+    const isCrit    = p.PRO_STOCK_ACTUAL <= p.PRO_STOCK_MINIMO;
+    const stockPct  = p.PRO_STOCK_MINIMO > 0
+      ? Math.min(100, Math.round((p.PRO_STOCK_ACTUAL / (p.PRO_STOCK_MINIMO * 3)) * 100))
+      : 100;
+    const barColor  = isCrit ? '#ef4444' : stockPct < 50 ? '#f59e0b' : '#22c55e';
+
+    let rowNotifs = '';
+    if (isCrit) {
+      rowNotifs += `<span class="row-notif row-notif-stock">🚨 ¡Reabastecer pronto!</span> `;
+    }
+    const dias = p.dias_vencimiento ?? null;
+    if (dias !== null && dias >= 0 && dias <= 30) {
+      rowNotifs += `<span class="row-notif row-notif-vence">⏰ Vence en ${dias}d</span>`;
+    } else if (dias !== null && dias < 0) {
+      rowNotifs += `<span class="row-notif row-notif-stock">☠️ VENCIDO</span>`;
+    }
+
+    let expCell = '<span style="color:#94a3b8;">—</span>';
+    if (p.PRO_FECHA_VENCIMIENTO) {
+      if (dias < 0)        expCell = `<span class="badge badge-danger">VENCIDO</span>`;
+      else if (dias <= 30) expCell = `<span class="badge badge-warn">⏰ ${dias}d</span>`;
+      else                 expCell = `<span class="badge badge-ok">${formatDate(p.PRO_FECHA_VENCIMIENTO)}</span>`;
+    }
+
+    const estLabel = p.estado || p.NOMBRE_ESTADO || '—';
+    const nomEst   = String(estLabel).toLowerCase();
+    const estBadge = nomEst.includes('activ')
+      ? `<span class="badge badge-ok">${esc(estLabel)}</span>`
+      : `<span class="badge badge-inactive">${esc(estLabel)}</span>`;
+
+    return `<tr>
+      <td>${prodThumb(p)}</td>
+      <td>
+        <div style="font-weight:600;color:var(--c-dark);">${esc(p.PRO_NOMBRE)}</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">${esc(p.PRO_UNIDAD_MEDIDA ?? '')}</div>
+        ${rowNotifs ? `<div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px;">${rowNotifs}</div>` : ''}
+      </td>
+      <td>
+        <span style="background:#f0f0fe;color:#4338ca;padding:3px 9px;border-radius:6px;font-size:12px;font-weight:600;">
+          ${CAT_ICONS[p.PRO_CATEGORIA] ?? ''} ${esc(p.PRO_CATEGORIA ?? '—')}
+        </span>
+      </td>
+      <td>
+        <div style="font-size:13px;font-weight:500;">${esc(p.PRO_MARCA ?? '—')}</div>
+        <div style="font-size:11px;color:#94a3b8;">${esc(p.PRO_LOTE ?? '—')}</div>
+      </td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="badge ${isCrit ? 'badge-danger' : 'badge-ok'}" style="font-size:13px;">${p.PRO_STOCK_ACTUAL}</span>
+          ${isCrit ? `<span style="font-size:11px;color:#dc2626;">mín:${p.PRO_STOCK_MINIMO}</span>` : ''}
+        </div>
+        <div class="stock-bar">
+          <div class="stock-bar-fill" style="width:${stockPct}%;background:${barColor};"></div>
+        </div>
+      </td>
+      <td style="font-weight:600;color:var(--c-dark);">
+        $${Number(p.PRO_PRECIO_VENTA ?? 0).toLocaleString('es-CO')}
+      </td>
+      <td>${expCell}</td>
+      <td style="font-size:13px;">${esc(p.proveedor ?? '—')}</td>
+      <td>${estBadge}</td>
+      <td>
+        <div style="display:flex;gap:6px;justify-content:center;">
+          <button class="btn btn-secondary btn-sm btn-icon" title="Editar" onclick="editProduct(${p.ID_PRODUCTOS})">✏️</button>
+          <button class="btn btn-danger btn-sm btn-icon"    title="Inactivar" onclick="askDelete(${p.ID_PRODUCTOS},'${esc(p.PRO_NOMBRE)}')">🗑️</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCards(products) {
+  const container = document.getElementById('cardsContainer');
+
+  if (!products || !products.length) {
+    container.innerHTML = `
+      <div style="grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+                  padding:64px 32px;gap:16px;background:white;border:1px solid var(--c-border);border-radius:18px;">
+        <div style="font-size:64px;line-height:1;">📦</div>
+        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#0f172a;">Sin productos en el catálogo</div>
+        <div style="font-size:14px;color:#64748b;text-align:center;max-width:380px;line-height:1.6;">
+          Agrega tu primer producto para comenzar a gestionar el inventario. 🐾
+        </div>
+        <button class="btn btn-primary" style="margin-top:8px;" onclick="openModal()">
+          <span style="font-size:18px;line-height:1;">＋</span> Agregar primer producto
+        </button>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = products.map(p => {
+    const isCrit   = p.PRO_STOCK_ACTUAL <= p.PRO_STOCK_MINIMO;
+    const stockPct = p.PRO_STOCK_MINIMO > 0
+      ? Math.min(100, Math.round((p.PRO_STOCK_ACTUAL / (p.PRO_STOCK_MINIMO * 3)) * 100))
+      : 100;
+    const barColor = isCrit ? '#ef4444' : stockPct < 50 ? '#f59e0b' : '#22c55e';
+    const dias     = p.dias_vencimiento ?? null;
+    const icon     = CAT_ICONS[p.PRO_CATEGORIA] ?? '📦';
+
+    const estLabel = p.estado || p.NOMBRE_ESTADO || '—';
+    const nomEst   = String(estLabel).toLowerCase();
+    const estBadge = nomEst.includes('activ')
+      ? `<span class="badge badge-ok">${esc(estLabel)}</span>`
+      : `<span class="badge badge-inactive">${esc(estLabel)}</span>`;
+
+    let notifHtml = '';
+    if (isCrit)
+      notifHtml += `<span class="row-notif row-notif-stock">🚨 ¡Reabastecer pronto!</span>`;
+    if (dias !== null && dias >= 0 && dias <= 30)
+      notifHtml += `<span class="row-notif row-notif-vence">⏰ Vence en ${dias}d</span>`;
+    if (dias !== null && dias < 0)
+      notifHtml += `<span class="row-notif row-notif-stock">☠️ VENCIDO</span>`;
+
+    const imgHtml = p.PRO_IMAGEN
+      ? `<img src="${p.PRO_IMAGEN}" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:56px;>${icon}</div>'"/>`
+      : `<span style="font-size:56px;z-index:1;position:relative;">${icon}</span>`;
+
+    let vencTxt = '—';
+    if (p.PRO_FECHA_VENCIMIENTO) {
+      if (dias < 0)        vencTxt = '☠️ VENCIDO';
+      else if (dias <= 30) vencTxt = `⏰ ${dias} días`;
+      else                 vencTxt = formatDate(p.PRO_FECHA_VENCIMIENTO);
+    }
+
+    const precioC = p.PRO_PRECIO_COMPRA
+      ? `$${Number(p.PRO_PRECIO_COMPRA).toLocaleString('es-CO')}`
+      : '—';
+
+    return `
+    <div class="prod-card">
+      <div class="prod-card-img-placeholder" style="position:relative;height:180px;">
+        ${imgHtml}
+        <div class="prod-card-badge-overlay">
+          ${estBadge}
+          <span style="background:#f0f0fe;color:#4338ca;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700;">
+            ${icon} ${esc(p.PRO_CATEGORIA ?? '—')}
+          </span>
+        </div>
+      </div>
+
+      <div class="prod-card-body">
+
+        <div>
+          <div class="prod-card-title">${esc(p.PRO_NOMBRE)}</div>
+          ${p.PRO_DESCRIPCION
+            ? `<div class="prod-card-desc" style="margin-top:4px;">${esc(p.PRO_DESCRIPCION)}</div>`
+            : ''}
+        </div>
+
+        <div style="display:flex;align-items:flex-end;gap:12px;justify-content:space-between;">
+          <div>
+            <div class="prod-card-price-label">Precio venta</div>
+            <div class="prod-card-price">$${Number(p.PRO_PRECIO_VENTA ?? 0).toLocaleString('es-CO')}</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="prod-card-price-label">Precio compra</div>
+            <div style="font-size:14px;font-weight:700;color:var(--c-mid);">${precioC}</div>
+          </div>
+        </div>
+
+        <div class="prod-card-grid">
+          <div class="prod-card-field">
+            <label>Marca</label>
+            <span>${esc(p.PRO_MARCA ?? '—')}</span>
+          </div>
+          <div class="prod-card-field">
+            <label>Lote</label>
+            <span>${esc(p.PRO_LOTE ?? '—')}</span>
+          </div>
+          <div class="prod-card-field">
+            <label>Unidad</label>
+            <span>${esc(p.PRO_UNIDAD_MEDIDA ?? '—')}</span>
+          </div>
+          <div class="prod-card-field">
+            <label>Vencimiento</label>
+            <span style="font-size:12px;">${vencTxt}</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;">Stock</span>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="badge ${isCrit ? 'badge-danger' : 'badge-ok'}" style="font-size:12px;">
+                ${p.PRO_STOCK_ACTUAL} ${esc(p.PRO_UNIDAD_MEDIDA ?? '')}
+              </span>
+              ${isCrit ? `<span style="font-size:11px;color:#dc2626;">mín:${p.PRO_STOCK_MINIMO}</span>` : ''}
+            </div>
+          </div>
+          <div class="card-stock-bar">
+            <div class="card-stock-bar-fill" style="width:${stockPct}%;background:${barColor};"></div>
+          </div>
+        </div>
+
+        <div class="prod-card-prov">
+          <div class="prod-card-prov-icon">🏭</div>
+          <div>
+            <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Proveedor</div>
+            <div style="font-size:13px;font-weight:600;color:var(--c-dark);">${esc(p.proveedor ?? '—')}</div>
+          </div>
+        </div>
+
+        ${notifHtml ? `<div class="prod-card-notifs">${notifHtml}</div>` : ''}
+
+        <div class="prod-card-actions">
+          <button class="btn btn-secondary btn-sm" onclick="editProduct(${p.ID_PRODUCTOS})">✏️ Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="askDelete(${p.ID_PRODUCTOS},'${esc(p.PRO_NOMBRE)}')">🗑️</button>
+        </div>
+
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderPagination(pag) {
+  totalPages = pag.total_pages ?? 1;
+  const start = (pag.page - 1) * pag.limit + 1;
+  const end   = Math.min(pag.page * pag.limit, pag.total);
+  document.getElementById('pageInfo').textContent =
+    pag.total ? `Mostrando ${start}–${end} de ${pag.total} productos` : 'Sin resultados';
+
+  let html = '';
+  if (pag.page > 1) html += btn(pag.page - 1, '‹', false);
+  for (let i = 1; i <= totalPages; i++) {
+    if (totalPages > 7 && Math.abs(i - pag.page) > 2 && i !== 1 && i !== totalPages) {
+      if (i === 2 || i === totalPages - 1) html += `<span style="padding:0 4px;color:#94a3b8;line-height:32px;">…</span>`;
+      continue;
+    }
+    html += btn(i, i, i === pag.page);
+  }
+  if (pag.page < totalPages) html += btn(pag.page + 1, '›', false);
+  document.getElementById('pagination').innerHTML = html;
+}
+
+function btn(page, label, active) {
+  return `<button onclick="loadProducts(${page})"
+    style="min-width:32px;height:32px;padding:0 8px;border-radius:8px;
+    border:1px solid ${active?'#7c3aed':'var(--c-border)'};
+    background:${active?'#7c3aed':'white'};
+    color:${active?'white':'var(--c-mid)'};
+    font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">${label}</button>`;
+}
+
+function renderStats(s) {
+  if (!s) return;
+  animateCount('statTotal',    s.total_productos ?? 0);
+  animateCount('statCritical', s.stock_critico    ?? 0);
+  animateCount('statExpiring', s.proximos_vencer  ?? 0);
+  document.getElementById('statValue').textContent =
+    '$' + Number(s.valor_inventario ?? 0).toLocaleString('es-CO');
+}
+
+function animateCount(id, target) {
+  const el = document.getElementById(id);
+  const start = parseInt(el.textContent) || 0;
+  const dur = 600, step = 16; let current = start, elapsed = 0;
+  const t = setInterval(() => {
+    elapsed += step;
+    current = Math.round(start + (target - start) * (elapsed / dur));
+    el.textContent = current;
+    if (elapsed >= dur) { el.textContent = target; clearInterval(t); }
+  }, step);
+}
+
+function renderAlerts(products) {
+  const crit = products.filter(p => p.PRO_STOCK_ACTUAL <= p.PRO_STOCK_MINIMO);
+  const venc = products.filter(p => p.PRO_FECHA_VENCIMIENTO && (p.dias_vencimiento ?? 999) <= 30 && (p.dias_vencimiento ?? 999) >= 0);
+  const venc0 = products.filter(p => (p.dias_vencimiento ?? 1) < 0);
+
+  let html = '';
+
+  if (venc0.length) {
+    html += `<div class="alert-banner alert-danger">
+      <span style="font-size:22px;">☠️</span>
+      <div>
+        <strong style="font-size:14px;color:#991b1b;">Productos VENCIDOS en catálogo</strong>
+        <p style="font-size:13px;color:#b91c1c;margin-top:3px;">
+          Retira del inventario: <strong>${venc0.slice(0,5).map(p=>esc(p.PRO_NOMBRE)).join(', ')}${venc0.length>5?'…':''}</strong>
+        </p>
+      </div>
+    </div>`;
+  }
+
+  if (crit.length) {
+    const msgs = [
+      `¡Houston, tenemos un problema! 🚀 ${crit.length} producto(s) están a punto de agotarse.`,
+      `🐾 Tus pacientes dependen de esto. ${crit.length} producto(s) necesitan reabastecimiento urgente.`,
+      `📦 Stock bajo detectado en ${crit.length} producto(s). ¡Es momento de hacer el pedido!`,
+    ];
+    const msg = msgs[crit.length % msgs.length];
+    html += `<div class="alert-banner alert-danger">
+      <span style="font-size:22px;">🚨</span>
+      <div>
+        <strong style="font-size:14px;color:#991b1b;">Stock Crítico — Reabastecer pronto</strong>
+        <p style="font-size:13px;color:#b91c1c;margin-top:3px;">${msg}</p>
+        <p style="font-size:12px;color:#dc2626;margin-top:4px;">
+          Productos: <strong>${crit.slice(0,5).map(p=>esc(p.PRO_NOMBRE)).join(', ')}${crit.length>5?`… y ${crit.length-5} más`:''}</strong>
+        </p>
+      </div>
+    </div>`;
+  }
+
+  if (venc.length) {
+    html += `<div class="alert-banner alert-warn">
+      <span style="font-size:22px;">📅</span>
+      <div>
+        <strong style="font-size:14px;color:#92400e;">Atención: Productos próximos a vencer</strong>
+        <p style="font-size:13px;color:#b45309;margin-top:3px;">
+          ${venc.length} producto(s) vencen en los próximos 30 días. Revisar y planificar su uso.
+        </p>
+        <p style="font-size:12px;color:#d97706;margin-top:4px;">
+          <strong>${venc.slice(0,5).map(p=>`${esc(p.PRO_NOMBRE)} (${p.dias_vencimiento}d)`).join(', ')}${venc.length>5?'…':''}</strong>
+        </p>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById('alertsContainer').innerHTML = html;
+}
+
+function setImagePreview(src) {
+  const box  = document.getElementById('imgPreviewBox');
+  const icon = document.getElementById('imgPlaceholderIcon');
+  if (src) {
+    box.innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;" onerror="clearImage()"/>`;
+    document.getElementById('btnClearImg').style.display = 'inline-flex';
+    if (icon) icon.style.display = 'none';
+  } else {
+    box.innerHTML = `<span id="imgPlaceholderIcon">📦</span>`;
+    document.getElementById('btnClearImg').style.display = 'none';
+  }
+}
+
+function clearImage() {
+  document.getElementById('f_imagen').value      = '';
+  document.getElementById('f_imagen_url').value  = '';
+  document.getElementById('f_imagen_file').value = '';
+  setImagePreview(null);
+}
+
+function toggleUrlInput() {
+  const el = document.getElementById('f_imagen_url');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  if (el.style.display === 'block') el.focus();
+}
+
+function handleImageUrl(val) {
+  const trimmed = val.trim();
+  document.getElementById('f_imagen').value = trimmed;
+  if (trimmed) setImagePreview(trimmed);
+  else         setImagePreview(null);
+}
+
+function handleImageFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 3 * 1024 * 1024) { showToast('La imagen no debe superar 3 MB', 'error'); input.value = ''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('f_imagen').value     = e.target.result;
+    document.getElementById('f_imagen_url').value = '';
+    setImagePreview(e.target.result);
+  };
+  reader.readAsDataURL(file);
+}
+
+(function() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const zone = document.getElementById('uploadZone');
+    if (!zone) return;
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.borderColor='#7c3aed'; zone.style.background='#faf5ff'; });
+    zone.addEventListener('dragleave', () => { zone.style.borderColor=''; zone.style.background=''; });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.style.borderColor = ''; zone.style.background = '';
+      const file = e.dataTransfer.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      const dt = new DataTransfer(); dt.items.add(file);
+      const inp = document.getElementById('f_imagen_file');
+      inp.files = dt.files;
+      handleImageFile(inp);
+    });
+  });
+})();
+
+// FIX: Carga categorías dinámicas desde /api/productos?action=categorias
+// El select f_id_categoria usa ID_CATEGORIAS como value (FK numérica)
+async function loadCategoriasSelect() {
+  const el = document.getElementById('f_id_categoria');
+  el.innerHTML = '<option value="">Cargando…</option>';
+  try {
+    const data = await apiFetch(`${ENDPOINTS.productos}?action=categorias`);
+    const cats = unwrapList(data, ['categorias','data']);
+    el.innerHTML = '<option value="">— Seleccionar categoría —</option>' +
+      cats.map(c => `<option value="${c.ID_CATEGORIAS}">${esc(c.CAT_NOMBRE)}</option>`).join('');
+  } catch {
+    el.innerHTML = '<option value="">— Seleccionar categoría —</option>';
+    showToast('No se pudieron cargar las categorías', 'warn');
+  }
+}
+
+async function openModal(product = null) {
+  editingId = product ? product.ID_PRODUCTOS : null;
+  document.getElementById('modalTitle').textContent = product ? 'Editar Producto' : 'Nuevo Producto';
+  document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+  // FIX: carga los tres selects en paralelo
+  await Promise.all([loadCategoriasSelect(), loadProveedoresSelect(), loadEstadosSelect()]);
+
+  clearImage();
+
+  if (product) {
+    setValue('f_nombre',        product.PRO_NOMBRE            ?? '');
+    setValue('f_descripcion',   product.PRO_DESCRIPCION       ?? '');
+    setValue('f_marca',         product.PRO_MARCA              ?? '');
+    setValue('f_lote',          product.PRO_LOTE               ?? '');
+    // FIX: set categoria por ID_CATEGORIAS (numérico), no por texto
+    setValue('f_id_categoria',  product.ID_CATEGORIAS          ?? '');
+    setValue('f_unidad',        product.PRO_UNIDAD_MEDIDA      ?? '');
+    setValue('f_stock',         product.PRO_STOCK_ACTUAL       ?? 0);
+    // FIX: id correcto del campo f_stock_minimo
+    setValue('f_stock_minimo',  product.PRO_STOCK_MINIMO       ?? 0);
+    // FIX: ids de campos de precio corregidos
+    setValue('f_precio_compra', product.PRO_PRECIO_COMPRA      ?? '');
+    setValue('f_precio_venta',  product.PRO_PRECIO_VENTA       ?? '');
+    setValue('f_vencimiento',   product.PRO_FECHA_VENCIMIENTO  ?? '');
+    // FIX: select proveedor por id correcto
+    setValue('f_id_proveedor',  product.ID_PROVEEDOR           ?? '');
+    setValue('f_estado',        product.ID_ESTADO              ?? '');
+    if (product.PRO_IMAGEN) {
+      setValue('f_imagen', product.PRO_IMAGEN);
+      setImagePreview(product.PRO_IMAGEN);
+    }
+  } else {
+    ['f_nombre','f_descripcion','f_marca','f_lote','f_vencimiento','f_imagen'].forEach(id => setValue(id,''));
+    ['f_id_categoria','f_unidad','f_id_proveedor','f_estado'].forEach(id => setValue(id,''));
+    ['f_stock','f_stock_minimo','f_precio_compra','f_precio_venta'].forEach(id  => setValue(id,''));
+  }
+
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('f_nombre').focus(), 300);
+}
+
+async function editProduct(id) {
+  try {
+    const data = await apiFetch(`${ENDPOINTS.productos}?action=obtener&id=${id}`);
+    const raw  = Array.isArray(data) ? data[0] : (data.data ?? data);
+    openModal(normalizeProducto(raw));
+  } catch {
+    showToast('No se pudo cargar el producto', 'error');
+  }
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  editingId = null;
+}
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+async function loadProveedoresSelect() {
+  const el = document.getElementById('f_id_proveedor');
+  el.innerHTML = '<option value="">Cargando…</option>';
+  try {
+    const data  = await apiFetch(`${ENDPOINTS.proveedores}`);
+    const provs = unwrapList(data, ['proveedores','data']);
+    el.innerHTML = '<option value="">— Seleccionar proveedor —</option>' +
+      provs.map(p => `<option value="${p.ID_PROVEEDOR}">${esc(p.PROV_NOMBRE || 'Proveedor')}</option>`).join('');
+  } catch {
+    el.innerHTML = '<option value="">Error al cargar</option>';
+    showToast('No se pudieron cargar los proveedores', 'warn');
+  }
+}
+
+async function loadEstadosSelect() {
+  const el = document.getElementById('f_estado');
+  el.innerHTML = '<option value="">Cargando…</option>';
+  try {
+    const data   = await apiFetch(`${ENDPOINTS.estados}`);
+    // FIX: columna real es ID_ESTADOS (con S final) según digital_pet.sql
+    const estados = unwrapList(data, ['estados','data']);
+    el.innerHTML = '<option value="">— Seleccionar estado —</option>' +
+      estados.map(e => `<option value="${e.ID_ESTADOS}">${esc(e.EST_NOMBRE)}</option>`).join('');
+  } catch {
+    el.innerHTML = `<option value="">— Seleccionar estado —</option>
+      <option value="1">Activo</option><option value="2">Inactivo</option>`;
+  }
+}
+
+async function saveProduct() {
+  if (!validateForm()) return;
+
+  const btnEl = document.getElementById('btnSave');
+  btnEl.disabled = true;
+  btnEl.innerHTML = '<span class="spinner"></span> Guardando…';
+
+  const imagenVal = gv('f_imagen');
+  const isBase64  = imagenVal.startsWith('data:image/');
+
+  let body, headers;
+
+  if (isBase64) {
+    const blob = dataURLtoBlob(imagenVal);
+    const fd   = new FormData();
+    fd.append('f_imagen', blob, 'producto.' + (blob.type.split('/')[1] || 'jpg'));
+    appendFormData(fd, editingId, imagenVal, true);
+    body    = fd;
+    headers = {};
+  } else {
+    const params = new URLSearchParams();
+    appendFormData(params, editingId, imagenVal, false);
+    body    = params;
+    headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+  }
+
+  const action = editingId ? 'actualizar' : 'crear';
+
+  try {
+    await apiFetch(`${ENDPOINTS.productos}?action=${action}`, {
+      method: 'POST',
+      headers,
+      body,
+    });
+    showToast(editingId ? '✅ Producto actualizado' : '✅ Producto creado', 'success');
+    closeModal();
+    loadProducts(currentPage);
+  } catch(err) {
+    showToast(err.message || 'Error al guardar', 'error');
+  } finally {
+    btnEl.disabled = false;
+    btnEl.innerHTML = '<span>💾</span> Guardar Producto';
+  }
+}
+
+function appendFormData(container, editingId, imagenVal, isBase64) {
+  const isFormData = container instanceof FormData;
+  const set = (k, v) => isFormData ? container.append(k, v) : container.set(k, v);
+
+  if (editingId) set('id', editingId);
+  // FIX: todos los nombres de campo alineados con lo que lee _leer() en productos_controller.py
+  set('f_nombre',          gv('f_nombre'));
+  set('f_descripcion',     gv('f_descripcion'));       // _leer: raw.get('f_descripcion')
+  set('f_marca',           gv('f_marca'));
+  set('f_lote',            gv('f_lote'));              // _leer: raw.get('f_codigo') or raw.get('f_lote')
+  set('f_id_categoria',    gv('f_id_categoria'));      // _leer: raw.get('f_id_categoria') → ID_CATEGORIAS
+  set('f_unidad',          gv('f_unidad'));
+  set('f_stock',           gv('f_stock'));             // _leer: raw.get('f_stock')
+  set('f_stock_minimo',    gv('f_stock_minimo'));      // _leer: raw.get('f_stock_minimo')
+  set('f_precio_compra',   gv('f_precio_compra'));     // _leer: raw.get('f_precio_compra') → PRO_PRECIO_COMPRA
+  set('f_precio_venta',    gv('f_precio_venta'));      // _leer: raw.get('f_precio_venta') → PRO_PRECIO_VENTA
+  set('f_id_proveedor',    gv('f_id_proveedor'));      // _leer: raw.get('f_id_proveedor') → ID_PROVEEDOR
+  set('f_estado',          gv('f_estado'));            // _leer: raw.get('f_estado') → ID_ESTADO
+  if (!isBase64) set('f_avatar', imagenVal);           // _leer: raw.get('f_imagen') or raw.get('f_avatar')
+}
+
+function dataURLtoBlob(dataURL) {
+  const [header, data] = dataURL.split(',');
+  const mime = header.match(/:(.*?);/)[1];
+  const binary = atob(data);
+  const array  = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) array[i] = binary.charCodeAt(i);
+  return new Blob([array], { type: mime });
+}
+
+function validateForm() {
+  const rules = [
+    { id:'f_nombre',       msg:'El nombre del producto es obligatorio.' },
+    { id:'f_marca',        msg:'La marca es obligatoria.' },
+    // FIX: id correcto del campo de categoría
+    { id:'f_id_categoria', msg:'Selecciona una categoría.' },
+    { id:'f_unidad',       msg:'Selecciona una unidad de medida.' },
+    { id:'f_stock',        msg:'Ingresa el stock actual.' },
+    { id:'f_stock_minimo', msg:'Ingresa el stock mínimo.' },
+    { id:'f_precio_venta', msg:'Ingresa el precio de venta.' },
+    // FIX: id correcto del campo proveedor
+    { id:'f_id_proveedor', msg:'Selecciona un proveedor.' },
+    { id:'f_estado',       msg:'Selecciona un estado.' },
+  ];
+  let ok = true;
+  document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+  for (const r of rules) {
+    const el = document.getElementById(r.id);
+    if (!el?.value?.trim()) {
+      el?.classList.add('input-error');
+      if (ok) { showToast(r.msg, 'error'); el?.focus(); }
+      ok = false;
+    }
+  }
+  return ok;
+}
+
+function askDelete(id, nombre) {
+  document.getElementById('confirmMsg').innerHTML =
+    `¿Confirma inactivar <strong>"${esc(nombre)}"</strong>?<br>
+     <span style="font-size:12px;color:#94a3b8;display:block;margin-top:6px;">El registro permanecerá en el historial.</span>`;
+  confirmCallback = async () => {
+    try {
+      await apiFetch(`productos?action=inactivar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id })
+      });
+      showToast('Producto inactivado correctamente', 'success');
+      document.getElementById('confirmOverlay').classList.remove('open');
+      await loadProducts(currentPage);
+    } catch (error) {
+      showToast('Error al inactivar el producto', 'error');
+    }
+  };
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+
+function closeConfirm()  { document.getElementById('confirmOverlay').classList.remove('open'); confirmCallback = null; }
+function confirmAction() { if (confirmCallback) confirmCallback(); closeConfirm(); }
+
+function debounceSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => loadProducts(1), 380);
+}
+
+function formatDate(str) {
+  if (!str) return '—';
+  const [y,m,d] = str.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function esc(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function gv(id)         { return document.getElementById(id)?.value?.trim() ?? ''; }
+function setValue(id,v) { const el = document.getElementById(id); if (el) el.value = v ?? ''; }
+
+function showToast(msg, type = 'success') {
+  const c  = document.getElementById('toast');
+  if (!c) return;
+  const el = document.createElement('div');
+  el.className = `toast-item ${type}`;
+  const icons = { success:'✅', error:'❌', warn:'⚠️', info:'ℹ️' };
+  el.innerHTML = `<span>${icons[type]??'ℹ️'}</span><span>${msg}</span>`;
+  c.appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity    = '0';
+    el.style.transform  = 'translateX(20px)';
+    setTimeout(() => el.remove(), 320);
+  }, 3400);
+}
+
+function setOnline(online) {
+  const dot = document.getElementById('statusDot');
+  const t   = document.getElementById('statusText');
+  if (dot) dot.style.background = online ? '#22c55e' : '#ef4444';
+  if (t) {
+    t.textContent = online ? 'Sistema en línea' : 'Sin conexión';
+    t.style.color = online ? '#64748b' : '#ef4444';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof cargarInfoUsuario === 'function') cargarInfoUsuario();
+  // FIX: cargar categorías del filtro desde la BD al inicio
+  loadCategoriasFilter();
+});
+loadProducts(1);
+</script>
+
+{% endblock %}

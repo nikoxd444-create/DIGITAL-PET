@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#6e7881",
+                    "primary-fixed": "#c9e6ff",
+                    "surface-container": "#eaedff",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eef0ff",
+                    "surface-dim": "#d2d9f4",
+                    "secondary-fixed-dim": "#4edea3",
+                    "on-secondary-container": "#00714d",
+                    "secondary-container": "#6cf8bb",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#005236",
+                    "on-tertiary-fixed": "#07006c",
+                    "surface-container-high": "#e2e7ff",
+                    "on-primary-fixed-variant": "#004c6e",
+                    "tertiary": "#494bd6",
+                    "inverse-surface": "#283044",
+                    "on-primary-fixed": "#001e2f",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#dae2fd",
+                    "primary": "#006591",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "on-surface": "#131b2e",
+                    "outline-variant": "#bec8d2",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed-dim": "#c0c1ff",
+                    "tertiary-fixed": "#e1e0ff",
+                    "on-secondary-fixed": "#002113",
+                    "on-primary-container": "#003751",
+                    "on-primary": "#ffffff",
+                    "surface": "#faf8ff",
+                    "on-surface-variant": "#3e4850",
+                    "tertiary-container": "#8d90ff",
+                    "on-tertiary-fixed-variant": "#2f2ebe",
+                    "inverse-primary": "#89ceff",
+                    "surface-tint": "#006591",
+                    "secondary-fixed": "#6ffbbe",
+                    "on-tertiary-container": "#1407ad",
+                    "primary-container": "#0ea5e9",
+                    "surface-bright": "#faf8ff",
+                    "surface-container-low": "#f2f3ff",
+                    "on-background": "#131b2e",
+                    "primary-fixed-dim": "#89ceff",
+                    "surface-container-highest": "#dae2fd",
+                    "background": "#faf8ff",
+                    "secondary": "#006c49",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "2xl": "48px",
+                    "gutter": "24px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #faf8ff;
+            font-family: 'Inter', sans-serif;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #bec8d2;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="text-on-background">
+<!-- TopNavBar Layout -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant">
+<div class="max-w-7xl mx-auto px-lg h-16 flex justify-between items-center">
+<div class="flex items-center gap-xl">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[20px]">pets</span>
+</div>
+<div>
+<h1 class="text-label-md font-bold text-primary leading-tight">VetCare Client</h1>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-base">
+<a class="px-md py-2 text-on-surface-variant hover:text-primary transition-colors text-label-md rounded-lg" href="#">Dashboard</a>
+<a class="px-md py-2 text-on-surface-variant hover:text-primary transition-colors text-label-md rounded-lg" href="#">Mascotas</a>
+<a class="px-md py-2 text-on-surface-variant hover:text-primary transition-colors text-label-md rounded-lg" href="#">Citas</a>
+<a class="px-md py-2 text-primary font-bold bg-primary-container/20 rounded-lg text-label-md" href="#">Historia Clínica</a>
+<a class="px-md py-2 text-on-surface-variant hover:text-primary transition-colors text-label-md rounded-lg" href="#">Facturas</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-low border-none rounded-full py-1.5 pl-9 pr-4 w-48 text-label-sm focus:ring-2 focus:ring-primary" placeholder="Buscar..." type="text"/>
+<span class="material-symbols-outlined absolute left-2.5 top-1.5 text-on-surface-variant text-[18px]">search</span>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-xs"></div>
+<div class="flex items-center gap-sm cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img alt="User Profile Avatar" data-alt="A professional headshot of a smiling middle-aged man with short hair and clean-cut features, illuminated by soft natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRy1SHueJWCgbv1tzXHWz3-nGNIED-oi-BYtR-cOtRWNrL3nrjifBQXiKqt6evzdU7xKbgrLT-gMp99sHiUo8H8O1Kpw4kD2459NM6vvah8qY3SdzlULmOKzDaEdKrX3KH4WMrP8hlWEKDT3XNMZsMBMreYUjgp-23ltN-gNGMXftY62jgOv96IEHXS-ELJ0Bu6MgGdohMBdvVg5euoh1wl9-f-4vVPTVpZ-AOT2s9HyDvl0HE7_3_hWCbECtWYWgznE2akGfXZAI"/>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-2xl min-h-screen">
+<div class="max-w-7xl mx-auto px-lg">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xl">
+<div>
+<h2 class="text-display-lg font-display-lg text-on-surface">Historia Clínica</h2>
+<p class="text-body-md text-on-surface-variant">Consulta el expediente médico detallado de tus mascotas.</p>
+</div>
+<button class="bg-primary text-on-primary py-sm px-lg rounded-full font-label-md flex items-center justify-center gap-sm hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined">add_circle</span>
+                    Solicitar Cita
+                </button>
+</div>
+<!-- Pet Selector Section -->
+<section class="mb-2xl">
+<h3 class="text-headline-md font-headline-md text-on-surface mb-md">Seleccionar Mascota</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Active Pet -->
+<div class="bg-surface rounded-2xl p-md border-2 border-primary shadow-sm flex items-center gap-md cursor-pointer group transition-all duration-300">
+<div class="w-16 h-16 rounded-xl overflow-hidden shrink-0">
+<img alt="Luna - Beagle" data-alt="A close-up portrait of a friendly Beagle named Luna" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANnPOXqi-XuLmQWdondftutmLg9WiSRVAPwisweRkkw5CY3aA2BRqcaRrKfUEASDTpMFa-kCwThK5JUlLg2M_eumSnh6Mki7PoikaNDu7a1T-OF1bxaiZw-sFprMWWsdnUQwREAYAo75Leo4I648ah4ZgE9ZFlsAzzTqTcecXJLgeDNCTnOXUbK57Q3igZzoS3zy16QVN5wATWDpQJrSmCCf2-vmOPcbLtBmjLTcxv_pR_zLL2tgePqQNTi3luoRSfvjfhsT7UnrM"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-primary text-body-lg">Luna</h4>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Beagle • 4 años</p>
+</div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<!-- Inactive Pet -->
+<div class="bg-surface rounded-2xl p-md border border-outline-variant shadow-sm flex items-center gap-md cursor-pointer hover:border-primary-fixed-dim hover:bg-surface-container-low transition-all duration-300">
+<div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 grayscale">
+<img alt="Oliver - Cat" data-alt="A beautiful ginger tabby cat named Oliver" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1udMvnisHlljeBHLWzb4ICIzFt_fempD111Y0b3jSG0251hTvNbkH7uiK0jcME1_tD4I4F97rCSIabz-Oh8M0yG1uaWdGQq_ILGLMVuJ6UZ0HLfq3P7U0gstpXw_DfJT7ebflV8AJpcRPw_cdnUzNug5R5rV43mSJwuDtwYjGF4TkxVJW3c-D6N71SY2nBCqCwwyNnKUwDEZMZw_l-PejRJvu-w5uIeKpDZsTKx2vx8SKClVZbmTNF5xrG7rZ0T5dAWFp99v_Bf8"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-on-surface text-body-lg">Oliver</h4>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Gato Común • 2 años</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<!-- Inactive Pet -->
+<div class="bg-surface rounded-2xl p-md border border-outline-variant shadow-sm flex items-center gap-md cursor-pointer hover:border-primary-fixed-dim hover:bg-surface-container-low transition-all duration-300">
+<div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 grayscale">
+<img alt="Max - Golden Retriever" data-alt="A majestic Golden Retriever dog named Max" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuu56sM7GMPrKsVJSLKZgMLrhvhqdseb5eqaRO7m10gz6Qwf_ryK9AW_EEk-UkRUtxfjHqgBThZC0A_AYlUQ5ao-vJBw-oVBNYXL_sQgYsizrTik2jVdEX_Nw7osR4j-KO1cVoBWm_rQEzEEI5Ows3j_2nG9mAWWEwGrS4wq79maPoE8tcqmWYXggPLrESDhT4oJZQCEW4rBQpZdaQ6jY-jrrMYGyLcEAw9czfOrxzOqtDlA2LCGtTix5IJ6aiblS8zkGj9SuPp2Q"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-on-surface text-body-lg">Max</h4>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Golden R. • 7 años</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Timeline Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Left: Quick Stats / Summary -->
+<div class="lg:col-span-4 flex flex-col gap-lg">
+<div class="bg-primary-container/10 p-lg rounded-2xl border border-primary-container/20">
+<div class="flex items-center gap-md mb-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">health_metrics</span>
+</div>
+<h5 class="text-headline-md font-headline-md text-primary">Resumen Actual</h5>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between items-center py-sm border-b border-primary-container/10">
+<span class="text-label-md text-on-surface-variant">Peso</span>
+<span class="text-body-md font-bold text-on-surface">12.4 kg</span>
+</div>
+<div class="flex justify-between items-center py-sm border-b border-primary-container/10">
+<span class="text-label-md text-on-surface-variant">Última Vacuna</span>
+<span class="text-body-md font-bold text-on-surface">15 May 2023</span>
+</div>
+<div class="flex justify-between items-center py-sm">
+<span class="text-label-md text-on-surface-variant">Estado General</span>
+<span class="px-3 py-1 bg-secondary-container/20 text-secondary font-bold text-label-sm rounded-full">Excelente</span>
+</div>
+</div>
+</div>
+<div class="bg-surface p-lg rounded-2xl border border-outline-variant shadow-sm">
+<h5 class="text-body-lg font-bold text-on-surface mb-md">Recordatorios Próximos</h5>
+<ul class="space-y-md">
+<li class="flex gap-md">
+<div class="bg-error-container/20 p-2 rounded-lg shrink-0">
+<span class="material-symbols-outlined text-error">vaccines</span>
+</div>
+<div>
+<p class="text-body-md font-bold">Refuerzo Rabia</p>
+<p class="text-label-sm text-on-surface-variant">Vence en 12 días</p>
+</div>
+</li>
+<li class="flex gap-md">
+<div class="bg-tertiary-container/20 p-2 rounded-lg shrink-0">
+<span class="material-symbols-outlined text-tertiary">pill</span>
+</div>
+<div>
+<p class="text-body-md font-bold">Desparasitación</p>
+<p class="text-label-sm text-on-surface-variant">Programada para Octubre</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Right: Clinical History Timeline -->
+<div class="lg:col-span-8">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="text-headline-md font-headline-md text-on-surface">Historial de Consultas</h3>
+<div class="flex items-center gap-sm">
+<button class="flex items-center gap-xs px-md py-sm bg-surface-container-low text-on-surface-variant rounded-lg font-label-md hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+                                Filtrar
+                            </button>
+<button class="flex items-center gap-xs px-md py-sm bg-surface-container-low text-on-surface-variant rounded-lg font-label-md hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                                Exportar PDF
+                            </button>
+</div>
+</div>
+<div class="relative timeline-line space-y-xl">
+<!-- Timeline Entry 1 -->
+<div class="relative pl-xl">
+<div class="absolute left-0 top-1 w-10 h-10 bg-primary-container rounded-full flex items-center justify-center z-10 border-4 border-surface shadow-sm">
+<span class="material-symbols-outlined text-on-primary-container text-[18px]" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<div class="bg-surface rounded-2xl p-lg border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-sm mb-md">
+<div>
+<p class="text-label-sm font-label-sm text-primary uppercase">Chequeo General</p>
+<h4 class="text-body-lg font-bold text-on-surface">Control de Peso y Vacunación</h4>
+</div>
+<div class="text-on-surface-variant font-label-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">event</span>
+                                        15 de Mayo, 2023
+                                    </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">stethoscope</span>
+<span class="text-label-sm uppercase tracking-wide">Diagnóstico</span>
+</div>
+<p class="text-body-md text-on-surface">Paciente saludable. Desarrollo muscular óptimo para su edad. No se observan anomalías en el examen físico.</p>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">medication</span>
+<span class="text-label-sm uppercase tracking-wide">Tratamiento</span>
+</div>
+<p class="text-body-md text-on-surface">Aplicación de vacuna polivalente (Refuerzo anual). Refuerzo de desparasitación externa.</p>
+</div>
+</div>
+<div class="mt-lg p-md bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div class="flex items-center gap-xs text-primary mb-xs">
+<span class="material-symbols-outlined text-[20px]">tips_and_updates</span>
+<span class="text-label-sm uppercase font-bold">Recomendaciones</span>
+</div>
+<p class="text-body-md text-on-surface-variant italic">"Continuar con la dieta actual de alta proteína. Incrementar la actividad física diaria a 45 minutos. Próximo control en 6 meses."</p>
+</div>
+</div>
+</div>
+<!-- Timeline Entry 2 -->
+<div class="relative pl-xl">
+<div class="absolute left-0 top-1 w-10 h-10 bg-secondary-container rounded-full flex items-center justify-center z-10 border-4 border-surface shadow-sm">
+<span class="material-symbols-outlined text-on-secondary-container text-[18px]" style="font-variation-settings: 'FILL' 1;">emergency</span>
+</div>
+<div class="bg-surface rounded-2xl p-lg border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-sm mb-md">
+<div>
+<p class="text-label-sm font-label-sm text-secondary uppercase">Urgencia Menor</p>
+<h4 class="text-body-lg font-bold text-on-surface">Gastroenteritis Leve</h4>
+</div>
+<div class="text-on-surface-variant font-label-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">event</span>
+                                        12 de Marzo, 2023
+                                    </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">stethoscope</span>
+<span class="text-label-sm uppercase tracking-wide">Diagnóstico</span>
+</div>
+<p class="text-body-md text-on-surface">Irritación gástrica por ingesta de alimento no habitual. Deshidratación leve detectada.</p>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">medication</span>
+<span class="text-label-sm uppercase tracking-wide">Tratamiento</span>
+</div>
+<p class="text-body-md text-on-surface">Administración de suero subcutáneo. Prescripción de protector gástrico y dieta blanda.</p>
+</div>
+</div>
+<div class="mt-lg p-md bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div class="flex items-center gap-xs text-primary mb-xs">
+<span class="material-symbols-outlined text-[20px]">tips_and_updates</span>
+<span class="text-label-sm uppercase font-bold">Recomendaciones</span>
+</div>
+<p class="text-body-md text-on-surface-variant italic">"Mantener ayuno sólido por 12h. Ofrecer pequeñas cantidades de agua fresca. No administrar premios ni comida casera hasta nuevo aviso."</p>
+</div>
+</div>
+</div>
+<!-- Timeline Entry 3 -->
+<div class="relative pl-xl">
+<div class="absolute left-0 top-1 w-10 h-10 bg-surface-variant rounded-full flex items-center justify-center z-10 border-4 border-surface shadow-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">history</span>
+</div>
+<div class="bg-surface rounded-2xl p-lg border border-outline-variant shadow-sm hover:shadow-md transition-shadow opacity-80">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-sm mb-md">
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant uppercase">Especialidad: Odontología</p>
+<h4 class="text-body-lg font-bold text-on-surface">Limpieza Dental Profiláctica</h4>
+</div>
+<div class="text-on-surface-variant font-label-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">event</span>
+                                        05 de Enero, 2023
+                                    </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">stethoscope</span>
+<span class="text-label-sm uppercase tracking-wide">Diagnóstico</span>
+</div>
+<p class="text-body-md text-on-surface">Presencia moderada de sarro en molares superiores. Encías con inflamación leve.</p>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">medication</span>
+<span class="text-label-sm uppercase tracking-wide">Tratamiento</span>
+</div>
+<p class="text-body-md text-on-surface">Limpieza por ultrasonido bajo sedación ligera. Pulido dental.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- End of Timeline Indicator -->
+<div class="relative pl-xl py-md">
+<p class="text-label-sm text-on-surface-variant text-center border-t border-outline-variant pt-md">Se han cargado los últimos 12 meses de historia clínica.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<script>
+        // Pet Selection Interaction
+        const petCards = document.querySelectorAll('section:first-of-type .grid > div');
+        petCards.forEach(card => {
+            card.addEventListener('click', function() {
+                petCards.forEach(c => {
+                    c.classList.remove('border-2', 'border-primary', 'bg-surface-container-low');
+                    c.classList.add('border', 'border-outline-variant');
+                    const icon = c.querySelector('.material-symbols-outlined:last-child');
+                    if (icon) {
+                        icon.textContent = 'chevron_right';
+                        icon.style.fontVariationSettings = "'FILL' 0";
+                        icon.classList.remove('text-primary');
+                        icon.classList.add('text-outline-variant');
+                    }
+                    const img = c.querySelector('img');
+                    if(img) img.parentElement.classList.add('grayscale');
+                });
+
+                this.classList.remove('border', 'border-outline-variant');
+                this.classList.add('border-2', 'border-primary');
+                const icon = this.querySelector('.material-symbols-outlined:last-child');
+                if (icon) {
+                    icon.textContent = 'check_circle';
+                    icon.style.fontVariationSettings = "'FILL' 1";
+                    icon.classList.remove('text-outline-variant');
+                    icon.classList.add('text-primary');
+                }
+                const img = this.querySelector('img');
+                if(img) img.parentElement.classList.remove('grayscale');
+            });
+        });
+
+        // Top nav active state logic
+        document.querySelectorAll('header nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // For demo purposes, we're not actually navigating
+                e.preventDefault();
+                document.querySelectorAll('header nav a').forEach(l => {
+                    l.classList.remove('text-primary', 'font-bold', 'bg-primary-container/20');
+                    l.classList.add('text-on-surface-variant');
+                });
+                this.classList.remove('text-on-surface-variant');
+                this.classList.add('text-primary', 'font-bold', 'bg-primary-container/20');
+            });
+        });
+    </script>
+</body></html>

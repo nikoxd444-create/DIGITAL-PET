@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Pet Admin – Auditoría</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+  :root{--yellow:#FFCC00;--yellow-dark:#E6B800;--yellow-light:#FFF4B8;--orange:#FF8C42;--green:#4CAF79;--red:#FF5252;--dark:#1A1A2E;}
+  *{font-family:'Nunito',sans-serif;}
+  .fredoka{font-family:'Fredoka One',cursive;}
+  .sidebar-link{transition:all .2s;border-left:3px solid transparent;}
+  .sidebar-link:hover,.sidebar-link.active{background:rgba(255,204,0,.15);border-left:3px solid var(--yellow);}
+  .fade-in{opacity:0;transform:translateY(14px);animation:fadeIn .4s ease forwards;}
+  @keyframes fadeIn{to{opacity:1;transform:translateY(0);}}
+  .stagger-1{animation-delay:.1s;}.stagger-2{animation-delay:.2s;}.stagger-3{animation-delay:.3s;}
+  tbody tr{transition:background .15s;}
+  tbody tr:hover{background:#fffde7;}
+  .action-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+  .detail-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;align-items:center;justify-content:center;}
+  .detail-panel.open{display:flex;}
+  .detail-box{animation:slideUp .3s ease;max-height:90vh;overflow-y:auto;}
+  @keyframes slideUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 min-h-screen bg-white shadow-lg flex flex-col fixed top-0 left-0 z-20">
+  <div class="flex items-center gap-3 px-6 py-5 border-b border-yellow-100">
+    <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--yellow)"><span class="text-xl">🐾</span></div>
+    <div><p class="fredoka text-lg" style="color:var(--dark)">DIGITAL PET</p><p class="text-xs text-gray-400">Panel Admin</p></div>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1">
+    <p class="text-xs font-800 text-gray-400 px-3 mb-2 uppercase tracking-widest">Principal</p>
+    <a href="admin-dashboard.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>📊</span> Dashboard</a>
+    <a href="admin-reportes.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>📈</span> Reportes</a>
+    <a href="admin-auditoria.html" class="sidebar-link active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700 text-gray-700"><span>🔍</span> Auditoría</a>
+    <p class="text-xs font-800 text-gray-400 px-3 mt-4 mb-2 uppercase tracking-widest">Gestión</p>
+    <a href="admin-usuarios.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>👤</span> Usuarios</a>
+    <a href="admin-roles.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🛡️</span> Roles</a>
+    <a href="admin-clientes.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>👥</span> Clientes</a>
+    <a href="admin-mascotas.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🐶</span> Mascotas</a>
+    <a href="admin-estados.html" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-600 text-gray-500"><span>🏷️</span> Estados</a>
+  </nav>
+  <div class="px-4 py-4 border-t border-gray-100">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-yellow-300 flex items-center justify-center text-sm font-800">AD</div>
+      <div><p class="text-sm font-700 text-gray-700">Admin</p><p class="text-xs text-gray-400">Superusuario</p></div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="ml-64 flex-1 p-8">
+
+  <div class="flex items-center justify-between mb-7 fade-in">
+    <div>
+      <h1 class="fredoka text-3xl" style="color:var(--dark)">Auditoría del Sistema 🔍</h1>
+      <p class="text-gray-400 text-sm mt-1">Registro completo de acciones en el sistema</p>
+    </div>
+    <button onclick="exportLogs()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-700 border-2 border-gray-200 text-gray-600 hover:border-yellow-400 transition">
+      📥 Exportar logs
+    </button>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="grid grid-cols-4 gap-4 mb-6 fade-in stagger-1">
+    <div class="bg-white rounded-2xl p-4 shadow-sm">
+      <div class="flex items-center gap-2 mb-2"><span class="text-xl">📝</span><p class="text-xs font-700 text-gray-400 uppercase">Total acciones hoy</p></div>
+      <p class="text-2xl font-900" style="color:var(--dark)">847</p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-sm">
+      <div class="flex items-center gap-2 mb-2"><span class="text-xl">✅</span><p class="text-xs font-700 text-gray-400 uppercase">Creaciones</p></div>
+      <p class="text-2xl font-900 text-green-600">312</p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-sm">
+      <div class="flex items-center gap-2 mb-2"><span class="text-xl">✏️</span><p class="text-xs font-700 text-gray-400 uppercase">Ediciones</p></div>
+      <p class="text-2xl font-900 text-blue-600">428</p>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-sm">
+      <div class="flex items-center gap-2 mb-2"><span class="text-xl">🗑️</span><p class="text-xs font-700 text-gray-400 uppercase">Eliminaciones</p></div>
+      <p class="text-2xl font-900 text-red-500">107</p>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="bg-white rounded-2xl p-5 shadow-sm mb-5 fade-in stagger-2">
+    <div class="flex gap-4 flex-wrap">
+      <div class="flex-1 min-w-48 relative">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+        <input id="searchInput" onkeyup="filterLogs()" type="text" placeholder="Buscar por usuario, acción, tabla…" class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50"/>
+      </div>
+      <select id="filterAction" onchange="filterLogs()" class="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 bg-gray-50">
+        <option value="">Todas las acciones</option>
+        <option>CREATE</option><option>UPDATE</option><option>DELETE</option><option>LOGIN</option><option>LOGOUT</option>
+      </select>
+      <select id="filterTable" onchange="filterLogs()" class="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 bg-gray-50">
+        <option value="">Todas las tablas</option>
+        <option>usuarios</option><option>mascotas</option><option>citas</option><option>clientes</option><option>roles</option>
+      </select>
+      <input type="date" value="2026-05-21" class="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 bg-gray-50"/>
+    </div>
+  </div>
+
+  <!-- LOGS TABLE -->
+  <div class="bg-white rounded-2xl shadow-sm overflow-hidden fade-in stagger-3">
+    <table class="w-full">
+      <thead>
+        <tr style="background:var(--yellow-light)">
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Fecha / Hora</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Usuario</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Acción</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Tabla afectada</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Descripción</th>
+          <th class="text-left px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">IP</th>
+          <th class="text-center px-5 py-3.5 text-xs font-800 text-gray-600 uppercase tracking-wide">Detalle</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="flex items-center justify-between mt-4">
+    <p class="text-sm text-gray-400">Mostrando <strong id="count">12</strong> de <strong>847</strong> registros</p>
+    <div class="flex gap-1">
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm text-gray-400">‹</button>
+      <button class="w-8 h-8 rounded-lg text-sm font-700 text-white" style="background:var(--yellow-dark)">1</button>
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm text-gray-600">2</button>
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm text-gray-600">3</button>
+      <span class="w-8 h-8 flex items-center justify-center text-sm text-gray-400">…</span>
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm text-gray-600">71</button>
+      <button class="w-8 h-8 rounded-lg bg-white border border-gray-200 text-sm text-gray-400">›</button>
+    </div>
+  </div>
+</main>
+
+<!-- DETAIL MODAL -->
+<div class="detail-panel" id="detailPanel">
+  <div class="detail-box bg-white rounded-2xl shadow-2xl w-full max-w-lg p-7">
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="fredoka text-2xl" style="color:var(--dark)">Detalle del log</h2>
+      <button onclick="document.getElementById('detailPanel').classList.remove('open')" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xl hover:bg-red-100 hover:text-red-500 transition">×</button>
+    </div>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
+  <div class="flex items-center gap-3 bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-xl text-sm font-700">📥 <span>Logs exportados</span></div>
+</div>
+
+<script>
+const logs=[
+  {id:1,date:"2026-05-21",time:"09:42:15",user:"cramirez",role:"Admin",action:"CREATE",table:"citas",desc:"Nueva cita agendada para Max (ID: 342)",ip:"192.168.1.10",before:null,after:{id:342,mascota:"Max",fecha:"2026-05-21",hora:"10:00",vet:"García"}},
+  {id:2,date:"2026-05-21",time:"09:38:02",user:"agarcia",role:"Veterinario",action:"UPDATE",table:"mascotas",desc:"Actualización de historial médico de Luna",ip:"192.168.1.15",before:{peso:"3.2kg",vacunas:"2"},after:{peso:"3.5kg",vacunas:"3"}},
+  {id:3,date:"2026-05-21",time:"09:30:58",user:"ltorres",role:"Recepcionista",action:"LOGIN",table:"sesiones",desc:"Inicio de sesión exitoso",ip:"192.168.1.22",before:null,after:null},
+  {id:4,date:"2026-05-21",time:"09:15:44",user:"cramirez",role:"Admin",action:"DELETE",table:"usuarios",desc:"Usuario inactivo eliminado del sistema",ip:"192.168.1.10",before:{id:91,nombre:"Jorge V."},after:null},
+  {id:5,date:"2026-05-21",time:"09:05:30",user:"psanchez",role:"Auxiliar",action:"UPDATE",table:"inventario",desc:"Stock de Vacuna Rabia actualizado",ip:"192.168.1.30",before:{stock:8},after:{stock:2}},
+  {id:6,date:"2026-05-21",time:"08:58:11",user:"agarcia",role:"Veterinario",action:"CREATE",table:"clientes",desc:"Nuevo cliente registrado: Valentina Ruiz",ip:"192.168.1.15",before:null,after:{nombre:"Valentina Ruiz",email:"vale@mail.com"}},
+  {id:7,date:"2026-05-21",time:"08:45:09",user:"cramirez",role:"Admin",action:"UPDATE",table:"roles",desc:"Permisos del rol Auxiliar modificados",ip:"192.168.1.10",before:{permisos:6},after:{permisos:8}},
+  {id:8,date:"2026-05-21",time:"08:30:00",user:"ldiaz",role:"Recepcionista",action:"LOGOUT",table:"sesiones",desc:"Cierre de sesión",ip:"192.168.1.18",before:null,after:null},
+  {id:9,date:"2026-05-21",time:"08:15:22",user:"jmorales",role:"Auxiliar",action:"CREATE",table:"mascotas",desc:"Nueva mascota registrada: Duque (Perro)",ip:"192.168.1.35",before:null,after:{nombre:"Duque",especie:"Perro"}},
+  {id:10,date:"2026-05-21",time:"08:10:05",user:"cramirez",role:"Admin",action:"UPDATE",table:"estados",desc:"Estado PENDIENTE habilitado para citas",ip:"192.168.1.10",before:{activo:false},after:{activo:true}},
+  {id:11,date:"2026-05-21",time:"08:05:58",user:"ltorres",role:"Recepcionista",action:"UPDATE",table:"citas",desc:"Cita ID 338 cancelada por cliente",ip:"192.168.1.22",before:{estado:"CONFIRMADA"},after:{estado:"CANCELADA"}},
+  {id:12,date:"2026-05-21",time:"08:00:00",user:"agarcia",role:"Veterinario",action:"LOGIN",table:"sesiones",desc:"Inicio de sesión exitoso",ip:"192.168.1.15",before:null,after:null},
+];
+
+const actionColors={CREATE:"background:#E8F5E9;color:#2E7D32",UPDATE:"background:#E3F2FD;color:#1565C0",DELETE:"background:#FFEBEE;color:#C62828",LOGIN:"background:#FFF3E0;color:#E65100",LOGOUT:"background:#F5F5F5;color:#616161"};
+const actionIcons={CREATE:"✅",UPDATE:"✏️",DELETE:"🗑️",LOGIN:"🔑",LOGOUT:"🚪"};
+
+function renderTable(data){
+  const tb=document.getElementById('tableBody');
+  tb.innerHTML='';
+  document.getElementById('count').textContent=data.length;
+  data.forEach(l=>{
+    tb.innerHTML+=`<tr class="border-t border-gray-100">
+      <td class="px-5 py-3">
+        <p class="text-xs font-700 text-gray-700">${l.date}</p>
+        <p class="text-xs text-gray-400 font-mono">${l.time}</p>
+      </td>
+      <td class="px-5 py-3">
+        <p class="text-sm font-700 text-gray-700">@${l.user}</p>
+        <p class="text-xs text-gray-400">${l.role}</p>
+      </td>
+      <td class="px-5 py-3">
+        <span class="action-badge" style="${actionColors[l.action]}">${actionIcons[l.action]} ${l.action}</span>
+      </td>
+      <td class="px-5 py-3">
+        <span class="text-xs font-700 px-2 py-1 rounded-lg font-mono" style="background:var(--yellow-light);color:var(--dark)">${l.table}</span>
+      </td>
+      <td class="px-5 py-3 text-sm text-gray-500 max-w-48 truncate">${l.desc}</td>
+      <td class="px-5 py-3 text-xs text-gray-400 font-mono">${l.ip}</td>
+      <td class="px-5 py-3 text-center">
+        <button onclick="showDetail(${l.id})" class="p-1.5 rounded-lg hover:bg-yellow-100 transition text-sm">🔍</button>
+      </td>
+    </tr>`;
+  });
+}
+
+function filterLogs(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const ac=document.getElementById('filterAction').value;
+  const tb=document.getElementById('filterTable').value;
+  renderTable(logs.filter(l=>
+    (!q||(l.user+l.desc+l.table).toLowerCase().includes(q))&&
+    (!ac||l.action===ac)&&
+    (!tb||l.table===tb)
+  ));
+}
+
+function showDetail(id){
+  const l=logs.find(x=>x.id===id);
+  document.getElementById('detailContent').innerHTML=`
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-3 text-sm">
+        <div class="p-3 rounded-xl bg-gray-50"><p class="text-xs font-700 text-gray-400 mb-1">USUARIO</p><p class="font-700 text-gray-700">@${l.user} (${l.role})</p></div>
+        <div class="p-3 rounded-xl bg-gray-50"><p class="text-xs font-700 text-gray-400 mb-1">ACCIÓN</p><span class="action-badge" style="${actionColors[l.action]}">${actionIcons[l.action]} ${l.action}</span></div>
+        <div class="p-3 rounded-xl bg-gray-50"><p class="text-xs font-700 text-gray-400 mb-1">TABLA</p><p class="font-700 font-mono text-gray-700">${l.table}</p></div>
+        <div class="p-3 rounded-xl bg-gray-50"><p class="text-xs font-700 text-gray-400 mb-1">IP</p><p class="font-700 font-mono text-gray-700">${l.ip}</p></div>
+        <div class="col-span-2 p-3 rounded-xl bg-gray-50"><p class="text-xs font-700 text-gray-400 mb-1">FECHA Y HORA</p><p class="font-700 text-gray-700">${l.date} ${l.time}</p></div>
+        <div class="col-span-2 p-3 rounded-xl bg-gray-50"><p class="text-xs font-700 text-gray-400 mb-1">DESCRIPCIÓN</p><p class="text-gray-700">${l.desc}</p></div>
+      </div>
+      ${l.before?`<div><p class="text-xs font-700 text-gray-400 mb-2">ANTES</p><pre class="text-xs bg-red-50 text-red-700 p-3 rounded-xl overflow-x-auto">${JSON.stringify(l.before,null,2)}</pre></div>`:''}
+      ${l.after?`<div><p class="text-xs font-700 text-gray-400 mb-2">DESPUÉS</p><pre class="text-xs bg-green-50 text-green-700 p-3 rounded-xl overflow-x-auto">${JSON.stringify(l.after,null,2)}</pre></div>`:''}
+    </div>`;
+  document.getElementById('detailPanel').classList.add('open');
+}
+
+function exportLogs(){
+  const t=document.getElementById('toast');
+  t.classList.remove('hidden');
+  setTimeout(()=>t.classList.add('hidden'),2500);
+}
+
+renderTable(logs);
+</script>
+</body>
+</html>

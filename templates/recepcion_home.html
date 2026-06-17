@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#001c3a",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#c7dde9",
+                    "primary": "#005dac",
+                    "tertiary": "#505e68",
+                    "surface-bright": "#f3faff",
+                    "primary-fixed": "#d4e3ff",
+                    "tertiary-container": "#697781",
+                    "secondary-container": "#bee1fe",
+                    "surface-tint": "#005faf",
+                    "on-primary-container": "#fffdff",
+                    "on-primary-fixed-variant": "#004786",
+                    "surface-container-highest": "#cfe6f2",
+                    "error": "#ba1a1a",
+                    "on-surface": "#071e27",
+                    "surface-container": "#dbf1fe",
+                    "secondary-fixed-dim": "#a8cbe7",
+                    "background": "#f3faff",
+                    "secondary-fixed": "#c9e6ff",
+                    "secondary": "#40627b",
+                    "outline": "#717783",
+                    "on-background": "#071e27",
+                    "surface-container-high": "#d5ecf8",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#0f1d25",
+                    "inverse-surface": "#1e333c",
+                    "primary-container": "#1976d2",
+                    "surface-variant": "#cfe6f2",
+                    "surface": "#f3faff",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#a5c8ff",
+                    "primary-fixed-dim": "#a5c8ff",
+                    "on-secondary-fixed": "#001e2f",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-low": "#e6f6ff",
+                    "inverse-on-surface": "#dff4ff",
+                    "on-secondary-fixed-variant": "#274a62",
+                    "on-secondary-container": "#43647d",
+                    "tertiary-fixed": "#d6e5ef",
+                    "on-tertiary-fixed-variant": "#3b4951",
+                    "on-surface-variant": "#414752",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#fdfdff",
+                    "outline-variant": "#c1c6d4",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#bac9d3",
+                    "on-secondary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-lg": "24px",
+                    "margin-edge": "32px",
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "stack-sm": "8px",
+                    "container-max": "1440px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "caption": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.03em", "fontWeight": "500"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-medical-shadow {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03);
+        }
+        .active-nav-border {
+            border-bottom: 2px solid #005dac;
+        }
+        body {
+            background-color: #F8FAFC;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full bg-surface-bright z-50 border-b border-outline-variant shadow-sm">
+<div class="flex justify-between items-center h-16 px-margin-edge max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary">Clinical Clarity</span>
+<nav class="hidden md:flex gap-6 items-center h-16">
+<a class="text-primary border-b-2 border-primary pb-1 font-semibold font-title-lg text-title-lg h-full flex items-center mt-1" href="#">Dashboard</a>
+<a class="text-secondary hover:text-primary transition-colors font-title-lg text-title-lg h-full flex items-center mt-1" href="#">Clients</a>
+<a class="text-secondary hover:text-primary transition-colors font-title-lg text-title-lg h-full flex items-center mt-1" href="#">Appointments</a>
+<a class="text-secondary hover:text-primary transition-colors font-title-lg text-title-lg h-full flex items-center mt-1" href="#">Services</a>
+<a class="text-secondary hover:text-primary transition-colors font-title-lg text-title-lg h-full flex items-center mt-1" href="#">Invoicing</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container-low rounded-full px-4 py-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-outline text-[20px] mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-48" placeholder="Buscar paciente..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined text-secondary">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined text-secondary">help</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary ml-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-edge py-stack-lg pb-24">
+<!-- Hero Welcome Section -->
+<section class="mb-stack-lg relative overflow-hidden rounded-xl bg-white p-8 border border-outline-variant soft-medical-shadow">
+<div class="relative z-10 max-w-2xl">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">¡Buen día, Equipo de Recepción!</h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-lg">
+                    Optimizando el flujo de trabajo para brindar el mejor cuidado a nuestros pacientes y sus familias. Gestiona hoy con precisión y empatía.
+                </p>
+<div class="mt-6 flex gap-4">
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-title-lg text-title-lg hover:brightness-110 transition-all flex items-center gap-2 active:scale-95">
+<span class="material-symbols-outlined">add</span>
+                        Nueva Cita
+                    </button>
+<button class="border border-primary text-primary px-6 py-2.5 rounded-lg font-title-lg text-title-lg hover:bg-primary/5 transition-all active:scale-95">
+                        Ver Agenda
+                    </button>
+</div>
+</div>
+<div class="absolute right-0 top-0 h-full w-1/3 hidden lg:block">
+<div class="w-full h-full opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary to-transparent"></div>
+</div>
+</section>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Column: Quick Actions & Pulse -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<!-- Quick Actions Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="group p-stack-md bg-white rounded-xl border border-outline-variant soft-medical-shadow hover:border-primary transition-all cursor-pointer flex items-start gap-4">
+<div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[28px]">calendar_month</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm mb-1">Gestionar Agenda</h3>
+<p class="font-body-md text-on-surface-variant">Consulta disponibilidad y coordina turnos médicos.</p>
+</div>
+</div>
+<div class="group p-stack-md bg-white rounded-xl border border-outline-variant soft-medical-shadow hover:border-primary transition-all cursor-pointer flex items-start gap-4">
+<div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[28px]">person_add</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm mb-1">Nuevo Registro</h3>
+<p class="font-body-md text-on-surface-variant">Alta de nuevos pacientes y responsables legales.</p>
+</div>
+</div>
+<div class="group p-stack-md bg-white rounded-xl border border-outline-variant soft-medical-shadow hover:border-primary transition-all cursor-pointer flex items-start gap-4">
+<div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[28px]">receipt_long</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm mb-1">Facturación Rápida</h3>
+<p class="font-body-md text-on-surface-variant">Generación de comprobantes y pagos inmediatos.</p>
+</div>
+</div>
+<div class="group p-stack-md bg-white rounded-xl border border-outline-variant soft-medical-shadow hover:border-primary transition-all cursor-pointer flex items-start gap-4">
+<div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[28px]">medical_services</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm mb-1">Catálogo de Servicios</h3>
+<p class="font-body-md text-on-surface-variant">Lista de procedimientos, vacunas y consultas.</p>
+</div>
+</div>
+</div>
+<!-- Daily Pulse -->
+<div class="bg-white rounded-xl border border-outline-variant soft-medical-shadow p-stack-lg">
+<div class="flex justify-between items-center mb-stack-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Daily Pulse</h2>
+<span class="font-label-md text-label-md bg-surface-container-high px-3 py-1 rounded-full text-secondary">Hoy, 24 Oct</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-stack-md">
+<div class="bg-surface-container-low p-stack-md rounded-lg border border-outline-variant/30 text-center">
+<p class="font-label-md text-label-md text-secondary uppercase tracking-wider">Total Citas</p>
+<p class="font-display-lg text-display-lg text-primary mt-1">24</p>
+<div class="mt-2 text-caption font-caption text-secondary flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 12% vs ayer
+                            </div>
+</div>
+<div class="bg-surface-container-low p-stack-md rounded-lg border border-outline-variant/30 text-center">
+<p class="font-label-md text-label-md text-secondary uppercase tracking-wider">Pacientes en Espera</p>
+<p class="font-display-lg text-display-lg text-primary mt-1">5</p>
+<div class="mt-2 text-caption font-caption text-secondary">Tiempo promedio: 12 min</div>
+</div>
+<div class="bg-surface-container-low p-stack-md rounded-lg border border-outline-variant/30 text-center">
+<p class="font-label-md text-label-md text-secondary uppercase tracking-wider">Facturas Pendientes</p>
+<p class="font-display-lg text-display-lg text-error mt-1">3</p>
+<div class="mt-2 text-caption font-caption text-error font-medium">Requieren seguimiento</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Recent Activity & Calendar Preview -->
+<aside class="col-span-12 lg:col-span-4 space-y-gutter">
+<!-- Recent Activity Feed -->
+<div class="bg-white rounded-xl border border-outline-variant soft-medical-shadow p-stack-lg h-full">
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="material-symbols-outlined text-primary">history</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Actividad Reciente</h2>
+</div>
+<div class="space-y-6 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-px before:bg-outline-variant">
+<div class="relative pl-10">
+<div class="absolute left-0 w-8 h-8 rounded-full bg-secondary-container border-2 border-white flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[16px] text-primary">person</span>
+</div>
+<p class="font-body-md text-on-surface"><strong>Marta</strong> registró a <span class="text-primary font-medium">Toby</span> (Golden Retriever)</p>
+<p class="font-caption text-caption text-on-surface-variant mt-1">Hace 15 min</p>
+</div>
+<div class="relative pl-10">
+<div class="absolute left-0 w-8 h-8 rounded-full bg-secondary-container border-2 border-white flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<p class="font-body-md text-on-surface">Cita confirmada para <span class="text-primary font-medium">Luna</span> con Dr. Pérez</p>
+<p class="font-caption text-caption text-on-surface-variant mt-1">Hace 42 min</p>
+</div>
+<div class="relative pl-10">
+<div class="absolute left-0 w-8 h-8 rounded-full bg-secondary-container border-2 border-white flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[16px] text-primary">payments</span>
+</div>
+<p class="font-body-md text-on-surface">Factura generada #8942 - Cliente: <strong>Roberto Gómez</strong></p>
+<p class="font-caption text-caption text-on-surface-variant mt-1">Hace 1 hora</p>
+</div>
+<div class="relative pl-10">
+<div class="absolute left-0 w-8 h-8 rounded-full bg-secondary-container border-2 border-white flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[16px] text-primary">edit</span>
+</div>
+<p class="font-body-md text-on-surface">Actualización de historia clínica de <span class="text-primary font-medium">Max</span></p>
+<p class="font-caption text-caption text-on-surface-variant mt-1">Hace 2 horas</p>
+</div>
+</div>
+<button class="w-full mt-8 text-primary font-label-md text-label-md hover:underline">Ver todo el historial</button>
+</div>
+<!-- Small Branding Image/Placeholder -->
+<div class="rounded-xl overflow-hidden relative aspect-video">
+<img alt="VetCare Environment" class="w-full h-full object-cover" data-alt="A clean, professional veterinary clinic reception desk with soft blue and white colors. In the background, a friendly veterinarian in a white lab coat is smiling while holding a small dog. The lighting is bright and airy, creating a modern, high-key medical atmosphere that feels clinical yet warm and reliable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLx97hnU-886g6I8SQOOb9gOw5LPL0G9e2xzsC5J5sT0TBuhYVFQLu-071OvYjHqe6l_RvJoFQ8elfee-d9J-5CdAgXE7g3zv3l-xZfQaNZK2TXfq-10H9pb8jEyc6NE6GBBgWmcdqYCkVB4wvW0xIk8owSnRSCdqu3hPdMzWIvm6vtlXixW3KbiTbL0VkKZGQwyAqQx1eDQIrs1msegine3zwWPCQBpAWorqi4JYELpYKB9p_taEyCgNBRy7xmvcC0mByi6V5BxDM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex items-end p-4">
+<p class="text-on-primary font-label-md text-label-md italic">"Pasión por el bienestar animal."</p>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-4 bg-surface-container border-t border-outline-variant shadow-lg z-50">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/50 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Clients</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/50 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-md text-label-md">Calendar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/50 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-md text-label-md">Tasks</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant/50 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Billing</span>
+</a>
+</nav>
+<script>
+        // Simple logic for micro-interactions if needed
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mousedown', () => card.style.transform = 'scale(0.98)');
+            card.addEventListener('mouseup', () => card.style.transform = 'scale(1)');
+            card.addEventListener('mouseleave', () => card.style.transform = 'scale(1)');
+        });
+    </script>
+</body></html>

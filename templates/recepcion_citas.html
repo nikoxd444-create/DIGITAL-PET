@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VetCare Reception - Gestión de Citas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#414752",
+                    "outline-variant": "#c1c6d4",
+                    "outline": "#717783",
+                    "on-tertiary-fixed-variant": "#3b4951",
+                    "inverse-primary": "#a5c8ff",
+                    "on-tertiary-fixed": "#0f1d25",
+                    "primary-container": "#1976d2",
+                    "on-primary-fixed": "#001c3a",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#43647d",
+                    "on-primary-fixed-variant": "#004786",
+                    "inverse-surface": "#1e333c",
+                    "secondary-fixed": "#c9e6ff",
+                    "surface-container-low": "#e6f6ff",
+                    "surface-container-high": "#d5ecf8",
+                    "surface-container": "#dbf1fe",
+                    "secondary-container": "#bee1fe",
+                    "surface-tint": "#005faf",
+                    "tertiary": "#505e68",
+                    "secondary-fixed-dim": "#a8cbe7",
+                    "surface-bright": "#f3faff",
+                    "on-primary-container": "#fffdff",
+                    "tertiary-container": "#697781",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#a5c8ff",
+                    "on-tertiary-container": "#fdfdff",
+                    "on-secondary-fixed": "#001e2f",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary": "#40627b",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#cfe6f2",
+                    "surface-container-highest": "#cfe6f2",
+                    "on-surface": "#071e27",
+                    "background": "#f3faff",
+                    "on-background": "#071e27",
+                    "inverse-on-surface": "#dff4ff",
+                    "primary-fixed": "#d4e3ff",
+                    "tertiary-fixed": "#d6e5ef",
+                    "surface-dim": "#c7dde9",
+                    "on-primary": "#ffffff",
+                    "primary": "#005dac",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#274a62",
+                    "surface": "#f3faff",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#bac9d3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "stack-lg": "24px",
+                    "stack-md": "16px",
+                    "unit": "4px",
+                    "margin-edge": "32px",
+                    "container-max": "1440px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.03em", "fontWeight": "500"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(5, 1fr);
+            grid-template-rows: auto repeat(11, minmax(80px, 1fr));
+        }
+        .time-marker {
+            grid-column: 1;
+            text-align: right;
+            padding-right: 12px;
+            font-size: 11px;
+            color: #717783;
+        }
+        .calendar-cell {
+            border-bottom: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface w-full sticky top-0 z-50 border-b border-outline-variant shadow-sm">
+<div class="flex flex-col w-full max-w-container-max mx-auto px-margin-edge">
+<div class="flex items-center justify-between h-16">
+<!-- Brand Anchor -->
+<div class="flex items-center gap-8">
+<span class="font-headline-sm text-headline-sm text-primary">VetCare Reception</span>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-6 mt-1">
+<a class="text-on-surface-variant pb-2 font-body-md text-body-md hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">Dashboard</a>
+<a class="text-on-surface-variant pb-2 font-body-md text-body-md hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">Clientes</a>
+<a class="text-primary border-b-2 border-primary pb-2 font-title-lg text-title-lg transition-colors cursor-pointer active:opacity-80" href="#">Citas</a>
+<a class="text-on-surface-variant pb-2 font-body-md text-body-md hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">Servicios</a>
+<a class="text-on-surface-variant pb-2 font-body-md text-body-md hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">Facturas</a>
+</nav>
+</div>
+<!-- Global Actions -->
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container rounded-full border-none focus:ring-2 focus:ring-primary text-body-md w-64" placeholder="Buscar paciente o cita..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<button class="flex items-center gap-2 p-1 pl-3 bg-surface-container-high rounded-full border border-outline-variant">
+<span class="text-label-md">Recepción Central</span>
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-edge py-stack-md">
+<!-- Calendar Header Controls -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-stack-lg gap-4">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-md text-headline-md text-on-surface">Octubre 2023</h1>
+<div class="flex items-center bg-surface-container-high rounded-lg p-1 border border-outline-variant">
+<button class="p-1 hover:bg-surface-bright rounded text-primary">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="px-3 py-1 font-label-md text-label-md hover:bg-surface-bright rounded">Hoy</button>
+<button class="p-1 hover:bg-surface-bright rounded text-primary">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex bg-surface-container-high p-1 rounded-lg border border-outline-variant mr-4">
+<button class="px-4 py-1.5 text-label-md rounded bg-white shadow-sm text-primary font-bold">Semanal</button>
+<button class="px-4 py-1.5 text-label-md rounded text-on-surface-variant hover:text-primary">Mensual</button>
+<button class="px-4 py-1.5 text-label-md rounded text-on-surface-variant hover:text-primary">Día</button>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 border border-primary text-primary rounded-lg font-label-md hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[20px]">event_repeat</span>
+                    Reprogramar
+                </button>
+<button class="flex items-center gap-2 px-4 py-2 border border-error text-error rounded-lg font-label-md hover:bg-error-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">close</span>
+                    Cancelar
+                </button>
+<button class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg font-label-md shadow-md hover:bg-primary-container transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    Crear Cita
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Secondary Detail/Quick Info Panel -->
+<aside class="col-span-12 lg:col-span-3 flex flex-col gap-stack-md">
+<!-- Mini Stats Card -->
+<div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm">
+<h3 class="text-label-md text-outline mb-4">ESTADO DEL DÍA</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-body-md">Confirmadas</span>
+<span class="bg-secondary-container text-on-secondary-fixed-variant px-2 py-0.5 rounded text-caption font-bold">12</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-body-md">Pendientes</span>
+<span class="bg-surface-container-highest text-outline px-2 py-0.5 rounded text-caption font-bold">04</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-body-md">Urgencias</span>
+<span class="bg-error-container text-error px-2 py-0.5 rounded text-caption font-bold">01</span>
+</div>
+</div>
+</div>
+<!-- Patient Snapshot from image_0.png Context -->
+<div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="p-4 bg-surface-container-low border-b border-outline-variant flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary-container font-bold">
+                            T
+                        </div>
+<div>
+<p class="font-title-lg text-primary">Toby (Canino)</p>
+<p class="text-caption text-outline">Dueño: Alberto G.</p>
+</div>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]">medical_services</span>
+<div>
+<p class="text-label-md font-bold">Vacunación Anual</p>
+<p class="text-caption text-on-surface-variant">Duración est: 30 min</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]">history</span>
+<p class="text-caption text-on-surface-variant">Última visita: 15 Abr 2023</p>
+</div>
+<div class="mt-4 p-3 bg-surface-bright border-l-4 border-primary rounded">
+<p class="text-caption italic">"El paciente presenta alergia estacional. Revisar ficha técnica antes de aplicar refuerzo."</p>
+</div>
+</div>
+</div>
+<!-- Quick Filter -->
+<div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm">
+<h3 class="text-label-md text-outline mb-3">VETERINARIO</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-3 cursor-pointer p-2 hover:bg-surface-container rounded-lg transition-colors">
+<input checked="" class="rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md">Dra. Marta Ruiz</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer p-2 hover:bg-surface-container rounded-lg transition-colors">
+<input checked="" class="rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md">Dr. Jorge Luis</span>
+</label>
+</div>
+</div>
+</aside>
+<!-- Main Interactive Calendar -->
+<div class="col-span-12 lg:col-span-9">
+<div class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col h-[800px]">
+<!-- Days Header -->
+<div class="grid grid-cols-[80px_repeat(5,1fr)] bg-surface-container-low border-b border-outline-variant">
+<div class="h-12 border-right border-outline-variant"></div>
+<div class="h-12 flex flex-col items-center justify-center border-r border-outline-variant">
+<span class="text-caption text-outline font-bold uppercase">Lun</span>
+<span class="text-title-lg">23</span>
+</div>
+<div class="h-12 flex flex-col items-center justify-center border-r border-outline-variant bg-primary-fixed/30">
+<span class="text-caption text-primary font-bold uppercase">Mar</span>
+<span class="text-title-lg text-primary">24</span>
+</div>
+<div class="h-12 flex flex-col items-center justify-center border-r border-outline-variant">
+<span class="text-caption text-outline font-bold uppercase">Mié</span>
+<span class="text-title-lg">25</span>
+</div>
+<div class="h-12 flex flex-col items-center justify-center border-r border-outline-variant">
+<span class="text-caption text-outline font-bold uppercase">Jue</span>
+<span class="text-title-lg">26</span>
+</div>
+<div class="h-12 flex flex-col items-center justify-center">
+<span class="text-caption text-outline font-bold uppercase">Vie</span>
+<span class="text-title-lg">27</span>
+</div>
+</div>
+<!-- Calendar Body -->
+<div class="flex-1 overflow-y-auto scroll-hide relative">
+<div class="calendar-grid">
+<!-- Time Slots -->
+<div class="time-marker py-4">08:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">09:00</div><div class="calendar-cell"></div><div class="calendar-cell bg-surface-container-low/50"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">10:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">11:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">12:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">13:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">14:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">15:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">16:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">17:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<div class="time-marker py-4">18:00</div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+<!-- Floating Appointment Blocks -->
+<!-- Luna - 08:30 Surgery -->
+<div class="absolute left-[80px] top-[30px] w-[calc(20%-16px)] h-[120px] bg-[#BBDEFB] border-l-4 border-primary p-2 shadow-sm rounded-r m-2 cursor-pointer hover:brightness-95 transition-all">
+<div class="flex justify-between items-start">
+<span class="text-caption font-bold text-primary-fixed-dim">08:30 - 10:00</span>
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">emergency</span>
+</div>
+<p class="text-label-md font-bold mt-1">Luna (Felino)</p>
+<p class="text-caption truncate">Cirugía Esterilización</p>
+</div>
+<!-- Toby - 09:15 Vaccination (Targeted for Tuesday) -->
+<div class="absolute left-[calc(80px+20%)] top-[80px] w-[calc(20%-16px)] h-[60px] bg-secondary-container border-l-4 border-secondary p-2 shadow-sm rounded-r m-2 cursor-pointer ring-2 ring-primary ring-offset-2">
+<div class="flex justify-between items-start">
+<span class="text-caption font-bold text-secondary">09:15 - 09:45</span>
+<span class="material-symbols-outlined text-[14px] text-secondary">vaccines</span>
+</div>
+<p class="text-label-md font-bold mt-0.5">Toby (Canino)</p>
+</div>
+<!-- Max - 11:30 Checkup -->
+<div class="absolute left-[calc(80px+40%)] top-[280px] w-[calc(20%-16px)] h-[45px] bg-[#E3F2FD] border-l-4 border-outline p-2 shadow-sm rounded-r m-2 cursor-pointer hover:brightness-95">
+<p class="text-label-md font-bold text-on-surface truncate">Max (Canino)</p>
+</div>
+<!-- Blue - 10:00 Consultation -->
+<div class="absolute left-[calc(80px+60%)] top-[160px] w-[calc(20%-16px)] h-[90px] bg-surface-variant border-l-4 border-on-surface-variant p-2 shadow-sm rounded-r m-2 cursor-pointer hover:brightness-95">
+<span class="text-caption font-bold text-on-surface-variant">10:00 - 11:30</span>
+<p class="text-label-md font-bold mt-1">Blue (Exótico)</p>
+<p class="text-caption">Control General</p>
+</div>
+<!-- Urgent Case Indicator -->
+<div class="absolute left-[calc(80px+80%)] top-[350px] w-[calc(20%-16px)] h-[150px] bg-error-container/30 border-l-4 border-error p-3 border-dashed border-2 border-r-error border-t-error border-b-error shadow-sm rounded-r m-2 cursor-pointer">
+<div class="flex items-center gap-2 text-error mb-1">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="text-caption font-bold">URGENCIA</span>
+</div>
+<p class="text-label-md font-bold text-error">Simba (Canino)</p>
+<p class="text-caption text-on-error-container">Trauma en pata trasera</p>
+<div class="mt-2 flex gap-1">
+<button class="px-2 py-0.5 bg-error text-white text-[10px] rounded">Prioridad Alta</button>
+</div>
+</div>
+<!-- Current Time Indicator -->
+<div class="absolute left-[80px] top-[210px] w-[calc(100%-80px)] border-t-2 border-primary z-10 flex items-center">
+<div class="w-3 h-3 bg-primary rounded-full -ml-1.5 shadow-sm"></div>
+<span class="ml-2 px-1.5 py-0.5 bg-primary text-white text-[10px] rounded font-bold">10:32 AM</span>
+</div>
+<!-- Availability Visual Validation (Hashed backgrounds for blocked slots) -->
+<div class="absolute left-[calc(80px+20%)] top-[480px] w-[calc(20%)] h-[80px] bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#f1f5f9_10px,#f1f5f9_20px)] opacity-50 flex items-center justify-center">
+<span class="text-caption text-outline font-bold">Descanso Médico</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB for quick appointment creation on mobile -->
+<button class="md:hidden fixed bottom-8 right-8 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-[100]">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<script>
+        // Simple Interaction logic for demo
+        document.addEventListener('DOMContentLoaded', () => {
+            const calendarCells = document.querySelectorAll('.calendar-cell');
+            
+            calendarCells.forEach(cell => {
+                cell.addEventListener('mouseenter', () => {
+                    cell.classList.add('bg-surface-container-low');
+                    cell.style.cursor = 'cell';
+                });
+                cell.addEventListener('mouseleave', () => {
+                    cell.classList.remove('bg-surface-container-low');
+                });
+                cell.addEventListener('click', () => {
+                    // Logic for opening 'New Appointment' modal at specific time
+                    console.log('Slot selected for booking');
+                });
+            });
+
+            // Toggle active veterinary filters
+            const filters = document.querySelectorAll('input[type="checkbox"]');
+            filters.forEach(filter => {
+                filter.addEventListener('change', (e) => {
+                    const name = e.target.nextElementSibling.innerText;
+                    console.log(`Filtering for: ${name}`);
+                });
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#414752",
+                    "outline-variant": "#c1c6d4",
+                    "outline": "#717783",
+                    "on-tertiary-fixed-variant": "#3b4951",
+                    "inverse-primary": "#a5c8ff",
+                    "on-tertiary-fixed": "#0f1d25",
+                    "primary-container": "#1976d2",
+                    "on-primary-fixed": "#001c3a",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#43647d",
+                    "on-primary-fixed-variant": "#004786",
+                    "inverse-surface": "#1e333c",
+                    "secondary-fixed": "#c9e6ff",
+                    "surface-container-low": "#e6f6ff",
+                    "surface-container-high": "#d5ecf8",
+                    "surface-container": "#dbf1fe",
+                    "secondary-container": "#bee1fe",
+                    "surface-tint": "#005faf",
+                    "tertiary": "#505e68",
+                    "secondary-fixed-dim": "#a8cbe7",
+                    "surface-bright": "#f3faff",
+                    "on-primary-container": "#fffdff",
+                    "tertiary-container": "#697781",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#a5c8ff",
+                    "on-tertiary-container": "#fdfdff",
+                    "on-secondary-fixed": "#001e2f",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary": "#40627b",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#cfe6f2",
+                    "surface-container-highest": "#cfe6f2",
+                    "on-surface": "#071e27",
+                    "background": "#f3faff",
+                    "on-background": "#071e27",
+                    "inverse-on-surface": "#dff4ff",
+                    "primary-fixed": "#d4e3ff",
+                    "tertiary-fixed": "#d6e5ef",
+                    "surface-dim": "#c7dde9",
+                    "on-primary": "#ffffff",
+                    "primary": "#005dac",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#274a62",
+                    "surface": "#f3faff",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#bac9d3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "stack-lg": "24px",
+                    "stack-md": "16px",
+                    "unit": "4px",
+                    "margin-edge": "32px",
+                    "container-max": "1440px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.03em", "fontWeight": "500"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3faff; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c6d4; border-radius: 10px; }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-on-surface-variant shadow-sm">
+<div class="flex flex-col w-full max-w-container-max mx-auto px-margin-edge">
+<div class="flex items-center justify-between h-16">
+<!-- Brand Identity -->
+<div class="flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-primary text-[32px]">pets</span>
+<h1 class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed">VetCare Reception</h1>
+</div>
+<!-- Desktop Navigation Links -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant dark:text-outline-variant pb-2 font-body-md text-body-md hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Dashboard</a>
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-2 font-title-lg text-title-lg transition-colors cursor-pointer active:opacity-80" href="#">Clientes</a>
+<a class="text-on-surface-variant dark:text-outline-variant pb-2 font-body-md text-body-md hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Citas</a>
+<a class="text-on-surface-variant dark:text-outline-variant pb-2 font-body-md text-body-md hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Servicios</a>
+<a class="text-on-surface-variant dark:text-outline-variant pb-2 font-body-md text-body-md hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer active:opacity-80" href="#">Facturas</a>
+</nav>
+<!-- Action Icons -->
+<div class="flex items-center gap-stack-md">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="flex items-center gap-2 p-1 pl-3 bg-surface-container rounded-full border border-outline-variant">
+<span class="font-label-md text-label-md text-on-surface-variant">Admin</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-edge py-stack-lg">
+<!-- Quick Search & Results Bento Layout -->
+<div class="grid grid-cols-12 gap-gutter mb-stack-lg">
+<!-- Left Column: Search & Quick Actions -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Search Card -->
+<section class="bg-surface-container-lowest p-stack-lg rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.03)] border border-outline-variant">
+<h2 class="font-title-lg text-title-lg text-primary mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined">person_search</span>
+                        Búsqueda Rápida
+                    </h2>
+<div class="relative">
+<input class="w-full pl-10 pr-4 py-3 bg-background border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md text-body-md" placeholder="Nombre, mascota o teléfono..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-3 text-outline">search</span>
+</div>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container text-secondary text-caption rounded-full cursor-pointer hover:bg-secondary-container transition-colors">Últimos Clientes</span>
+<span class="px-3 py-1 bg-surface-container text-secondary text-caption rounded-full cursor-pointer hover:bg-secondary-container transition-colors">Urgencias</span>
+<span class="px-3 py-1 bg-surface-container text-secondary text-caption rounded-full cursor-pointer hover:bg-secondary-container transition-colors">Por Cobrar</span>
+</div>
+</section>
+<!-- Stats/Tips Card (Decorative/Informative) -->
+<div class="hidden lg:block relative h-full min-h-[200px] rounded-xl overflow-hidden group shadow-[0px_4px_12px_rgba(0,0,0,0.03)]">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A bright and high-end modern veterinary clinic interior with clean white walls and soft blue accents. The lighting is professional and welcoming, creating a calm atmosphere. In the background, a minimalist digital interface shows health statistics. The scene is clean, sterile yet empathetic, perfectly aligning with a premium medical brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBkOmSPCjMjCZLB2bIbO-IenlxKLvL9bacQjMiFdckw5B2lux7C1iOTsRsV_oC3uIErWp2Qi7pZt42XGEMYv5MkgEu3vGTz4ChprCllOPVlqUOh0P-GlrSGPezOm68RskXmI_JqBjxiqstKwPiXTWOVMPyT0XwC9avouaCGh-0JNh9tAZ0tqkb3AMrsuxwlcO2V-b11E0Vt6_VJnFvMoJ7N6JnTFi7v-ymTwb04oug6gksfjpR_UaSBNvBppXhW-HPPoWoMDmfz3a6"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end p-stack-md">
+<div class="text-on-primary-container">
+<p class="font-title-lg text-title-lg">Consejo de hoy</p>
+<p class="font-body-md text-body-md opacity-90">Verifica siempre el peso actual de la mascota antes de cualquier procedimiento clínico.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Results List -->
+<div class="col-span-12 lg:col-span-8">
+<section class="bg-surface-container-lowest h-full rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.03)] border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-stack-md border-b border-outline-variant bg-surface-container flex justify-between items-center">
+<h3 class="font-title-lg text-title-lg text-on-surface">Resultados Recientes</h3>
+<span class="text-caption text-on-surface-variant">Mostrando 4 registros</span>
+</div>
+<div class="overflow-y-auto max-h-[450px] custom-scrollbar">
+<table class="w-full text-left">
+<thead class="bg-surface-container-high sticky top-0">
+<tr class="text-label-md text-on-surface-variant">
+<th class="px-stack-md py-3">Cliente</th>
+<th class="px-stack-md py-3">Contacto</th>
+<th class="px-stack-md py-3">Mascota(s)</th>
+<th class="px-stack-md py-3 text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-background transition-colors">
+<td class="px-stack-md py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary font-bold">ML</div>
+<div>
+<p class="font-body-lg text-body-lg font-medium">Martín López</p>
+<p class="text-caption text-on-surface-variant">ID: #0821</p>
+</div>
+</div>
+</td>
+<td class="px-stack-md py-4 font-body-md text-body-md">
+                                        m.lopez@email.com<br/>+34 611 223 344
+                                    </td>
+<td class="px-stack-md py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-flex items-center gap-1 text-caption bg-surface-variant px-2 py-0.5 rounded-full w-fit">
+<span class="material-symbols-outlined text-[14px]">pets</span> Bruno (Canino)
+                                            </span>
+<span class="inline-flex items-center gap-1 text-caption bg-surface-variant px-2 py-0.5 rounded-full w-fit">
+<span class="material-symbols-outlined text-[14px]">pets</span> Luna (Felino)
+                                            </span>
+</div>
+</td>
+<td class="px-stack-md py-4 text-right">
+<button class="p-2 hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 hover:text-primary transition-colors"><span class="material-symbols-outlined">calendar_add_on</span></button>
+</td>
+</tr>
+<tr class="hover:bg-background transition-colors">
+<td class="px-stack-md py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary font-bold">AS</div>
+<div>
+<p class="font-body-lg text-body-lg font-medium">Ana Suárez</p>
+<p class="text-caption text-on-surface-variant">ID: #0845</p>
+</div>
+</div>
+</td>
+<td class="px-stack-md py-4 font-body-md text-body-md">
+                                        ana.s@servidor.com<br/>+34 655 443 322
+                                    </td>
+<td class="px-stack-md py-4">
+<span class="inline-flex items-center gap-1 text-caption bg-surface-variant px-2 py-0.5 rounded-full w-fit">
+<span class="material-symbols-outlined text-[14px]">pets</span> Toby (Canino)
+                                        </span>
+</td>
+<td class="px-stack-md py-4 text-right">
+<button class="p-2 hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 hover:text-primary transition-colors"><span class="material-symbols-outlined">calendar_add_on</span></button>
+</td>
+</tr>
+<tr class="hover:bg-background transition-colors">
+<td class="px-stack-md py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary font-bold">RG</div>
+<div>
+<p class="font-body-lg text-body-lg font-medium">Roberto García</p>
+<p class="text-caption text-on-surface-variant">ID: #0912</p>
+</div>
+</div>
+</td>
+<td class="px-stack-md py-4 font-body-md text-body-md">
+                                        rgarcia@webmail.es<br/>+34 600 001 002
+                                    </td>
+<td class="px-stack-md py-4">
+<span class="inline-flex items-center gap-1 text-caption bg-surface-variant px-2 py-0.5 rounded-full w-fit">
+<span class="material-symbols-outlined text-[14px]">pets</span> Max (Canino)
+                                        </span>
+</td>
+<td class="px-stack-md py-4 text-right">
+<button class="p-2 hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 hover:text-primary transition-colors"><span class="material-symbols-outlined">calendar_add_on</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-8 text-center bg-surface-container-low/50 hidden" id="empty-state">
+<span class="material-symbols-outlined text-[48px] text-outline mb-2">person_search</span>
+<p class="font-body-lg text-body-lg text-on-surface-variant">No se encontraron clientes que coincidan con la búsqueda.</p>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Registration Form Section -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0px_12px_24px_rgba(0,0,0,0.05)] border border-outline-variant overflow-hidden">
+<div class="p-stack-lg border-b border-outline-variant flex items-center justify-between bg-white">
+<div class="flex items-center gap-3">
+<span class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
+<span class="material-symbols-outlined">person_add</span>
+</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Registro de Nuevo Cliente</h2>
+</div>
+<div class="flex gap-stack-sm">
+<button class="px-4 py-2 text-primary border border-primary rounded-lg font-label-md text-label-md hover:bg-primary-fixed transition-colors">Limpiar Formulario</button>
+<button class="px-6 py-2 bg-primary text-white rounded-lg font-label-md text-label-md hover:bg-primary-container transition-all shadow-md active:scale-95">Guardar y Continuar</button>
+</div>
+</div>
+<form class="p-stack-lg space-y-gutter">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Client Info -->
+<div class="space-y-stack-md">
+<h3 class="font-title-lg text-title-lg text-secondary border-b border-outline-variant pb-2">Información del Propietario</h3>
+<div class="space-y-unit">
+<label class="block font-label-md text-label-md text-on-surface-variant">Nombre Completo</label>
+<input class="w-full border border-outline-variant rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md" placeholder="Ej. Juan Pérez" type="text"/>
+</div>
+<div class="space-y-unit">
+<label class="block font-label-md text-label-md text-on-surface-variant">Correo Electrónico</label>
+<input class="w-full border border-outline-variant rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md" placeholder="juan@ejemplo.com" type="email"/>
+</div>
+<div class="space-y-unit">
+<label class="block font-label-md text-label-md text-on-surface-variant">Teléfono de Contacto</label>
+<input class="w-full border border-outline-variant rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md" placeholder="+34 000 000 000" type="tel"/>
+</div>
+</div>
+<!-- Pet Info Section -->
+<div class="lg:col-span-2 bg-surface-container-low p-stack-md rounded-xl border border-outline-variant">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-title-lg text-title-lg text-secondary">Mascota Primaria</h3>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:rotate-180 transition-transform duration-500">add_circle</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="space-y-stack-md">
+<div class="space-y-unit">
+<label class="block font-label-md text-label-md text-on-surface-variant">Nombre de la Mascota</label>
+<input class="w-full border border-outline-variant rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md" placeholder="Nombre" type="text"/>
+</div>
+<div class="space-y-unit">
+<label class="block font-label-md text-label-md text-on-surface-variant">Especie</label>
+<select class="w-full border border-outline-variant rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md appearance-none bg-white">
+<option value="canino">Canino</option>
+<option value="felino">Felino</option>
+<option value="ave">Ave</option>
+<option value="exotico">Exótico</option>
+</select>
+</div>
+</div>
+<div class="space-y-stack-md">
+<div class="space-y-unit">
+<label class="block font-label-md text-label-md text-on-surface-variant">Raza</label>
+<input class="w-full border border-outline-variant rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md" placeholder="Ej. Golden Retriever" type="text"/>
+</div>
+<div class="flex gap-4">
+<div class="space-y-unit flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant">Edad</label>
+<input class="w-full border border-outline-variant rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md" placeholder="Años" type="number"/>
+</div>
+<div class="space-y-unit flex-1">
+<label class="block font-label-md text-label-md text-on-surface-variant">Peso (kg)</label>
+<input class="w-full border border-outline-variant rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all font-body-md" placeholder="0.0" step="0.1" type="number"/>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-stack-md p-stack-sm bg-white/50 rounded-lg border border-dashed border-outline-variant flex items-center justify-center gap-2 cursor-pointer hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-outline">add_a_photo</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Subir foto de la mascota</span>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="pt-stack-md flex items-center justify-between border-t border-outline-variant">
+<p class="text-caption text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-error">info</span>
+                        Los campos de nombre y teléfono son obligatorios para el registro inicial.
+                    </p>
+<div class="flex gap-stack-sm">
+<button class="px-4 py-2 text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors" type="reset">Descartar</button>
+<button class="bg-primary text-white px-8 py-3 rounded-lg font-title-lg text-title-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all" type="submit">Finalizar Registro</button>
+</div>
+</div>
+</form>
+</section>
+</main>
+<!-- Success Toast (Hidden by default) -->
+<div class="fixed bottom-margin-edge right-margin-edge transform translate-y-24 opacity-0 transition-all duration-500 z-[100]" id="toast">
+<div class="bg-on-background text-on-primary-container px-stack-lg py-stack-md rounded-xl shadow-2xl flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-green-400" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="font-title-lg text-title-lg">Cliente registrado</p>
+<p class="font-body-md text-body-md opacity-80">Se ha creado el perfil exitosamente.</p>
+</div>
+<button class="ml-stack-md text-outline-variant hover:text-white" onclick="hideToast()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<script>
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(hideToast, 5000);
+        }
+
+        function hideToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('translate-y-24', 'opacity-0');
+        }
+
+        // Mock interaction for the search bar
+        document.querySelector('input[type="text"]').addEventListener('input', (e) => {
+            const tbody = document.querySelector('tbody');
+            const emptyState = document.getElementById('empty-state');
+            if(e.target.value.toLowerCase() === 'none') {
+                tbody.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                tbody.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+            }
+        });
+
+        // Form Submission Interception
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast();
+            e.target.reset();
+        });
+    </script>
+</body></html>

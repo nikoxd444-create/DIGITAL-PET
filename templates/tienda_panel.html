@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VetCare Pro - Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lexend:wght@500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#d8e5e2",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#89f5e7",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-secondary-container": "#5b6765",
+                        "secondary-fixed": "#d8e5e2",
+                        "tertiary-container": "#a36700",
+                        "on-secondary-fixed": "#121e1c",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#005049",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#008378",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary": "#825100",
+                        "surface-variant": "#d3e4fe",
+                        "on-primary-container": "#f4fffc",
+                        "on-secondary": "#ffffff",
+                        "primary": "#00685f",
+                        "inverse-primary": "#6bd8cb",
+                        "inverse-surface": "#213145",
+                        "outline": "#6d7a77",
+                        "surface-container": "#e5eeff",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-secondary-fixed-variant": "#3d4947",
+                        "secondary": "#55615f",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "surface-bright": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-high": "#dce9ff",
+                        "on-primary-fixed": "#00201d",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-background": "#0b1c30",
+                        "on-surface-variant": "#3d4947",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-tint": "#006a61",
+                        "outline-variant": "#bcc9c6",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "secondary-fixed-dim": "#bcc9c6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "lg": "40px",
+                        "sm": "16px",
+                        "base": "4px",
+                        "container-max": "1440px",
+                        "md": "24px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Lexend"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Lexend"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Lexend"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .zebra-stripe:nth-child(even) {
+            background-color: rgba(240, 253, 250, 0.5);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f9ff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bcc9c6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #008378;
+        }
+    </style>
+</head>
+<body class="bg-[#F0FDFA] font-body-lg text-on-surface">
+<!-- TopNavBar (Shell Component) -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant">
+<div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">VetCare Pro</span>
+<div class="hidden md:flex items-center bg-surface-container-low px-sm py-xs rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-outline text-body-md mr-xs">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-64 placeholder:text-on-surface-variant" placeholder="Search patients or records..." type="text"/>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Shop</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Appointments</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Services</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Patients</a><a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Inventory</a><a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Staff</a><a class="font-body-lg text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Reports</a></nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 transition-transform">shopping_cart</button>
+<button class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 transition-transform">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional medical professional's close-up portrait in a modern clinic setting. The lighting is soft and high-key, emphasizing a clean and trustworthy atmosphere. The overall aesthetic is minimalist and sophisticated, aligning with a premium corporate medical brand. The colors include subtle teals and whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-FQBT0zGNBUCv8PRBtRnmAwLuQ9aaPTpJK3p1RyemPgFUBOydHcNjpLkBdRuYuN27Kt3VEPQWXHwMGB4ywLFhipPDrGgqkzLBjxWt_-2JtW0t2XmTJYBNoNxtGMesaJRCjor_1TUetUgdL7zn0vn4TmEuXroAWKpKCHErJF5HYyiXTy0fe6cIZDbAeaVDgc1ihmv394SCIo1ocuDa5xbjUXIMw7RfRCq0tMv48HkX_QsDVE9zVVyb1DPlyDd5dIZHMQTuXD6t-kM"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Shell Component) -->
+<!-- Main Content Canvas -->
+<main class="pt-16 min-h-screen">
+<div class="max-w-container-max mx-auto p-gutter">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Clinic Dashboard</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Welcome back, Dr. Miller. Here's what's happening today.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-xs border border-outline text-primary rounded-full hover:bg-primary-container hover:text-on-primary-container transition-all text-body-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export Report
+                    </button>
+<button class="px-md py-xs bg-primary text-on-primary rounded-full hover:opacity-90 transition-all text-body-md font-bold">
+                        Add New Patient
+                    </button>
+</div>
+</div>
+<!-- Stats Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant hover:shadow-sm transition-all flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary p-xs bg-secondary-container rounded-lg">group</span>
+<span class="text-primary text-label-md font-bold">+12%</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Patients</div>
+<div class="font-headline-lg text-headline-lg text-on-surface">1,284</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant hover:shadow-sm transition-all flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary p-xs bg-tertiary-fixed rounded-lg">payments</span>
+<span class="text-tertiary text-label-md font-bold">+5.4%</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Monthly Sales</div>
+<div class="font-headline-lg text-headline-lg text-on-surface">$42,390</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant hover:shadow-sm transition-all flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary p-xs bg-secondary-container rounded-lg">event_available</span>
+<span class="text-on-surface-variant text-label-md font-bold">Today</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Appointments Today</div>
+<div class="font-headline-lg text-headline-lg text-on-surface">24</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant hover:shadow-sm transition-all flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-error p-xs bg-error-container rounded-lg">warning</span>
+<span class="text-error text-label-md font-bold">Critical</span>
+</div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Inventory Alerts</div>
+<div class="font-headline-lg text-headline-lg text-on-surface">03</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-md">
+<!-- Recent Appointments Table (8 cols) -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">Recent Appointments</h2>
+<button class="text-primary font-label-md hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-on-surface-variant">
+<tr>
+<th class="px-md py-sm font-label-md">Patient</th>
+<th class="px-md py-sm font-label-md">Type</th>
+<th class="px-md py-sm font-label-md">Time</th>
+<th class="px-md py-sm font-label-md">Status</th>
+<th class="px-md py-sm font-label-md">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="zebra-stripe border-b border-outline-variant last:border-0">
+<td class="px-md py-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">B</div>
+<div>
+<div class="font-body-lg font-bold">Bella (Dog)</div>
+<div class="text-label-sm text-on-surface-variant">Owner: John Wick</div>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-md text-on-surface-variant">Vaccination</td>
+<td class="px-md py-sm text-body-md">10:30 AM</td>
+<td class="px-md py-sm">
+<span class="px-xs py-base bg-primary-container/20 text-primary text-label-sm rounded-lg">Confirmed</span>
+</td>
+<td class="px-md py-sm">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="zebra-stripe border-b border-outline-variant last:border-0">
+<td class="px-md py-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs">M</div>
+<div>
+<div class="font-body-lg font-bold">Misty (Cat)</div>
+<div class="text-label-sm text-on-surface-variant">Owner: Sarah L.</div>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-md text-on-surface-variant">General Checkup</td>
+<td class="px-md py-sm text-body-md">11:15 AM</td>
+<td class="px-md py-sm">
+<span class="px-xs py-base bg-tertiary-fixed text-on-tertiary-fixed-variant text-label-sm rounded-lg">Waiting</span>
+</td>
+<td class="px-md py-sm">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="zebra-stripe border-b border-outline-variant last:border-0">
+<td class="px-md py-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">O</div>
+<div>
+<div class="font-body-lg font-bold">Oliver (Rabbit)</div>
+<div class="text-label-sm text-on-surface-variant">Owner: Mike Ross</div>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-md text-on-surface-variant">Dental Cleaning</td>
+<td class="px-md py-sm text-body-md">12:45 PM</td>
+<td class="px-md py-sm">
+<span class="px-xs py-base bg-secondary-container text-on-secondary-container text-label-sm rounded-lg">Completed</span>
+</td>
+<td class="px-md py-sm">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="zebra-stripe border-b border-outline-variant last:border-0">
+<td class="px-md py-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">R</div>
+<div>
+<div class="font-body-lg font-bold">Rocky (Dog)</div>
+<div class="text-label-sm text-on-surface-variant">Owner: Emma Watson</div>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-md text-on-surface-variant">Surgery Follow-up</td>
+<td class="px-md py-sm text-body-md">02:30 PM</td>
+<td class="px-md py-sm">
+<span class="px-xs py-base bg-primary-container/20 text-primary text-label-sm rounded-lg">Confirmed</span>
+</td>
+<td class="px-md py-sm">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Sales Overview Chart (4 cols) -->
+<div class="lg:col-span-4 bg-surface-container-lowest rounded-xl border border-outline-variant flex flex-col">
+<div class="p-md border-b border-outline-variant">
+<h2 class="font-headline-md text-headline-md text-on-surface">Sales Overview</h2>
+<p class="text-label-sm text-on-surface-variant">Weekly performance tracking</p>
+</div>
+<div class="flex-1 p-md flex flex-col">
+<!-- Simulated Chart -->
+<div class="flex-1 flex items-end gap-xs py-lg">
+<div class="flex-1 bg-primary-container/10 rounded-t-lg relative group h-1/2">
+<div class="absolute bottom-0 w-full bg-primary-container rounded-t-lg h-3/4 group-hover:h-4/5 transition-all"></div>
+</div>
+<div class="flex-1 bg-primary-container/10 rounded-t-lg relative group h-3/4">
+<div class="absolute bottom-0 w-full bg-primary-container rounded-t-lg h-1/2 group-hover:h-3/5 transition-all"></div>
+</div>
+<div class="flex-1 bg-primary-container/10 rounded-t-lg relative group h-full">
+<div class="absolute bottom-0 w-full bg-primary-container rounded-t-lg h-2/3 group-hover:h-3/4 transition-all"></div>
+</div>
+<div class="flex-1 bg-primary-container/10 rounded-t-lg relative group h-1/2">
+<div class="absolute bottom-0 w-full bg-primary-container rounded-t-lg h-4/5 group-hover:h-full transition-all"></div>
+</div>
+<div class="flex-1 bg-primary-container/10 rounded-t-lg relative group h-2/3">
+<div class="absolute bottom-0 w-full bg-primary-container rounded-t-lg h-1/2 group-hover:h-3/5 transition-all"></div>
+</div>
+<div class="flex-1 bg-primary-container/10 rounded-t-lg relative group h-5/6">
+<div class="absolute bottom-0 w-full bg-primary-container rounded-t-lg h-3/4 group-hover:h-4/5 transition-all"></div>
+</div>
+<div class="flex-1 bg-primary-container/10 rounded-t-lg relative group h-3/4">
+<div class="absolute bottom-0 w-full bg-primary-container rounded-t-lg h-2/3 group-hover:h-3/4 transition-all"></div>
+</div>
+</div>
+<div class="flex justify-between text-label-sm text-on-surface-variant px-xs">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+<span class="text-body-md text-on-surface-variant">Total Profit</span>
+</div>
+<span class="font-bold text-on-surface">$12,480</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer (Shell Component) -->
+<footer class="w-full mt-auto bg-surface-container border-t border-outline-variant">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-xl px-gutter py-xl max-w-container-max mx-auto">
+<div class="flex flex-col gap-sm">
+<span class="font-headline-md text-headline-md text-primary">VetCare Pro</span>
+<p class="font-body-md text-body-md text-on-surface-variant">The leading solution for modern veterinary practice management.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold uppercase">Emergency Care</span>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Find a Clinic</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">ER Hotline</a>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold uppercase">Legal</span>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold uppercase">Support</span>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Contact Us</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Help Center</a>
+</div>
+</div>
+<div class="px-gutter py-md border-t border-outline-variant max-w-container-max mx-auto text-center text-label-sm text-on-surface-variant">
+                2024 VetCare Pro Management Systems. All rights reserved.
+            </div>
+</footer>
+</main>
+<script>
+        // Simple micro-interaction for the stats cards
+        document.querySelectorAll('.bg-surface-container-lowest').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0px)';
+            });
+        });
+    </script>
+</body></html>

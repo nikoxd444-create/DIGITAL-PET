@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGITALPET · Ajustes de cuenta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body { font-family: 'DM Sans', sans-serif; background-color: #f8fafc; color: #0f172a; min-height: 100vh; display: flex; flex-direction: column; }
+        .brand { font-family: 'Syne', sans-serif; }
+        header { position: sticky; top: 0; z-index: 50; background: rgba(15,23,42,0.97); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(124,58,237,0.3); box-shadow: 0 4px 24px rgba(107,33,168,0.18); }
+        .nav-link { color: #94a3b8; text-decoration: none; font-size: 13.5px; font-weight: 500; padding: 6px 14px; border-radius: 8px; transition: color .2s; }
+        .nav-link:hover { color: #c4b5fd; }
+        .nav-link.active { color: #a78bfa; border-bottom: 2px solid #7c3aed; }
+        .user-menu { position: relative; }
+        .user-trigger { display: flex; align-items: center; gap: 9px; cursor: pointer; padding: 5px 10px; border-radius: 10px; transition: background .2s; }
+        .user-trigger:hover { background: rgba(124,58,237,0.12); }
+        .avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#7c3aed,#4338ca); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+        .chevron { color: #64748b; font-size: 10px; transition: transform .25s; }
+        .user-menu.open .chevron { transform: rotate(180deg); }
+        .dropdown { position: absolute; top: calc(100% + 10px); right: 0; width: 220px; background: #1e293b; border: 1px solid rgba(124,58,237,0.25); border-radius: 14px; box-shadow: 0 16px 48px rgba(0,0,0,0.4); overflow: hidden; opacity: 0; pointer-events: none; transform: translateY(-8px) scale(.97); transition: all .2s; z-index: 200; }
+        .user-menu.open .dropdown { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+        .dropdown-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 11px 16px; color: #94a3b8; font-size: 13px; font-weight: 500; text-decoration: none; transition: all .15s; }
+        .dropdown-item:hover { background: rgba(124,58,237,0.12); color: #c4b5fd; }
+        .dropdown-item.danger { color: #f87171; }
+        .dropdown-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0; }
+        .divider { width: 1px; height: 22px; background: rgba(255,255,255,0.1); }
+        .tab-btn-aj { padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 600; border: 1px solid #e2e8f0; background: white; color: #64748b; cursor: pointer; transition: all .2s; }
+        .tab-btn-aj.active { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
+        .bg-dark-card {
+            background-color: #161925; 
+        }
+        .input-dark {
+            background-color: #1e2235;
+            border: 1px solid #2d334d;
+            color: #ffffff;
+        }
+        .input-dark:focus {
+            border-color: #6366f1;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+  <div style="max-width:100%;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div style="background:linear-gradient(135deg,#7c3aed,#4338ca);width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;">
+        <span style="color:white;font-weight:800;font-size:14px;font-family:Syne,sans-serif;">DP</span>
+      </div>
+      <span class="brand" style="color:white;font-size:18px;font-weight:700;letter-spacing:-.02em;">DIGITAL<span style="color:#a78bfa;">PET</span></span>
+      <div class="divider"></div>
+      <span style="color:#a78bfa;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Ajustes</span>
+    </div>
+    <nav class="nav-links-desktop" style="display:flex;gap:4px;">
+      <a href="/productos" class="nav-link">Productos</a>
+      <a href="/proveedores" class="nav-link">Proveedores</a>
+      <a href="/movimientos" class="nav-link">Movimientos</a>
+      <a href="/compras" class="nav-link">Compras</a>
+    </nav>
+    <div class="user-menu" id="userMenu">
+      <div class="user-trigger" onclick="toggleDropdown()">
+        <div class="avatar" id="avatarInitials">AD</div>
+        <div style="line-height:1.2;">
+          <div style="color:white;font-size:13px;font-weight:600;" id="headerUserName">Admin DPET</div>
+          <div style="color:#475569;font-size:11px;" id="headerUserRole">Veterinario Jefe</div>
+        </div>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="dropdown">
+        <div class="dropdown-header">
+          <div style="color:#e2e8f0;font-size:13px;font-weight:600;" id="dropdownName">Admin DPET</div>
+          <div style="color:#64748b;font-size:11px;margin-top:2px;" id="dropdownEmail">admin@digitalpet.com</div>
+        </div>
+        <div style="padding:6px 0;">
+          <a href="/usuarios" class="dropdown-item" data-solo-admin>👥 Usuarios</a>
+          <a href="/ajustes" class="dropdown-item" style="color:#a78bfa;background:rgba(124,58,237,0.1);">⚙️ Ajustes de cuenta</a>
+          <a href="/perfil" class="dropdown-item">👤 Perfil</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item danger" onclick="cerrarSesion(event)">🚪 Cerrar sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+    <div class="flex-1 overflow-y-auto px-8 py-8">
+        <nav class="flex flex-wrap gap-2 mb-6">
+            <button onclick="switchTab('empresa', this)" class="tab-btn-aj tab-btn active">🏢 Empresa</button>
+            <button onclick="switchTab('inventario', this)" class="tab-btn-aj tab-btn">📦 Inventario</button>
+            <button onclick="switchTab('documentos', this)" class="tab-btn-aj tab-btn">📄 Documentos</button>
+            <button onclick="switchTab('usuarios', this)" class="tab-btn-aj tab-btn">👥 Roles</button>
+            <button onclick="switchTab('sistema', this)" class="tab-btn-aj tab-btn">🗄️ Sistema</button>
+        </nav>
+        
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-200 pb-6 mb-8">
+            <div>
+                <div class="flex items-center gap-3">
+                    <div class="bg-violet-100 text-violet-600 p-2.5 rounded-xl">
+                        <i class="fa-solid fa-sliders text-xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold tracking-tight text-slate-900 brand">Panel de Control</h1>
+                </div>
+                <p class="text-sm text-slate-500 mt-1 ml-12">Gestiona el comportamiento del ERP y la personalización de documentos.</p>
+            </div>
+            
+            <div class="mt-4 md:mt-0 ml-12 md:ml-0">
+                <button type="button" onclick="guardarAjustesGlobales()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-600/20 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar Cambios
+                </button>
+            </div>
+        </div>
+
+        <div class="max-w-5xl">
+            
+            <div id="tab-empresa" class="tab-content active space-y-6">
+                <div class="bg-dark-card rounded-2xl p-6 border border-slate-800/60 shadow-xl">
+                    <div class="flex items-center gap-2.5 mb-6 border-b border-slate-800 pb-4">
+                        <i class="fa-solid fa-id-card text-indigo-400"></i>
+                        <h2 class="text-lg font-semibold text-white">Identificación Institucional</h2>
+                    </div>
+                    <form class="grid grid-cols-1 md:grid-cols-2 gap-5" onsubmit="event.preventDefault();">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nombre de la Veterinaria *</label>
+                            <input type="text" id="emp_nombre" class="w-full input-dark rounded-xl px-4 py-3 text-sm transition-all" placeholder="Ej: Digital Pet S.A.S.">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">NIT / RUT *</label>
+                            <input type="text" id="emp_nit" class="w-full input-dark rounded-xl px-4 py-3 text-sm transition-all" placeholder="Ej: 901.456.789-1">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Teléfono Comercial</label>
+                            <input type="text" id="emp_telefono" class="w-full input-dark rounded-xl px-4 py-3 text-sm transition-all" placeholder="Ej: +57 300 123 4567">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email del Sistema</label>
+                            <input type="email" id="emp_email" class="w-full input-dark rounded-xl px-4 py-3 text-sm transition-all" placeholder="Ej: soporte@digitalpet.com">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Dirección Física</label>
+                            <input type="text" id="emp_direccion" class="w-full input-dark rounded-xl px-4 py-3 text-sm transition-all" placeholder="Ej: Calle 147 # 19 - 45, Usaquén, Bogotá">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="tab-inventario" class="tab-content space-y-6">
+                <div class="bg-dark-card rounded-2xl p-6 border border-slate-800/60 shadow-xl">
+                    <div class="flex items-center gap-2.5 mb-6 border-b border-slate-800 pb-4">
+                        <i class="fa-solid fa-sliders text-amber-400"></i>
+                        <h2 class="text-lg font-semibold text-white">Lógicas de Abastecimiento</h2>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="max-w-xs">
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Umbral Mínimo Global (Alertas)</label>
+                            <div class="relative rounded-xl shadow-sm">
+                                <input type="number" id="inv_stock_minimo" class="w-full input-dark rounded-xl pl-4 pr-12 py-3 text-sm transition-all" value="5">
+                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-slate-500 font-medium">Unds</div>
+                            </div>
+                        </div>
+                        
+                        <hr class="border-slate-800/60">
+
+                        <label class="flex items-start gap-4 cursor-pointer group">
+                            <input type="checkbox" id="inv_permitir_negativos" class="mt-1 sr-only peer">
+                            <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 relative shrink-0"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium text-slate-200 group-hover:text-white transition-colors">Facturar sin Existencias (Stock Negativo)</span>
+                                <span class="text-xs text-slate-500 mt-0.5">Permite registrar salidas automáticas del Kardex de productos, insumos o medicamentos veterinarios aunque el inventario esté en cero.</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-4 cursor-pointer group">
+                            <input type="checkbox" id="inv_notificar_dashboard" class="mt-1 sr-only peer">
+                            <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600 relative shrink-0"></div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium text-slate-200 group-hover:text-white transition-colors">Notificaciones Visuales Críticas</span>
+                                <span class="text-xs text-slate-500 mt-0.5">Muestra banners de alerta interactivos en el panel principal si hay insumos por debajo del stock mínimo.</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-documentos" class="tab-content space-y-6">
+                <div class="bg-dark-card rounded-2xl p-6 border border-slate-800/60 shadow-xl">
+                    <div class="flex items-center gap-2.5 mb-6 border-b border-slate-800 pb-4">
+                        <i class="fa-solid fa-receipt text-emerald-400"></i>
+                        <h2 class="text-lg font-semibold text-white">Estructura de Documentos y Prefijos</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Prefijo Órdenes de Compra</label>
+                            <input type="text" id="doc_prefijo_compra" class="w-full input-dark rounded-xl px-4 py-3 text-sm transition-all" value="OC-">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Consecutivo Inicial de Compras</label>
+                            <input type="number" id="doc_consecutivo_compra" class="w-full input-dark rounded-xl px-4 py-3 text-sm transition-all" value="1">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nota / Términos Legales (Pie de Página)</label>
+                            <textarea id="doc_pie_pagina" rows="3" class="w-full input-dark rounded-xl px-4 py-3 text-sm transition-all resize-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-usuarios" class="tab-content space-y-6">
+                <div class="bg-dark-card rounded-2xl p-6 border border-slate-800/60 shadow-xl">
+                    <div class="flex items-center gap-2.5 mb-4 border-b border-slate-800 pb-4">
+                        <i class="fa-solid fa-users-gear text-purple-400"></i>
+                        <h2 class="text-lg font-semibold text-white">Roles de Usuario Definidos</h2>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-6">Visualiza los privilegios preconfigurados para los perfiles que operan el sistema de inventario.</p>  
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+                                    <th class="py-3 px-4 font-semibold">Rol</th>
+                                    <th class="py-3 px-4 font-semibold">Módulo Compras</th>
+                                    <th class="py-3 px-4 font-semibold">Módulo Kardex</th>
+                                    <th class="py-3 px-4 font-semibold">Modificar Precios</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-roles" class="divide-y divide-slate-800/50 text-slate-300">
+                                <tr>
+                                    <td class="py-3.5 px-4 font-medium text-white">Administrador</td>
+                                    <td class="py-3.5 px-4"><span class="text-xs font-medium bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full">Total</span></td>
+                                    <td class="py-3.5 px-4"><span class="text-xs font-medium bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full">Total</span></td>
+                                    <td class="py-3.5 px-4 text-emerald-400"><i class="fa-solid fa-circle-check"></i></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3.5 px-4 font-medium text-white">Veterinario / Operador</td>
+                                    <td class="py-3.5 px-4"><span class="text-xs font-medium bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full">Solo Crear</span></td>
+                                    <td class="py-3.5 px-4"><span class="text-xs font-medium bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full">Total</span></td>
+                                    <td class="py-3.5 px-4 text-rose-400"><i class="fa-solid fa-circle-xmark"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-sistema" class="tab-content space-y-6">
+                <div class="bg-dark-card rounded-2xl p-6 border border-slate-800/60 shadow-xl">
+                    <div class="flex items-center gap-2.5 mb-6 border-b border-slate-800 pb-4">
+                        <i class="fa-solid fa-toolbox text-rose-400"></i>
+                        <h2 class="text-lg font-semibold text-white">Herramientas Críticas del Administrador</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-sm font-semibold text-white mb-1 flex items-center gap-2">
+                                    <i class="fa-solid fa-download text-indigo-400"></i> Respaldar Base de Datos
+                                </h3>
+                                <p class="text-xs text-slate-400">Genera un volcado estructurado con todas las tablas de compras, productos y movimientos actuales.</p>
+                            </div>
+                            <button type="button" onclick="ejecutarBackup()" class="mt-4 w-full bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs px-4 py-2.5 rounded-xl transition-all border border-slate-700">
+                                Descargar Backup Completo
+                            </button>
+                        </div>
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-sm font-semibold text-white mb-1 flex items-center gap-2">
+                                    <i class="fa-solid fa-power-off text-rose-400"></i> Modo Mantenimiento
+                                </h3>
+                                <p class="text-xs text-slate-400">Bloquea temporalmente el acceso general al software para usuarios operadores mientras realizas cambios estructurales.</p>
+                            </div>
+                            <div class="mt-4 flex items-center justify-end">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" id="sis_mantenimiento" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600 relative"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // La tabla `configuracion` en digital_pet.sql tiene columnas: CFG_LLAVE (PK), CFG_VALOR
+        // El controller devuelve un objeto { CFG_LLAVE: CFG_VALOR } desde _obtener()
+        // El endpoint GET /api/ajustes (sin action) llama a _obtener() que hace SELECT CFG_LLAVE, CFG_VALOR
+        // El endpoint POST /api/ajustes con action=guardar llama a _guardar()
+        // La tabla `roles` en digital_pet.sql: ID_ROLES, ROL_NOMBRE, ROL_DESCRIPCION, ID_ESTADO
+        // La tabla `estados` en digital_pet.sql: ID_ESTADOS, EST_NOMBRE
+
+        const URL_CONTROLADOR = '/api/ajustes';
+        const URL_USUARIOS = '/api/usuarios';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof cargarInfoUsuario === 'function') cargarInfoUsuario();
+            cargarAjustesDesdeBD();
+            cargarRoles();
+        });
+
+        function cargarAjustesDesdeBD() {
+            // GET sin action → el controller ejecuta _obtener() que lee CFG_LLAVE/CFG_VALOR de `configuracion`
+            fetch(URL_CONTROLADOR, { credentials: 'include' })
+                .then(response => {
+                    if (!response.ok) throw new Error('Error al conectar con la API de ajustes.');
+                    return response.text();
+                })
+                .then(text => {
+                    try {
+                        const res = JSON.parse(text);
+                        // _obtener() retorna un dict {CFG_LLAVE: CFG_VALOR, ...}
+                        if (res.status === 'success' && res.data) {
+                            const datos = res.data;
+                            // Mapear cada CFG_LLAVE a su campo del formulario
+                            const camposTexto = {
+                                'emp_nombre': 'emp_nombre',
+                                'emp_nit': 'emp_nit',
+                                'emp_telefono': 'emp_telefono',
+                                'emp_email': 'emp_email',
+                                'emp_direccion': 'emp_direccion',
+                                'inv_stock_minimo': 'inv_stock_minimo',
+                                'doc_prefijo_compra': 'doc_prefijo_compra',
+                                'doc_consecutivo_compra': 'doc_consecutivo_compra',
+                                'doc_pie_pagina': 'doc_pie_pagina'
+                            };
+                            for (const [llave, idEl] of Object.entries(camposTexto)) {
+                                if (datos[llave] !== undefined && datos[llave] !== null) {
+                                    const el = document.getElementById(idEl);
+                                    if (el) el.value = datos[llave];
+                                }
+                            }
+                            // Booleanos: almacenados como '1'/'0' en CFG_VALOR
+                            const camposBool = ['inv_permitir_negativos', 'inv_notificar_dashboard', 'sis_mantenimiento'];
+                            for (const llave of camposBool) {
+                                if (datos[llave] !== undefined) {
+                                    const el = document.getElementById(llave);
+                                    if (el) el.checked = (String(datos[llave]) === '1');
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        console.error("Error al parsear respuesta de ajustes:", err, "\nRespuesta real:", text);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al precargar configuraciones:', error);
+                });
+        }
+
+        function cargarRoles() {
+            // Carga roles reales desde `roles` (ID_ROLES, ROL_NOMBRE) via /api/usuarios?action=roles
+            fetch(URL_USUARIOS + '?action=roles', { credentials: 'include' })
+                .then(r => r.ok ? r.json() : null)
+                .then(res => {
+                    if (!res || res.status !== 'success' || !Array.isArray(res.data)) return;
+                    const tbody = document.getElementById('tbody-roles');
+                    if (!tbody) return;
+                    tbody.innerHTML = '';
+                    res.data.forEach(rol => {
+                        const nombre = rol.ROL_NOMBRE || '';
+                        const esAdmin = nombre.toUpperCase().includes('ADMIN');
+                        tbody.innerHTML += `
+                            <tr>
+                                <td class="py-3.5 px-4 font-medium text-white">${nombre}</td>
+                                <td class="py-3.5 px-4"><span class="text-xs font-medium ${esAdmin ? 'bg-emerald-500/10 text-emerald-400' : 'bg-blue-500/10 text-blue-400'} px-2.5 py-1 rounded-full">${esAdmin ? 'Total' : 'Solo Crear'}</span></td>
+                                <td class="py-3.5 px-4"><span class="text-xs font-medium bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full">Total</span></td>
+                                <td class="py-3.5 px-4 ${esAdmin ? 'text-emerald-400' : 'text-rose-400'}"><i class="fa-solid ${esAdmin ? 'fa-circle-check' : 'fa-circle-xmark'}"></i></td>
+                            </tr>`;
+                    });
+                })
+                .catch(() => {/* mantener filas estáticas si falla */});
+        }
+
+        function guardarAjustesGlobales() {
+            // Construye payload con las llaves exactas que se guardan en CFG_LLAVE de `configuracion`
+            // El controller _guardar() itera el dict y hace INSERT ... ON DUPLICATE KEY UPDATE
+            // usando CFG_LLAVE como PK y CFG_VALOR como valor
+            const payload = {
+                action: 'guardar',
+                emp_nombre: document.getElementById('emp_nombre').value.trim(),
+                emp_nit: document.getElementById('emp_nit').value.trim(),
+                emp_telefono: document.getElementById('emp_telefono').value.trim(),
+                emp_email: document.getElementById('emp_email').value.trim(),
+                emp_direccion: document.getElementById('emp_direccion').value.trim(),
+                inv_stock_minimo: document.getElementById('inv_stock_minimo').value,
+                doc_prefijo_compra: document.getElementById('doc_prefijo_compra').value.trim(),
+                doc_consecutivo_compra: document.getElementById('doc_consecutivo_compra').value,
+                doc_pie_pagina: document.getElementById('doc_pie_pagina').value.trim(),
+                // Los booleanos se envían como true/false; el controller los convierte a '1'/'0'
+                inv_permitir_negativos: document.getElementById('inv_permitir_negativos').checked,
+                inv_notificar_dashboard: document.getElementById('inv_notificar_dashboard').checked,
+                sis_mantenimiento: document.getElementById('sis_mantenimiento').checked
+            };
+
+            if (!payload.emp_nombre || !payload.emp_nit) {
+                alert("⚠ El Nombre de la empresa y el NIT son parámetros institucionales requeridos.");
+                return;
+            }
+
+            fetch(URL_CONTROLADOR, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Error al procesar la actualización masiva.');
+                return response.json();
+            })
+            .then(res => {
+                if (res.status === 'success') {
+                    alert("✓ Los parámetros globales de Digital Pet han sido almacenados y la auditoría fue registrada.");
+                    cargarAjustesDesdeBD();
+                } else {
+                    alert("⚠ Error devuelto por el controlador: " + res.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error crítico al realizar el almacenamiento:', error);
+                alert("❌ Falló el enlace con la base de datos.");
+            });
+        }
+
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn-aj').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            element.classList.add('active');
+        }
+
+        function ejecutarBackup() {
+            // El endpoint de backup debe existir en el backend Flask como ruta dedicada
+            fetch('/api/backup', { credentials: 'include' })
+                .then(r => {
+                    if (!r.ok) throw new Error('Sin respuesta del servidor de backup.');
+                    return r.blob();
+                })
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `digitalpet_backup_${new Date().toISOString().slice(0,10)}.sql`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                })
+                .catch(() => {
+                    alert("⚠ El endpoint de backup no está disponible. Contacta al administrador del servidor.");
+                });
+        }
+    </script>
+<div id="logoutModal" onclick="if(event.target===this)closeLogoutModal()"
+  style="position:fixed;inset:0;z-index:200;background:rgba(15,23,42,0.7);backdrop-filter:blur(8px);
+         display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;">
+  <div id="logoutModalBox" style="background:#1e293b;border:1px solid rgba(124,58,237,0.3);border-radius:20px;width:380px;max-width:95vw;padding:32px;transform:scale(.92);transition:transform .3s;">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:48px;margin-bottom:12px;">🚪</div>
+      <h2 style="font-family:Syne,sans-serif;color:white;font-size:20px;font-weight:700;">¿Cerrar sesión?</h2>
+    </div>
+    <div style="display:flex;gap:12px;">
+      <button type="button" onclick="closeLogoutModal()" class="flex-1 px-4 py-2 rounded-lg bg-slate-600 text-white">Cancelar</button>
+      <button type="button" onclick="confirmarLogout()" class="flex-1 px-4 py-2 rounded-lg bg-red-600 text-white">Sí, cerrar</button>
+    </div>
+  </div>
+</div>
+<script src="/static/nav-common.js"></script>
+</body>
+</html>

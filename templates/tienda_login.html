@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VetCare Pro - Access Your Clinic</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lexend:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#d8e5e2",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#89f5e7",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "on-secondary-container": "#5b6765",
+                    "secondary-fixed": "#d8e5e2",
+                    "tertiary-container": "#a36700",
+                    "on-secondary-fixed": "#121e1c",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "on-primary-fixed-variant": "#005049",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#008378",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary": "#825100",
+                    "surface-variant": "#d3e4fe",
+                    "on-primary-container": "#f4fffc",
+                    "on-secondary": "#ffffff",
+                    "primary": "#00685f",
+                    "inverse-primary": "#6bd8cb",
+                    "inverse-surface": "#213145",
+                    "outline": "#6d7a77",
+                    "surface-container": "#e5eeff",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-secondary-fixed-variant": "#3d4947",
+                    "secondary": "#55615f",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "surface-bright": "#f8f9ff",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-fixed": "#00201d",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-background": "#0b1c30",
+                    "on-surface-variant": "#3d4947",
+                    "tertiary-fixed": "#ffddb8",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-tint": "#006a61",
+                    "outline-variant": "#bcc9c6",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "secondary-fixed-dim": "#bcc9c6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "lg": "40px",
+                    "sm": "16px",
+                    "base": "4px",
+                    "container-max": "1440px",
+                    "md": "24px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "xl": "64px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Lexend"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Lexend"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Lexend"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>.auth-card {
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.95)
+    }
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.tab-active {
+    border-bottom: 2px solid #00685f;
+    color: #00685f
+    }
+.tab-inactive {
+    color: #55615f
+    }
+.bg-pattern {
+    background-image: linear-gradient(rgba(240, 253, 250, 0.92), rgba(240, 253, 250, 0.92)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuCt6YwYae1lualEJGl06A9j8PRoao_HclNTFK1EUWBIxc4LmKm4SW1yaFYIwSSbGqwgguf5tOrdRjEqqeyI9j3eSXZm9Ceslbi-Eet6NxEjblDbW0hW6f5mX_xB6dh0DwzuHjieV1v8pnd1xXDtxao_fQQanzEi8QNwVA0-PBPckGljJFxHDTLVgPCnZPmL7iOKRiBSpGab0XIDSjxfL8L8LUH8f9-nS5-45mnHdNNLSfde-IrZxEXR61HySmtDB2w8JMQcBodOxzw);
+    background-size: cover;
+    background-position: center
+    }</style>
+</head>
+<body class="bg-background min-h-screen flex items-center justify-center p-sm md:p-md bg-pattern" data-alt="A serene veterinary clinic background with soft-focus imagery of a clean medical environment. The lighting is bright and warm, with a secondary soft mint wash overlay that creates a calming and professional medical atmosphere. The overall style is corporate modern with high-legibility and minimalist tactile edges.">
+<main class="w-full max-w-md">
+<!-- Brand Identity -->
+<div class="text-center mb-xl">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-xs">VetCare Pro</h1>
+<p class="font-body-md text-body-md text-secondary">Advanced Veterinary Management Systems</p>
+</div>
+<!-- Auth Card -->
+<div class="auth-card rounded-xl border border-outline-variant p-md md:p-lg shadow-sm">
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant mb-md">
+<button class="flex-1 py-sm font-label-md text-label-md transition-all tab-active" id="loginTab" onclick="switchTab('login')">
+                    Login
+                </button>
+<button class="flex-1 py-sm font-label-md text-label-md transition-all tab-inactive" id="signupTab" onclick="switchTab('signup')">
+                    Sign Up
+                </button>
+</div>
+<!-- Login Form -->
+<form class="space-y-md" id="loginForm">
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">mail</span>
+<input class="w-full pl-[44px] pr-sm py-sm rounded-lg border border-outline focus:ring-2 focus:ring-primary-container focus:border-primary outline-none transition-all font-body-md" placeholder="dr.smith@vetcarepro.com" type="email"/>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">lock</span>
+<input class="w-full pl-[44px] pr-sm py-sm rounded-lg border border-outline focus:ring-2 focus:ring-primary-container focus:border-primary outline-none transition-all font-body-md" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<label class="flex items-center gap-xs cursor-pointer">
+<input class="w-4 h-4 rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant">Remember Me</span>
+</label>
+<a class="font-body-md text-body-md text-primary hover:underline" href="#">Forgot Password?</a>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-sm rounded-lg hover:opacity-90 active:scale-95 transition-all shadow-sm" type="submit">
+                    Access Portal
+                </button>
+</form>
+<!-- Sign Up Form (Hidden by default) -->
+<form class="space-y-md hidden" id="signupForm">
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant">Full Name</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">person</span>
+<input class="w-full pl-[44px] pr-sm py-sm rounded-lg border border-outline focus:ring-2 focus:ring-primary-container focus:border-primary outline-none transition-all font-body-md" placeholder="Dr. Jane Doe" type="text"/>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant">Clinic Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">mail</span>
+<input class="w-full pl-[44px] pr-sm py-sm rounded-lg border border-outline focus:ring-2 focus:ring-primary-container focus:border-primary outline-none transition-all font-body-md" placeholder="jane@clinic.com" type="email"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant">Password</label>
+<input class="w-full px-sm py-sm rounded-lg border border-outline focus:ring-2 focus:ring-primary-container focus:border-primary outline-none transition-all font-body-md" placeholder="••••••••" type="password"/>
+</div>
+<div class="space-y-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant">Specialization</label>
+<select class="w-full px-sm py-sm rounded-lg border border-outline focus:ring-2 focus:ring-primary-container focus:border-primary outline-none transition-all font-body-md bg-white">
+<option value="feline">Feline Medicine</option>
+<option value="canine">Canine Specialists</option>
+<option value="exotic">Exotic Animals</option>
+<option value="equine">Equine Care</option>
+</select>
+</div>
+</div>
+<button class="w-full bg-tertiary text-on-tertiary font-label-md text-label-md py-sm rounded-lg hover:opacity-90 active:scale-95 transition-all shadow-sm" type="submit">
+                    Create Clinic Account
+                </button>
+</form>
+<!-- Social Auth Divider -->
+<div class="relative my-lg">
+<div class="absolute inset-0 flex items-center">
+<span class="w-full border-t border-outline-variant"></span>
+</div>
+<div class="relative flex justify-center">
+<span class="bg-surface px-sm font-label-md text-label-md text-outline">Or continue with</span>
+</div>
+</div>
+<!-- Social Buttons -->
+<div class="grid grid-cols-2 gap-sm">
+<button class="flex items-center justify-center gap-xs py-sm border border-outline-variant rounded-lg hover:bg-surface-container transition-colors active:scale-98">
+<img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK-5hMn7ovX0N2O_6Ph4Rr2D5WYVwaAWP2GNSXa9lXJO2csKCd-dZ6jpV_U0efkw1d374G5fG7k3SYUWZDGyW2EMJ4yA8A4vqWjMNWyaH6rsb3r32s0r0fQuTBY2tVqZ3MsSpAnPOUnlaYV-2Ur9FbwP_wbK7MQTcFpWhHSW6ar_UQMIRSZ8CwbWmcSLBDfNhBy3pQJKyhZu2MnHrBXiJ9ZicDvU2Ar867THXcDveFvFqSwLrmBmUMjmWNp1ePp2lhkuMhUKmFjEQ"/>
+<span class="font-label-md text-label-md text-on-surface">Google</span>
+</button>
+<button class="flex items-center justify-center gap-xs py-sm border border-outline-variant rounded-lg hover:bg-surface-container transition-colors active:scale-98">
+<svg class="w-5 h-5 text-[#1877F2]" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+<span class="font-label-md text-label-md text-on-surface">Facebook</span>
+</button>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-xl text-center">
+<p class="font-body-md text-body-md text-outline">© 2024 VetCare Pro Management Systems. All rights reserved.</p>
+<div class="mt-sm space-x-md">
+<a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">Emergency Support</a>
+</div>
+</footer>
+</main>
+<script>
+        function switchTab(type) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+
+            if (type === 'login') {
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+                loginTab.classList.add('tab-active');
+                loginTab.classList.remove('tab-inactive');
+                signupTab.classList.remove('tab-active');
+                signupTab.classList.add('tab-inactive');
+            } else {
+                loginForm.classList.add('hidden');
+                signupForm.classList.remove('hidden');
+                loginTab.classList.remove('tab-active');
+                loginTab.classList.add('tab-inactive');
+                signupTab.classList.add('tab-active');
+                signupTab.classList.remove('tab-inactive');
+            }
+        }
+    </script>
+</body></html>
