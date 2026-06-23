@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Digital Pet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* FONDO OSCURO */
+.bg-dark {
+  background: radial-gradient(circle at top, #1f2937, #020617);
+}
+
+/* NAVBAR ANIMACIÓN (LA TUYA) */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: white;
+  left: 0;
+  bottom: -4px;
+  transition: 0.3s;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* HOVER CARDS */
+.card-hover:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
+}
+</style>
+
+</head>
+
+<body class="bg-dark text-white">
+
+<!-- NAVBAR -->
+<header class="flex justify-between items-center px-10 py-6 border-b border-white/10">
+
+<div class="text-2xl font-bold tracking-wide">
+🐾 Digital Pet
+</div>
+
+<nav class="hidden md:flex gap-8 text-sm text-gray-300">
+
+<a href="#" class="nav-link text-white">Inicio</a>
+<a href="#servicios" class="nav-link">Servicios</a>
+<a href="#nosotros" class="nav-link">Nosotros</a>
+<a href="mascotas.html" class="nav-link">Mis Mascotas</a>
+
+</nav>
+
+<a href="login.html"
+class="bg-white text-black px-5 py-2 rounded-lg hover:scale-105 transition font-semibold">
+Ingresar
+</a>
+
+</header>
+
+<!-- HERO -->
+<section class="h-[85vh] flex flex-col justify-center px-10">
+
+<h1 class="text-6xl md:text-7xl font-extrabold mb-6 leading-tight">
+El cuidado de tu mascota <br>
+<span class="text-blue-400">al siguiente nivel</span>
+</h1>
+
+<p class="max-w-xl text-gray-400 text-lg mb-8">
+Digital Pet transforma la manera en que gestionas la salud,
+citas y bienestar de tus mascotas.
+</p>
+
+<div class="flex gap-4">
+
+<a href="mis_mascotas.html"
+class="bg-white text-black px-8 py-3 rounded-xl font-semibold hover:scale-110 transition">
+Entrar al sistema
+</a>
+
+<a href="#servicios"
+class="border border-white px-8 py-3 rounded-xl hover:bg-white hover:text-black transition">
+Explorar
+</a>
+
+</div>
+
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios" class="px-10 py-20">
+
+<h2 class="text-4xl font-bold mb-12">
+Servicios
+</h2>
+
+<div class="grid md:grid-cols-3 gap-8">
+
+<div class="bg-gray-900 p-8 rounded-2xl card-hover">
+<h3 class="text-xl font-bold mb-2">Citas médicas</h3>
+<p class="text-gray-400">Atención veterinaria profesional.</p>
+</div>
+
+<div class="bg-gray-900 p-8 rounded-2xl card-hover">
+<h3 class="text-xl font-bold mb-2">Estética animal</h3>
+<p class="text-gray-400">Baño, corte y cuidado.</p>
+</div>
+
+<div class="bg-gray-900 p-8 rounded-2xl card-hover">
+<h3 class="text-xl font-bold mb-2">Historial clínico</h3>
+<p class="text-gray-400">Consulta médica digital.</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- EXPERIENCIA -->
+<section class="px-10 py-20 bg-gradient-to-r from-blue-500/20 to-cyan-400/20">
+
+<h2 class="text-4xl font-bold mb-6">
+Una experiencia moderna
+</h2>
+
+<p class="max-w-2xl text-gray-300 mb-6">
+Gestiona todo desde una plataforma rápida, intuitiva y diseñada
+para el bienestar de tu mascota.
+</p>
+
+<a href="mis_mascotas.html"
+class="bg-white text-black px-6 py-3 rounded-lg hover:scale-105 transition">
+Comenzar ahora
+</a>
+
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros" class="px-10 py-20">
+
+<h2 class="text-4xl font-bold mb-6">
+Sobre Digital Pet
+</h2>
+
+<p class="max-w-2xl text-gray-400">
+Somos una plataforma diseñada para modernizar la gestión veterinaria,
+ofreciendo herramientas digitales para mejorar la atención y organización.
+</p>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="text-center py-6 text-gray-500 border-t border-white/10">
+© 2026 Digital Pet
+</footer>
+
+</body>
+</html>

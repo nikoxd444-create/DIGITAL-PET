@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Historial Clínico - Digital Pet</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Fondo oscuro premium */
+.bg-dark {
+  background: radial-gradient(circle at top, #1f2937, #020617);
+}
+
+/* Línea del timeline */
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  background: #374151;
+}
+
+/* Hover */
+.card-hover:hover {
+  transform: scale(1.02);
+  transition: 0.3s;
+}
+</style>
+
+</head>
+
+<body class="bg-dark text-white min-h-screen">
+
+<!-- NAVBAR -->
+<header class="flex justify-between items-center px-10 py-6 border-b border-white/10">
+
+<a href="index.html" class="text-2xl font-bold">
+🐾 Digital Pet
+</a>
+
+<nav class="flex gap-8 text-sm text-gray-300">
+
+<a href="mascotas.html">Mascotas</a>
+<a href="citas.html">Citas</a>
+<a href="historial.html" class="text-white">Historial</a>
+
+</nav>
+
+</header>
+
+<!-- TITULO -->
+<section class="px-10 mt-10 mb-10">
+
+<h1 class="text-5xl font-extrabold mb-2">
+Historial Clínico
+</h1>
+
+<p class="text-gray-400">
+Consulta médica completa de tus mascotas
+</p>
+
+</section>
+
+<!-- TIMELINE -->
+<section class="px-10 relative timeline max-w-4xl">
+
+<!-- ITEM 1 -->
+<div class="relative pl-16 mb-10">
+
+<div class="absolute left-3 top-2 w-4 h-4 bg-blue-500 rounded-full"></div>
+
+<div class="bg-gray-900 p-6 rounded-xl card-hover">
+
+<p class="text-sm text-gray-400 mb-1">02 Abril 2026</p>
+
+<h3 class="text-xl font-semibold mb-2">
+Chequeo general
+</h3>
+
+<p class="text-gray-300 text-sm mb-4">
+Mascota: Firulais
+</p>
+
+<a href="detalle_historial.html"
+class="inline-block bg-white text-black px-4 py-2 rounded-lg text-sm font-semibold hover:scale-105 transition">
+Ver detalle
+</a>
+
+</div>
+
+</div>
+
+<!-- ITEM 2 -->
+<div class="relative pl-16 mb-10">
+
+<div class="absolute left-3 top-2 w-4 h-4 bg-green-500 rounded-full"></div>
+
+<div class="bg-gray-900 p-6 rounded-xl card-hover">
+
+<p class="text-sm text-gray-400 mb-1">15 Marzo 2026</p>
+
+<h3 class="text-xl font-semibold mb-2">
+Vacunación
+</h3>
+
+<p class="text-gray-300 text-sm mb-4">
+Mascota: Michi
+</p>
+
+<a href="detalle_historial.html"
+class="inline-block bg-white text-black px-4 py-2 rounded-lg text-sm font-semibold hover:scale-105 transition">
+Ver detalle
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</body>
+</html>
