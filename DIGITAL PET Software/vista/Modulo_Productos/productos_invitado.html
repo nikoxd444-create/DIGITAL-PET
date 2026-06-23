@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Tienda Veterinaria Online</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #d1fae5;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #d1fae5;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #fbbf24;
+            color: #1f2937;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .btn-auth {
+            padding: 0.5rem 1rem;
+            border: 2px solid white;
+            background-color: transparent;
+            color: white;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-auth:hover {
+            background-color: white;
+            color: #10b981;
+        }
+
+        .btn-auth.primary {
+            background-color: #fbbf24;
+            color: #1f2937;
+            border-color: #fbbf24;
+        }
+
+        .btn-auth.primary:hover {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(20px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .btn-primary {
+            background-color: #fbbf24;
+            color: #1f2937;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* MAIN CONTAINER */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* PRODUCTS SECTION */
+        .products-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 2px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card.locked {
+            opacity: 0.7;
+        }
+
+        .product-card.locked .product-image {
+            filter: blur(3px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .lock-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-price {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+
+        .btn-add-cart {
+            width: 100%;
+            background-color: #10b981;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-cart:hover {
+            background-color: #059669;
+            transform: scale(1.02);
+        }
+
+        .product-card.locked .btn-add-cart {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .product-card.locked .btn-add-cart:hover {
+            background-color: #cbd5e1;
+            transform: scale(1);
+        }
+
+        /* RESTRICTION BANNER */
+        .restriction-banner {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .restriction-banner i {
+            font-size: 1.5rem;
+            color: #92400e;
+        }
+
+        .restriction-banner h3 {
+            color: #92400e;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .restriction-banner p {
+            color: #b45309;
+            font-size: 0.9rem;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #1f2937;
+        }
+
+        /* RESTRICTION MODAL */
+        .restriction-modal-content {
+            text-align: center;
+        }
+
+        .restriction-modal-content i {
+            font-size: 3rem;
+            color: #f59e0b;
+            margin-bottom: 1rem;
+        }
+
+        .restriction-modal-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .restriction-modal-content p {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn-modal {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-modal.primary {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .btn-modal.primary:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-modal.secondary {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .btn-modal.secondary:hover {
+            background-color: #d1d5db;
+        }
+
+        /* AUTH MODAL */
+        .auth-modal-content {
+            max-width: 400px;
+        }
+
+        .auth-modal-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            background-color: #10b981;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .btn-login:hover {
+            background-color: #059669;
+        }
+
+        .auth-link {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .auth-link a {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .auth-link a:hover {
+            color: #059669;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            display: inline-block;
+            width: 40%;
+            height: 1px;
+            background-color: #e5e7eb;
+            vertical-align: middle;
+        }
+
+        .divider::before {
+            margin-right: 0.5rem;
+        }
+
+        .divider::after {
+            margin-left: 0.5rem;
+        }
+
+        .btn-register {
+            width: 100%;
+            background-color: #fbbf24;
+            color: #1f2937;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-register:hover {
+            background-color: #f59e0b;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: white;
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #10b981;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #10b981;
+        }
+
+        .footer-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: #d1d5db;
+        }
+
+        .footer-contact i {
+            color: #10b981;
+            width: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #10b981;
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: #059669;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-menu {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .navbar-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.25rem;
+            }
+
+            .navbar-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .btn-auth {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-brand">
+                <i class="fas fa-paw"></i>
+                <span>PetCare</span>
+            </a>
+
+            <ul class="nav-menu hidden md:flex">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+
+            <div class="navbar-right">
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </div>
+                <button class="btn-auth" onclick="openLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+                <button class="btn-auth primary" onclick="openRegisterModal()">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="inicio">
+        <div class="hero-content fade-in">
+            <h1>🐾 Cuidado Premium para tu Mascota</h1>
+            <p>Productos de calidad veterinaria para la salud y bienestar de tus mejores amigos</p>
+            <a href="#productos" class="btn-primary">
+                <i class="fas fa-shopping-bag"></i> Explorar Productos
+            </a>
+        </div>
+    </section>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        <!-- RESTRICTION BANNER -->
+        <div class="restriction-banner">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <h3>¡Acceso Limitado!</h3>
+                <p>Algunos productos están disponibles solo para usuarios registrados. Crea una cuenta o inicia sesión para acceder a todo nuestro catálogo.</p>
+            </div>
+        </div>
+
+        <!-- PRODUCTOS -->
+        <section class="products-section" id="productos">
+            <h2 class="section-title">Nuestros Productos</h2>
+
+            <div class="products-grid">
+                <!-- Producto 1 - Disponible -->
+                <div class="product-card fade-in">
+                    <div class="product-image">🦴</div>
+                    <div class="product-info">
+                        <div class="product-name">Huesos Masticables</div>
+                        <div class="product-description">Huesos naturales para fortalecer dientes y encías</div>
+                        <div class="product-price">$12.99</div>
+                        <button class="btn-add-cart" onclick="addToCart('Huesos Masticables')">
+                            <i class="fas fa-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 2 - Bloqueado -->
+                <div class="product-card locked fade-in">
+                    <div class="product-image">
+                        🥩
+                        <span class="lock-badge">
+                            <i class="fas fa-lock"></i> Bloqueado
+                        </span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">Alimento Premium</div>
+                        <div class="product-description">Fórmula balanceada con proteínas de calidad</div>
+                        <div class="product-price">$24.99</div>
+                        <button class="btn-add-cart" onclick="showRestrictionModal()">
+                            <i class="fas fa-lock"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 3 - Disponible -->
+                <div class="product-card fade-in">
+                    <div class="product-image">🧴</div>
+                    <div class="product-info">
+                        <div class="product-name">Champú Veterinario</div>
+                        <div class="product-description">Limpieza profunda sin irritar la piel</div>
+                        <div class="product-price">$18.50</div>
+                        <button class="btn-add-cart" onclick="addToCart('Champú Veterinario')">
+                            <i class="fas fa-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 4 - Bloqueado -->
+                <div class="product-card locked fade-in">
+                    <div class="product-image">
+                        💊
+                        <span class="lock-badge">
+                            <i class="fas fa-lock"></i> Bloqueado
+                        </span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">Vitaminas Masticables</div>
+                        <div class="product-description">Suplemento nutricional para mascotas activas</div>
+                        <div class="product-price">$15.99</div>
+                        <button class="btn-add-cart" onclick="showRestrictionModal()">
+                            <i class="fas fa-lock"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 5 - Disponible -->
+                <div class="product-card fade-in">
+                    <div class="product-image">🧸</div>
+                    <div class="product-info">
+                        <div class="product-name">Juguete Interactivo</div>
+                        <div class="product-description">Estimula el juego y la inteligencia de tu mascota</div>
+                        <div class="product-price">$22.00</div>
+                        <button class="btn-add-cart" onclick="addToCart('Juguete Interactivo')">
+                            <i class="fas fa-plus"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 6 - Bloqueado -->
+                <div class="product-card locked fade-in">
+                    <div class="product-image">
+                        🛏️
+                        <span class="lock-badge">
+                            <i class="fas fa-lock"></i> Bloqueado
+                        </span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">Cama Ortopédica</div>
+                        <div class="product-description">Comodidad y soporte para descanso óptimo</div>
+                        <div class="product-price">$45.99</div>
+                        <button class="btn-add-cart" onclick="showRestrictionModal()">
+                            <i class="fas fa-lock"></i> Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="contacto">
+        <div class="footer-content">
+            <!-- Sobre nosotros -->
+            <div class="footer-section">
+                <h3><i class="fas fa-paw"></i> PetCare Veterinaria</h3>
+                <p style="color: #d1d5db; line-height: 1.6;">
+                    Somos una tienda especializada en productos veterinarios de calidad premium para el cuidado integral de tus mascotas.
+                </p>
+            </div>
+
+            <!-- Enlaces rápidos -->
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#productos">Productos</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <div class="footer-contact">
+                    <i class="fas fa-phone"></i>
+                    <span>+34 912 345 678</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-envelope"></i>
+                    <span>info@petcare.com</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Calle Principal 123, Madrid</span>
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <div class="social-icons">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 PetCare Veterinaria. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL RESTRICCIÓN -->
+    <div class="modal" id="restrictionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2></h2>
+                <button class="modal-close" onclick="closeRestrictionModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="restriction-modal-content">
+                <i class="fas fa-lock"></i>
+                <h2>Acceso Restringido</h2>
+                <p>Para agregar este producto al carrito y realizar compras, necesitas iniciar sesión o crear una cuenta en PetCare.</p>
+
+                <div class="modal-buttons">
+                    <button class="btn-modal primary" onclick="openLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                    </button>
+                    <button class="btn-modal secondary" onclick="openRegisterModal()">
+                        <i class="fas fa-user-plus"></i> Crear Cuenta
+                    </button>
+                    <button class="btn-modal secondary" onclick="closeRestrictionModal()">
+                        Continuar Explorando
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LOGIN -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content auth-modal-content">
+            <div class="modal-header">
+                <h2>Iniciar Sesión</h2>
+                <button class="modal-close" onclick="closeLoginModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form>
+                <div class="form-group">
+                    <label for="loginEmail">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" placeholder="tu@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••">
+                </div>
+
+                <button type="button" class="btn-login" onclick="loginUser()">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </button>
+
+                <div class="divider">o</div>
+
+                <div class="auth-link">
+                    ¿No tienes cuenta? <a href="#" onclick="switchToRegister()">Regístrate aquí</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRO -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content auth-modal-content">
+            <div class="modal-header">
+                <h2>Crear Cuenta</h2>
+                <button class="modal-close" onclick="closeRegisterModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form>
+                <div class="form-group">
+                    <label for="registerName">Nombre Completo</label>
+                    <input type="text" id="registerName" placeholder="Tu nombre">
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail">Correo Electrónico</label>
+                    <input type="email" id="registerEmail" placeholder="tu@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword">Contraseña</label>
+                    <input type="password" id="registerPassword" placeholder="••••••••">
+                </div>
+
+                <div class="form-group">
+                    <label for="registerConfirm">Confirmar Contraseña</label>
+                    <input type="password" id="registerConfirm" placeholder="••••••••">
+                </div>
+
+                <button type="button" class="btn-register" onclick="registerUser()">
+                    <i class="fas fa-user-plus"></i> Crear Cuenta
+                </button>
+
+                <div class="divider">o</div>
+
+                <div class="auth-link">
+                    ¿Ya tienes cuenta? <a href="#" onclick="switchToLogin()">Inicia sesión aquí</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script mínimo para interactividad visual -->
+    <script>
+        function showRestrictionModal() {
+            document.getElementById('restrictionModal').classList.add('active');
+        }
+
+        function closeRestrictionModal() {
+            document.getElementById('restrictionModal').classList.remove('active');
+        }
+
+        function openLoginModal() {
+            closeRestrictionModal();
+            closeRegisterModal();
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function openRegisterModal() {
+            closeRestrictionModal();
+            closeLoginModal();
+            document.getElementById('registerModal').classList.add('active');
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.remove('active');
+        }
+
+        function switchToLogin() {
+            closeRegisterModal();
+            openLoginModal();
+        }
+
+        function switchToRegister() {
+            closeLoginModal();
+            openRegisterModal();
+        }
+
+        function addToCart(productName) {
+            alert(`✅ "${productName}" agregado al carrito`);
+        }
+
+        function loginUser() {
+            alert('✅ Sesión iniciada correctamente. ¡Bienvenido!');
+            closeLoginModal();
+        }
+
+        function registerUser() {
+            alert('✅ Cuenta creada correctamente. ¡Bienvenido a PetCare!');
+            closeRegisterModal();
+        }
+
+        // Cerrar modales al hacer clic fuera
+        document.getElementById('restrictionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRestrictionModal();
+            }
+        });
+
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLoginModal();
+            }
+        });
+
+        document.getElementById('registerModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRegisterModal();
+            }
+        });
+
+        // Animación al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    el.style.transition = 'all 0.6s ease-out';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

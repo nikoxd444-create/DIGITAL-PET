@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare Veterinaria - Tienda Online</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS para animaciones -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #d1fae5;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #d1fae5;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(20px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .btn-primary {
+            background-color: #fbbf24;
+            color: #1f2937;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Productos */
+        .products-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 2px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-price {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+
+        .btn-add-cart {
+            width: 100%;
+            background-color: #10b981;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-cart:hover {
+            background-color: #059669;
+            transform: scale(1.02);
+        }
+
+        /* Carrito Modal */
+        .cart-modal {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-modal.active {
+            right: 0;
+        }
+
+        .cart-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .close-cart:hover {
+            transform: rotate(90deg);
+        }
+
+        .cart-items {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-item-price {
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f3f4f6;
+            width: fit-content;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .cart-item-quantity button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .cart-item-quantity button:hover {
+            color: #10b981;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 2px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .cart-total-price {
+            color: #10b981;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background-color: #10b981;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-checkout:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-continue {
+            width: 100%;
+            background-color: #e5e7eb;
+            color: #1f2937;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-continue:hover {
+            background-color: #d1d5db;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: white;
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #10b981;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #10b981;
+        }
+
+        .footer-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: #d1d5db;
+        }
+
+        .footer-contact i {
+            color: #10b981;
+            width: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #10b981;
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: #059669;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .cart-modal {
+                width: 100%;
+                right: -100%;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Animaciones suaves */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="navbar-brand">
+                <i class="fas fa-paw"></i>
+                <span>PetCare</span>
+            </div>
+
+            <ul class="nav-menu hidden md:flex">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+
+            <div class="flex items-center gap-4">
+                <div class="cart-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">3</span>
+                </div>
+                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition">
+                    <i class="fas fa-user text-green-600"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="inicio">
+        <div class="hero-content fade-in">
+            <h1>🐾 Cuidado Premium para tu Mascota</h1>
+            <p>Productos de calidad veterinaria para la salud y bienestar de tus mejores amigos</p>
+            <a href="#productos" class="btn-primary">
+                <i class="fas fa-shopping-bag"></i> Explorar Productos
+            </a>
+        </div>
+    </section>
+
+    <!-- PRODUCTOS -->
+    <section class="products-section" id="productos">
+        <h2 class="section-title">Nuestros Productos</h2>
+
+        <div class="products-grid">
+            <!-- Producto 1 -->
+            <div class="product-card fade-in">
+                <div class="product-image">🦴</div>
+                <div class="product-info">
+                    <div class="product-name">Huesos Masticables</div>
+                    <div class="product-description">Huesos naturales para fortalecer dientes y encías</div>
+                    <div class="product-price">$12.99</div>
+                    <button class="btn-add-cart" onclick="addToCart('Huesos Masticables', 12.99)">
+                        <i class="fas fa-plus"></i> Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="product-card fade-in">
+                <div class="product-image">🥩</div>
+                <div class="product-info">
+                    <div class="product-name">Alimento Premium</div>
+                    <div class="product-description">Fórmula balanceada con proteínas de calidad</div>
+                    <div class="product-price">$24.99</div>
+                    <button class="btn-add-cart" onclick="addToCart('Alimento Premium', 24.99)">
+                        <i class="fas fa-plus"></i> Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="product-card fade-in">
+                <div class="product-image">🧴</div>
+                <div class="product-info">
+                    <div class="product-name">Champú Veterinario</div>
+                    <div class="product-description">Limpieza profunda sin irritar la piel</div>
+                    <div class="product-price">$18.50</div>
+                    <button class="btn-add-cart" onclick="addToCart('Champú Veterinario', 18.50)">
+                        <i class="fas fa-plus"></i> Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="product-card fade-in">
+                <div class="product-image">💊</div>
+                <div class="product-info">
+                    <div class="product-name">Vitaminas Masticables</div>
+                    <div class="product-description">Suplemento nutricional para mascotas activas</div>
+                    <div class="product-price">$15.99</div>
+                    <button class="btn-add-cart" onclick="addToCart('Vitaminas Masticables', 15.99)">
+                        <i class="fas fa-plus"></i> Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Producto 5 -->
+            <div class="product-card fade-in">
+                <div class="product-image">🧸</div>
+                <div class="product-info">
+                    <div class="product-name">Juguete Interactivo</div>
+                    <div class="product-description">Estimula el juego y la inteligencia de tu mascota</div>
+                    <div class="product-price">$22.00</div>
+                    <button class="btn-add-cart" onclick="addToCart('Juguete Interactivo', 22.00)">
+                        <i class="fas fa-plus"></i> Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Producto 6 -->
+            <div class="product-card fade-in">
+                <div class="product-image">🛏️</div>
+                <div class="product-info">
+                    <div class="product-name">Cama Ortopédica</div>
+                    <div class="product-description">Comodidad y soporte para descanso óptimo</div>
+                    <div class="product-price">$45.99</div>
+                    <button class="btn-add-cart" onclick="addToCart('Cama Ortopédica', 45.99)">
+                        <i class="fas fa-plus"></i> Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARRITO MODAL -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h2>Mi Carrito</h2>
+            <button class="close-cart" onclick="toggleCart()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="cart-items">
+            <!-- Producto en carrito 1 -->
+            <div class="cart-item">
+                <div class="cart-item-image">🦴</div>
+                <div class="cart-item-details">
+                    <div class="cart-item-name">Huesos Masticables</div>
+                    <div class="cart-item-price">$12.99</div>
+                    <div class="cart-item-quantity">
+                        <button>−</button>
+                        <span>2</span>
+                        <button>+</button>
+                    </div>
+                </div>
+                <button style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.2rem;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+
+            <!-- Producto en carrito 2 -->
+            <div class="cart-item">
+                <div class="cart-item-image">🥩</div>
+                <div class="cart-item-details">
+                    <div class="cart-item-name">Alimento Premium</div>
+                    <div class="cart-item-price">$24.99</div>
+                    <div class="cart-item-quantity">
+                        <button>−</button>
+                        <span>1</span>
+                        <button>+</button>
+                    </div>
+                </div>
+                <button style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.2rem;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+
+            <!-- Producto en carrito 3 -->
+            <div class="cart-item">
+                <div class="cart-item-image">🧴</div>
+                <div class="cart-item-details">
+                    <div class="cart-item-name">Champú Veterinario</div>
+                    <div class="cart-item-price">$18.50</div>
+                    <div class="cart-item-quantity">
+                        <button>−</button>
+                        <span>1</span>
+                        <button>+</button>
+                    </div>
+                </div>
+                <button style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.2rem;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="cart-total-price">$93.46</span>
+            </div>
+            <button class="btn-checkout">
+                <i class="fas fa-credit-card"></i> Proceder al Pago
+            </button>
+            <button class="btn-continue" onclick="toggleCart()">
+                <i class="fas fa-shopping-bag"></i> Continuar Comprando
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="contacto">
+        <div class="footer-content">
+            <!-- Sobre nosotros -->
+            <div class="footer-section">
+                <h3><i class="fas fa-paw"></i> PetCare Veterinaria</h3>
+                <p style="color: #d1d5db; line-height: 1.6;">
+                    Somos una tienda especializada en productos veterinarios de calidad premium para el cuidado integral de tus mascotas.
+                </p>
+            </div>
+
+            <!-- Enlaces rápidos -->
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#productos">Productos</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+
+            <!-- Contacto -->
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <div class="footer-contact">
+                    <i class="fas fa-phone"></i>
+                    <span>+34 912 345 678</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-envelope"></i>
+                    <span>info@petcare.com</span>
+                </div>
+                <div class="footer-contact">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Calle Principal 123, Madrid</span>
+                </div>
+            </div>
+
+            <!-- Redes sociales -->
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <div class="social-icons">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 PetCare Veterinaria. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Script mínimo para interactividad visual -->
+    <script>
+        function toggleCart() {
+            const cartModal = document.getElementById('cartModal');
+            cartModal.classList.toggle('active');
+        }
+
+        function addToCart(productName, price) {
+            alert(`✅ "${productName}" agregado al carrito por $${price}`);
+        }
+
+        // Animación al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    el.style.transition = 'all 0.6s ease-out';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
